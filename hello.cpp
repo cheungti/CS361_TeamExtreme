@@ -10,5 +10,7 @@ int main() {
 		cout << "Hello World!" << endl;
 	}
 
+	cout << "Hi I'm Tinron" << endl;
+
 	return 0;
 }
