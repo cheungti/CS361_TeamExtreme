@@ -7,5 +7,13 @@ int main() {
 	cout << "here is my program" << endl;
 
 	cout << "sick program " << endl;
+	// Changes by William Dam
+	// Yes, let's print Hello World 25x
+	for (int i = 0; i < 25; i++) {
+		cout << "Hello World!" << endl;
+	}
+
+	cout << "Hi I'm Tinron" << endl;
+
 	return 0;
 }
