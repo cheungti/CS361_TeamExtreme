@@ -6,5 +6,6 @@ int main() {
 
 	cout << "here is my program" << endl;
 
+	cout << "sick program " << endl;
 	return 0;
 }
