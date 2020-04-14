@@ -1,24 +1,27 @@
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 using namespace std;
 
 int main() {
-	cout << "Hello world!" << endl;
+	printf("Hello World!\n");
 
-	cout << "here is my program" << endl;
-
-	cout << "sick program " << endl;
 	// Changes by William Dam
 	// Yes, let's print Hello World 25x
 	for (int i = 0; i < 25; i++) {
-		cout << "Hello World!" << endl;
+		printf("Hello World!\n");
 	}
 
-	// more changes - Jonathan Dressel
-	cout << "Hi I'm Tinron" << endl;
-	cout << "Hi I'm Danny. Again." << endl;
+	printf("\nHi I'm Tinron\n\n");
 
-	// Add a comment with your name below.
-	// Jonathan Dressel 
+	//random number of hello worlds
+	srand (time(NULL));
+	int a = rand() % 100 + 1; //random from 1-100
+
+	for (int i = 0; i < a; i++) {
+		printf("Hello World! - %i/%i\n", (i + 1), a);
+	}
 
 	return 0;
 }
