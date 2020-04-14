@@ -5,7 +5,7 @@
 * Daniel Mesa ( @ ) -
 * Jonathan Dressel ( @ ) - 503-871-0131
 * Tinron Cheung ( @ )
-* William Dam ( @ ) -
+* William Dam ( @damw ) -
 
 ## Description:
 Attempt to go about your daily life while avoiding contact with other people. Complete errands, gracefully deflect invitations to in-person social events, avoid your roommates, etc. Don't forget to wash your hands.
