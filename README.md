@@ -4,7 +4,7 @@
 * Bryce Hahn ( @hahn2014 ) - 932-819-555
 * Daniel Mesa ( @ ) -
 * Jonathan Dressel ( @ ) -
-* Tinron Cheung ( @ ) -
+* Tinron Cheung ( @ ) - 408-341-5726
 * William Dam ( @ ) -
 
 ## Description:
