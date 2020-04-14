@@ -3,7 +3,7 @@
 ### -- Meet The Team --
 * Bryce Hahn ( @hahn2014 ) - 932-819-555
 * Daniel Mesa ( @ ) -
-* Jonathan Dressel ( @ ) -
+* Jonathan Dressel ( @ ) - 503-871-0131
 * Tinron Cheung ( @ )
 * William Dam ( @ ) -
 
