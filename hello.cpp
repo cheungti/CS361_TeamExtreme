@@ -15,6 +15,7 @@ int main() {
 
 	// more changes - Jonathan Dressel
 	cout << "Hi I'm Tinron" << endl;
+	cout << "Hi I'm Danny." << endl;
 
 	// Add a comment with your name below.
 	// Jonathan Dressel 
