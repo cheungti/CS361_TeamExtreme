@@ -36,6 +36,8 @@ void Player::Step() {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 Player::Player() {
+    this->health = 100;
+    this->money = 0;
     updateLocation(0, 0); //start at 0, 0 -> board can go into the negatives
 }
 
