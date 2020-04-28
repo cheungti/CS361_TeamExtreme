@@ -4,10 +4,12 @@
 #include <string>
 #include "Logger.h"
 #include "Player.h"
+#include "GameBoard.h"
 
 //instantiate class variables
 Logger* io;
 Player* player;
+GameBoard* board;
 
 //define function declarations
 void Avoidance();
@@ -24,7 +26,7 @@ void Avoidance();
  ***************************************************************************/
 void Avoidance() {
 	//setup game board
-
+	board = new GameBoard();
 	//setup player
 	player = new Player();
 
@@ -35,6 +37,8 @@ void Avoidance() {
 	//main game loop
 	while (true) {
 		player->Step();
+		board->Step();
+		printf("Player POS: (x, y) ->[%i, %i]\n", player->getX(), player->getY());
 	}
 }
 
@@ -45,6 +49,7 @@ int main(int argc, char** argv) {
 		for (int i = 0; i < argc; i++) {
 			if (argv[i] == "-d") { //debug mode
 				io->setDebug(true);
+				io->Debug("Debug mode has been enabled by Command Line Argument.");
 			}
 		}
 	}

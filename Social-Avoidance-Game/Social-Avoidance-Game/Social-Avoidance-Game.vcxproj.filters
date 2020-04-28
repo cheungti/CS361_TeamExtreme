@@ -19,6 +19,9 @@
     <Filter Include="Source Files\IO">
       <UniqueIdentifier>{2b0e31a6-fb73-4279-8853-de5c91a7fb68}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Board">
+      <UniqueIdentifier>{3067a371-09cf-4d73-b867-571abfd17f39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Player.cpp">
@@ -29,6 +32,9 @@
     </ClCompile>
     <ClCompile Include="Logger.cpp">
       <Filter>Source Files\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="GameBoard.cpp">
+      <Filter>Source Files\Board</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -41,6 +47,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameBoard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

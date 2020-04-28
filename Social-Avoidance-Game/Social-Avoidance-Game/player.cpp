@@ -13,9 +13,16 @@
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 void Player::Step() {
-	
+	//testing, move one to right and down 1 every step
+    updateLocation(getX() + 1, getY() - 1);
 
+    //check for interactables in current room
 
+    //check for entities in current room
+
+    //get user input in console
+
+    //update location if necessary
 
 }
 
@@ -29,7 +36,7 @@ void Player::Step() {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 Player::Player() {
-
+    updateLocation(0, 0); //start at 0, 0 -> board can go into the negatives
 }
 
 /***************************************************************************
@@ -42,5 +49,115 @@ Player::Player() {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 Player::~Player() {
-
+    //nothing?
 }
+
+/***************************************************************************
+ *							  Update Location			    			   *
+ *	The function will update the players (x, y) integer coordinates        *
+ *																		   *
+ *	Params: int x defines new X position, int y defines new Y position     *
+ *	Return: N/A															   *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+void Player::updateLocation(int x, int y) {
+    this->x = x;
+    this->y = y;
+}
+
+/***************************************************************************
+ *							    Get Location			    			   *
+ *	The function will return the players (x, y) integer coordinates        *
+ *																		   *
+ *	Params: N/A                                                            *
+ *	Return: tuple<int, int> of the players (x, y) coordinates respectively *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+tuple<int, int> Player::getLocation() {
+    return tuple<int, int>(this->x, this->y);
+}
+
+/***************************************************************************
+ *							       Get X			    	    		   *
+ *	The function will return the player's x integer coordinate             *
+ *																		   *
+ *	Params: N/A                                                            *
+ *	Return: the player's x coordinate									   *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+int Player::getX() {
+    return this->x;
+}
+
+/***************************************************************************
+ *							       Get Y			    	    		   *
+ *	The function will return the player's y integer coordinate             *
+ *																		   *
+ *	Params: N/A                                                            *
+ *	Return: the player's y coordinate									   *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+int Player::getY() {
+    return this->y;
+}
+
+/***************************************************************************
+ *							  Update Health 			    			   *
+ *	The function will update the players integer health value              *
+ *																		   *
+ *	Params: int for new player health                                      *
+ *	Return: N/A															   *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+void Player::updateHealth(int newhealth) {
+    this->health = newhealth;
+}
+
+/***************************************************************************
+ *							     Get Health    			    			   *
+ *	The function will return the players health value                      *
+ *																		   *
+ *	Params: N/A                                                            *
+ *	Return: The player's current health                                    *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+int Player::getHealth() {
+    return this->health;
+}
+
+/***************************************************************************
+ *							    Update Money 			    			   *
+ *	The function will update the players integer money value               *
+ *																		   *
+ *	Params: int for new player money value                                 *
+ *	Return: N/A															   *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+void Player::updateMoney(int money) {
+    this->money = money;
+}
+
+/***************************************************************************
+ *							      Add Money 			    		  	   *
+ *	The function will add a designated ammount of cash to the players      *
+ *      integer money value                                                *
+ *																		   *
+ *	Params: int for new player money going to be added                     *
+ *	Return: N/A															   *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+void Player::addMoney(int additionalmoney) {
+    this->money += additionalmoney;
+}
+
+/***************************************************************************
+ *							     Get Money    			    			   *
+ *	The function will return the players money value                       *
+ *																		   *
+ *	Params: N/A                                                            *
+ *	Return: The player's current money value                               *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+int Player::getMoney() {
+    return this->money;
+};
