@@ -2,12 +2,13 @@
 #define GAMEBOARD_H
 //class imports
 #include "Player.hpp"
+#include "Cpu.hpp"
 #include <stdio.h>
 
 class GameBoard {
 private:
 	Player* player;
-	//CPU * cpu;
+	Cpu * cpu;
 	char** board;
 	char movement;
 	//Room * rooms;

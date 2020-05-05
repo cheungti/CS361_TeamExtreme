@@ -13,8 +13,32 @@ const int boardHeight = 60;
  *	Return: N/A															   *
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
-GameBoard::GameBoard() {
+GameBoard::GameBoard(Player *player) {
     this->board = createBoard();
+
+	this->player = player;
+//Spawn the 5 CPU on the board
+	Cpu1 = new Cpu();
+	Cpu2 = new Cpu();
+	Cpu3 = new Cpu();
+	Cpu4 = new Cpu();
+	Cpu5 = new Cpu();
+}
+
+
+/***************************************************************************
+*								CPU PLAYER INTERACTION					   *
+*	This function will check to see if the player and the CPU are in       *
+*		interaction range												   *
+*                                                                          *
+*																		   *
+*	Params: N/A															   *
+*	Return: N/A															   *
+*	Author: Bryce Hahn, Tinron Cheung									   *
+***************************************************************************/
+void GameBoard::checkInteraction() {
+	this->player->
+
 }
 
 /***************************************************************************

@@ -25,11 +25,12 @@ void Avoidance();
  *	Author: Bryce Hahn, Tinron Cheung, 									   *
  ***************************************************************************/
 void Avoidance() {
-	//setup game board
-	board = new GameBoard();
-	board->printBoard(); //draw gameboard
 	//setup player
 	player = new Player();
+	//setup game board
+	board = new GameBoard(*player);
+	board->printBoard(); //draw gameboard
+
 
 	//setup rooms
 
