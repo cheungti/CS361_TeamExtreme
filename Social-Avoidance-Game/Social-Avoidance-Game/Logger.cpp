@@ -14,19 +14,25 @@ Logger::Logger(bool debug) {
  *	Return: N/A															   *
  *	Author: Bryce Hahn													   *
  ***************************************************************************/
-void Logger::Debug(string message, ...) {
+void Logger::Debugs(string message, ...) {
 	if (this->debug) {
-		//va_list args;
-		//string msg = message;
+		va_list args;
+		string msg = message;
 		//start sorting through message arguments
-		//va_start(args, message);
+		va_start(args, message);
 
-		//msg = msg + va_arg(args, string); //concatenate messages together
+		msg = msg + va_arg(args, string); //concatenate messages together
 
-		//va_end(args); //we reached the end of the list
+		va_end(args); //we reached the end of the list
 
 		printf("[DEBUG] - %s", message);
 	}
+}
+
+void Logger::Debug(string message) {
+    if (this->debug) {
+        printf("[DEBUG] - %s\n", message);
+    }
 }
 
 /***************************************************************************

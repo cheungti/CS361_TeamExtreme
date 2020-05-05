@@ -36,8 +36,8 @@ void Player::Step() {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 Player::Player() {
-    this->health = 100;
-    this->money = 0;
+    updateHealth(100);
+    updateMoney(0);
     updateLocation(0, 0); //start at 0, 0 -> board can go into the negatives
 }
 
@@ -163,3 +163,27 @@ void Player::addMoney(int additionalmoney) {
 int Player::getMoney() {
     return this->money;
 };
+
+/***************************************************************************
+ *							   Is Infected    			    			   *
+ *	The function will return the players infection status                  *
+ *																		   *
+ *	Params: N/A                                                            *
+ *	Return: The player's current infection status                          *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+bool Player::isInfected() {
+    return this->infected;
+}
+
+/***************************************************************************
+ *							   Set Infected    			    			   *
+ *	The function will update the players infection status                  *
+ *																		   *
+ *	Params: The player's new infection status                              *
+ *	Return: N/A                                                            *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+void Player::setInfected(bool infectionStatus) {
+    this->infected = infectionStatus;
+}

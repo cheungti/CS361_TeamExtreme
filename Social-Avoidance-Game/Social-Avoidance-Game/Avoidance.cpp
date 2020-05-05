@@ -27,6 +27,7 @@ void Avoidance();
 void Avoidance() {
 	//setup game board
 	board = new GameBoard();
+	board->printBoard(); //draw gameboard
 	//setup player
 	player = new Player();
 
@@ -38,7 +39,7 @@ void Avoidance() {
 	while (true) {
 		player->Step();
 		board->Step();
-		printf("Player POS: (x, y) ->[%i, %i]\n", player->getX(), player->getY());
+		//printf("Player POS: (x, y) ->[%i, %i]\n", player->getX(), player->getY()); //this should eventually be sent to gameboard hug to update player's X,Y print debug
 	}
 }
 

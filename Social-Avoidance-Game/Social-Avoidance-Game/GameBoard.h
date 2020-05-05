@@ -2,17 +2,18 @@
 #define GAMEBOARD_H
 //class imports
 #include "Player.h"
+#include <stdio.h>
 
 #pragma once
 class GameBoard {
 private:
-	Player p;
+	Player* player;
 	//CPU * cpu;
 	char** board;
 	char movement;
 	//Room * rooms;
 	int infectAmount;
-
+	char* drawBox(int, int, int, int, int);
 
 public:
 	GameBoard();
