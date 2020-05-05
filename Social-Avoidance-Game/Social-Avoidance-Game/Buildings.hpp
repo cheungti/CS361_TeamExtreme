@@ -10,8 +10,13 @@
 #define Buildings_hpp
 
 #include <string>
+#include <vector>
+#include <tuple>
+#include "Cpu.hpp"
 
-class Buildings
+typedef std::vector< std::tuple<int,int> > tupleList;
+
+class Buildings : public Cpu
 {
 
 public:
@@ -19,10 +24,12 @@ public:
 	~Buildings();
 
 	void setBuilding(std::string name);		// Set building type
+	tupleList getLocation();				//returns a list of (x,y) coordinates for building location
+	void setLocation(tupleList coordinates); //set building location
 
 private:
 	std::string buildingType;				// Building type
-
+	tupleList location;
 };
 
 #endif

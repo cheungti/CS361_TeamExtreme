@@ -28,6 +28,22 @@ void Buildings::setBuilding(std::string buildingName) {
 }
 
 /*********************************************************************
+** Description: Set location
+*********************************************************************/
+void Buildings::setLocation(tupleList coordinates){
+
+	location = coordinates;
+}
+
+/*********************************************************************
+** Description: Get list of location points
+*********************************************************************/
+tupleList Buildings::getLocation(){
+	return location;
+}
+
+
+/*********************************************************************
 ** Description: Class destructor
 *********************************************************************/
 Buildings::~Buildings() {

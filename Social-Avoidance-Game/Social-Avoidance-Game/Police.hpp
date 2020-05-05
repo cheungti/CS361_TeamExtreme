@@ -16,9 +16,11 @@ class Police : public Cpu
 public:
 	Police();				// Default constructor
 	~Police();				// Destructor
+	int getFine();			
+	void setFine(int anAmount);
 
 private:
-
+	int fine;
 };
 
 #endif
