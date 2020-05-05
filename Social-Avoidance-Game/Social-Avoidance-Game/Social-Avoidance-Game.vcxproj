@@ -140,6 +140,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Avoidance.cpp" />
+    <ClCompile Include="Bystander.cpp" />
+    <ClCompile Include="Cpu.cpp" />
     <ClCompile Include="GameBoard.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -148,9 +150,14 @@
     <Text Include="README.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameBoard.h" />
-    <ClInclude Include="Logger.h" />
-    <ClInclude Include="Player.h" />
+    <ClInclude Include="Bystander.hpp" />
+    <ClInclude Include="Cpu.hpp" />
+    <ClInclude Include="GameBoard.hpp" />
+    <ClInclude Include="Logger.hpp" />
+    <ClInclude Include="Player.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,4 +1,4 @@
-#include "GameBoard.h"
+#include "GameBoard.hpp"
 
 const int boardWidth = 100;
 const int boardHeight = 60;
