@@ -18,11 +18,9 @@ GameBoard::GameBoard(Player *player) {
 
 	this->player = player;
 //Spawn the 5 CPU on the board
-	Cpu1 = new Cpu();
-	Cpu2 = new Cpu();
-	Cpu3 = new Cpu();
-	Cpu4 = new Cpu();
-	Cpu5 = new Cpu();
+	for (int i = 0; i < 5; i++) {
+		cpus[i] = new CPU();
+	}
 }
 
 
