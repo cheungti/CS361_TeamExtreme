@@ -12,24 +12,30 @@
 #include <string>
 #include <vector>
 #include <tuple>
-#include "Cpu.hpp"
+#include "Die.hpp"
 
 typedef std::vector< std::tuple<int,int> > tupleList;
 
-class Buildings : public Cpu
+class Buildings 
 {
 
 public:
-	Buildings();
+	Buildings(std::string aType);
 	~Buildings();
 
 	void setBuilding(std::string name);		// Set building type
+	std::string getBuilding();
 	tupleList getLocation();				//returns a list of (x,y) coordinates for building location
 	void setLocation(tupleList coordinates); //set building location
+	bool isLocked();
+	bool ifVisited();
 
 private:
 	std::string buildingType;				// Building type
 	tupleList location;
+	bool locked;
+	bool visited;
+	Die dice;
 };
 
 #endif

@@ -1,12 +1,13 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef PLAYER_HPP
+#define PLAYER_HPP
 //includes
 #include <tuple>
+#include "Entity.hpp"
 
 using namespace std;
 
 #pragma once
-class Player {
+class Player : public Entity {
 private:
 	int x;
 	int y;

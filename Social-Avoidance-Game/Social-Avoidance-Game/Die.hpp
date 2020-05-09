@@ -6,24 +6,19 @@
 ** Member methods defined in separate implementation file.
 *********************************************************************/
 
-#ifndef Cpu_hpp
-#define Cpu_hpp
+#ifndef Die_hpp
+#define Die_hpp
 
 #include <string>
 
-class Cpu
+class Die
 {
 
 public:
-	Cpu();
-	~Cpu();
+	Die();
+	~Die();
 
 	int dieRoll(int high, int low);
-
-	void setType(std::string name);		// Set character type
-
-private:
-	std::string type;					// Character type
 
 };
 

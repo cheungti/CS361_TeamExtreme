@@ -5,7 +5,7 @@
 ** the Cpu base class.  Member methods are defined within.
 *********************************************************************/
 
-#include "Cpu.hpp"
+#include "Die.hpp"
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
@@ -13,9 +13,8 @@
 /*********************************************************************
 ** Description: Default constructor for Cpu class
 *********************************************************************/
-Cpu::Cpu() {
+Die::Die() {
 	srand(static_cast<unsigned int>(time(0)));	// Seed random number generator
-	type = "";		// Initialize type
 }
 
 /*********************************************************************
@@ -23,13 +22,13 @@ Cpu::Cpu() {
 ** value.  Receives 2 args for high and low, for example, 6 sided
 ** die would be sent as dieRoll(6, 1).
 *********************************************************************/
-int Cpu::dieRoll(int high, int low) {
+int Die::dieRoll(int high, int low) {
 	return rand() % high + low;				// Return roll value
 }
 
 /*********************************************************************
 ** Description: Class destructor
 *********************************************************************/
-Cpu::~Cpu() {
+Die::~Die() {
 
 }

@@ -7,10 +7,10 @@
 *********************************************************************/
 #ifndef Police_hpp
 #define Police_hpp
-#include "Cpu.hpp"
+#include "Entity.hpp"
 #include <string>
 
-class Police : public Cpu
+class Police : public Entity
 {
 
 public:

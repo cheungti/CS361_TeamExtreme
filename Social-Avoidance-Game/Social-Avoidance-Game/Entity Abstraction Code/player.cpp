@@ -1,4 +1,4 @@
-#include "Player.h"
+#include "Player.hpp"
 
 
 /***************************************************************************
@@ -53,3 +53,65 @@ Player::Player() {
 Player::~Player() {
     //nothing?
 }
+
+/***************************************************************************
+ *							  Update Health 			    			   *
+ *	The function will update the entitys integer health value              *
+ *																		   *
+ *	Params: int for new entity health                                      *
+ *	Return: N/A															   *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+void Player::updateHealth(int newhealth) {
+    this->health = newhealth;
+}
+
+/***************************************************************************
+ *							     Get Health    			    			   *
+ *	The function will return the entitys health value                      *
+ *																		   *
+ *	Params: N/A                                                            *
+ *	Return: The entity's current health                                    *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+int Player::getHealth() {
+    return this->health;
+}
+
+/***************************************************************************
+ *							    Update Money 			    			   *
+ *	The function will update the entitys integer money value               *
+ *																		   *
+ *	Params: int for new entity money value                                 *
+ *	Return: N/A															   *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+void Player::updateMoney(int money) {
+    this->money = money;
+}
+
+/***************************************************************************
+ *							      Add Money 			    		  	   *
+ *	The function will add a designated ammount of cash to the entitys      *
+ *      integer money value                                                *
+ *																		   *
+ *	Params: int for new entity money going to be added                     *
+ *	Return: N/A															   *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+void Player::addMoney(int additionalmoney) {
+    this->money += additionalmoney;
+}
+
+/***************************************************************************
+ *							     Get Money    			    			   *
+ *	The function will return the entitys money value                       *
+ *																		   *
+ *	Params: N/A                                                            *
+ *	Return: The entity's current money value                               *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+int Player::getMoney() {
+    return this->money;
+};
+

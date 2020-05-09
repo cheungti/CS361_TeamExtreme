@@ -10,11 +10,13 @@
 #include <string>
 
 /*********************************************************************
-** Description: Default constructor for Buildings class
+** Description: Parameter constructor for Buildings class
 *********************************************************************/
-Buildings::Buildings() {
+Buildings::Buildings(std::string aType) {
 
-	buildingType = "";
+	buildingType = aType;
+	visited = false;
+	locked = false;
 
 }
 
@@ -28,11 +30,36 @@ void Buildings::setBuilding(std::string buildingName) {
 }
 
 /*********************************************************************
+** Description: Set function sets building type
+*********************************************************************/
+std::string Buildings::getBuilding() {
+
+	return buildingType;
+
+}
+
+/*********************************************************************
 ** Description: Set location
 *********************************************************************/
 void Buildings::setLocation(tupleList coordinates){
 
 	location = coordinates;
+}
+
+/*********************************************************************
+** Description: return if locked or not
+*********************************************************************/
+bool Buildings::isLocked(){
+
+	return locked; 
+}
+
+/*********************************************************************
+** Description: return if building has been visited
+*********************************************************************/
+bool Buildings::ifVisited(){
+
+	return visited; 
 }
 
 /*********************************************************************

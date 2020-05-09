@@ -13,7 +13,7 @@
 *********************************************************************/
 Bystander::Bystander() {
 
-	Cpu::setType("Bystander");	// Initialize type Bystander
+	Entity::setType("Bystander");	// Initialize type Bystander
 	infected = false;
 }
 
@@ -25,6 +25,13 @@ void Bystander::setInfection(bool infect) {
 	infected = infect;
 
 }
+/***************************************************************************
+ ** Description: return infected or not								   *
+ ***************************************************************************/
+bool Bystander::isInfected() {
+    return infected;
+}
+
 
 /*********************************************************************
 ** Description: Class destructor
