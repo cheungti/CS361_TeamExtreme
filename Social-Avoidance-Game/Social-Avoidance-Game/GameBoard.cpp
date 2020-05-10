@@ -19,13 +19,15 @@ GameBoard::GameBoard(Player *player) {
 	this->player = player;
 //Spawn the 5 CPU on the board
 	for (int i = 0; i < 5; i++) {
-		cpus[i] = new CPU();
+		bystander[i] = new Bystander();
 	}
+	
+	police = new Police();
 }
 
 
 /***************************************************************************
-*								CPU PLAYER INTERACTION					   *
+*								bystander PLAYER INTERACTION					   *
 *	This function will check to see if the player and the CPU are in       *
 *		interaction range												   *
 *                                                                          *
@@ -34,8 +36,78 @@ GameBoard::GameBoard(Player *player) {
 *	Return: N/A															   *
 *	Author: Bryce Hahn, Tinron Cheung									   *
 ***************************************************************************/
-void GameBoard::checkInteraction() {
-	this->player->
+void GameBoard::checkBystanderInteraction() {
+
+	int playerXcoord = this->player->getX();
+	int playerYcoord = this->player->getY();
+
+	for (int i = 0; i < 5; i++) {
+		bystanderXcoord = this->bystander[i]->getX();
+		bystanderYcoord = this->bystander[i]->getY();
+
+		//checks if player is 1 tile or on same tile as bystander
+		if (playerXcoord == bystanderXcoord)
+		{
+			if (playerYcoord == bystanderYcoord or playerYcoord == (bystanderYcoord + 1) or playerYcoord == (bystanderYcoord - 1)
+			{
+				return true;
+			}
+		}
+
+		if (playerYcoord == bystanderYcoord)
+		{
+			if (playerXcoord == bystanderXcoord or playerXcoord == (bystanderXcoord + 1) or playerXcoord == (bystanderXcoord - 1)
+			{
+				return true;
+			}
+		}
+	}
+	//false if player is not 1 tile away or on same tile as bystander
+	return false;
+
+
+}
+
+
+/***************************************************************************
+*								police PLAYER INTERACTION					   *
+*	This function will check to see if the player and the CPU are in       *
+*		interaction range												   *
+*                                                                          *
+*																		   *
+*	Params: N/A															   *
+*	Return: N/A															   *
+*	Author: Bryce Hahn, Tinron Cheung									   *
+***************************************************************************/
+void GameBoard::checkPoliceInteraction() {
+
+	int playerXcoord = this->player->getX();
+	int playerYcoord = this->player->getY();
+
+
+	policeXcoord = this->police->getX();
+	policerYcoord = this->police->getY();
+
+	//checks if player is 1 tile or on same tile as police
+	if (playerXcoord == policeXcoord)
+	{
+		if (playerYcoord == policeYcoord or playerYcoord == (policeYcoord + 1) or playerYcoord == (policeYcoord - 1)
+		{
+			return true;
+		}
+	}
+
+	if (playerYcoord == policeYcoord)
+	{
+		if (playerXcoord == policeXcoord or playerXcoord == (policeXcoord + 1) or playerXcoord == (policeXcoord - 1)
+		{
+			return true;
+		}
+	}
+	
+	//false if player is not 1 tile away or on same tile as police
+	return false;
+
 
 }
 
