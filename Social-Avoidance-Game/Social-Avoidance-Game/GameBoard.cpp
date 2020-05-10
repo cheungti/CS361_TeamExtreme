@@ -36,7 +36,7 @@ GameBoard::GameBoard(Player *player) {
 *	Return: N/A															   *
 *	Author: Bryce Hahn, Tinron Cheung									   *
 ***************************************************************************/
-void GameBoard::checkBystanderInteraction() {
+bool GameBoard::checkBystanderInteraction() {
 
 	int playerXcoord = this->player->getX();
 	int playerYcoord = this->player->getY();
@@ -79,7 +79,7 @@ void GameBoard::checkBystanderInteraction() {
 *	Return: N/A															   *
 *	Author: Bryce Hahn, Tinron Cheung									   *
 ***************************************************************************/
-void GameBoard::checkPoliceInteraction() {
+bool GameBoard::checkPoliceInteraction() {
 
 	int playerXcoord = this->player->getX();
 	int playerYcoord = this->player->getY();
