@@ -19,7 +19,7 @@ GameBoard::GameBoard(Player *player) {
 	this->player = player;
 //Spawn the 5 CPU on the board
 	for (int i = 0; i < 5; i++) {
-		bystander[i] = new Bystander();
+		bystander.push_back(Bystander());
 	}
 	
 	police = new Police();
