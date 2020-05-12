@@ -13,21 +13,23 @@ const int boardHeight = 60;
  *	Return: N/A															   *
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
-GameBoard::GameBoard(Player *player) {
+GameBoard::GameBoard(Player* player) {
     this->board = createBoard();
 
 	this->player = player;
 //Spawn the 5 CPU on the board
 	for (int i = 0; i < 5; i++) {
-		bystander.push_back(Bystander());
+		bystander.push_back(new Bystander());
+		entities.push_back(new Bystander());
 	}
-	
+
+	entities.push_back(new Police());
 	police = new Police();
 }
 
 
 /***************************************************************************
-*								bystander PLAYER INTERACTION					   *
+*								bystander PLAYER INTERACTION			   *
 *	This function will check to see if the player and the CPU are in       *
 *		interaction range												   *
 *                                                                          *
@@ -40,37 +42,26 @@ bool GameBoard::checkBystanderInteraction() {
 
 	int playerXcoord = this->player->getX();
 	int playerYcoord = this->player->getY();
+	int bystanderXcoord = 0;
+	int bystanderYcoord = 0;
 
 	for (int i = 0; i < 5; i++) {
-		bystanderXcoord = this->bystander[i]->getX();
-		bystanderYcoord = this->bystander[i]->getY();
+		bystanderXcoord = this->bystander.at(i)->getX();
+		bystanderYcoord = this->bystander.at(i)->getY();
 
 		//checks if player is 1 tile or on same tile as bystander
-		if (playerXcoord == bystanderXcoord)
-		{
-			if (playerYcoord == bystanderYcoord or playerYcoord == (bystanderYcoord + 1) or playerYcoord == (bystanderYcoord - 1)
-			{
-				return true;
-			}
-		}
 
-		if (playerYcoord == bystanderYcoord)
-		{
-			if (playerXcoord == bystanderXcoord or playerXcoord == (bystanderXcoord + 1) or playerXcoord == (bystanderXcoord - 1)
-			{
-				return true;
-			}
-		}
+        if (overlappingRadius(this->player, this->entities[i])) {
+            return true;
+        }
 	}
 	//false if player is not 1 tile away or on same tile as bystander
 	return false;
-
-
 }
 
 
 /***************************************************************************
-*								police PLAYER INTERACTION					   *
+*								police PLAYER INTERACTION				   *
 *	This function will check to see if the player and the CPU are in       *
 *		interaction range												   *
 *                                                                          *
@@ -80,18 +71,18 @@ bool GameBoard::checkBystanderInteraction() {
 *	Author: Bryce Hahn, Tinron Cheung									   *
 ***************************************************************************/
 bool GameBoard::checkPoliceInteraction() {
-
 	int playerXcoord = this->player->getX();
 	int playerYcoord = this->player->getY();
 
+	int policeXcoord = this->police->getX();
+	int policeYcoord = this->police->getY();
 
-	policeXcoord = this->police->getX();
-	policerYcoord = this->police->getY();
+
 
 	//checks if player is 1 tile or on same tile as police
 	if (playerXcoord == policeXcoord)
 	{
-		if (playerYcoord == policeYcoord or playerYcoord == (policeYcoord + 1) or playerYcoord == (policeYcoord - 1)
+		if (playerYcoord == policeYcoord or playerYcoord == (policeYcoord + 1) or playerYcoord == (policeYcoord - 1))
 		{
 			return true;
 		}
@@ -99,7 +90,7 @@ bool GameBoard::checkPoliceInteraction() {
 
 	if (playerYcoord == policeYcoord)
 	{
-		if (playerXcoord == policeXcoord or playerXcoord == (policeXcoord + 1) or playerXcoord == (policeXcoord - 1)
+		if (playerXcoord == policeXcoord or playerXcoord == (policeXcoord + 1) or playerXcoord == (policeXcoord - 1))
 		{
 			return true;
 		}
@@ -107,8 +98,29 @@ bool GameBoard::checkPoliceInteraction() {
 	
 	//false if player is not 1 tile away or on same tile as police
 	return false;
+}
 
 
+
+
+/***************************************************************************
+*				            Entity Radius Overlap					       *
+*	This function will check to see if two entities overlap at the         *
+*       infection radius distance.                                         *
+*                                                                          *
+*																		   *
+*	Params: e1 as the first entity (most likely player) e2 as the          *
+*               offending entity (most likely a bystander)                 *
+*	Return: true if the two entities overlap							   *
+*	Author: Bryce Hahn, Tinron Cheung									   *
+***************************************************************************/
+bool GameBoard::overlappingRadius(Entity* e1, Entity* e2) {
+    int distanceSquared  = pow((e2->getX() - e1->getX()), 2) + pow((e2->getY() - e1->getY()), 2);
+    int radiusSumSquared = pow((e1->getInfectionRadius() + e2->getInfectionRadius()), 2);
+    if (distanceSquared >= radiusSumSquared)
+        return false;
+    else
+        return true;
 }
 
 /***************************************************************************
@@ -176,6 +188,26 @@ char** GameBoard::createBoard() {
         }
     }
 	return board;
+}
+
+void GameBoard::updateBoard(Entity::EntityType type, int i, int j) {
+	this->board[i][j] = getEntityChar(type);
+}
+
+char GameBoard::getEntityChar(Entity::EntityType type) {
+    if (type == Entity::EntityType::Bystander) {
+		return 'b';
+	} else if (type == Entity::EntityType::Police) {
+		return 'p';
+	} else if (type == Entity::EntityType::Player) {
+		return '\@';
+	} else {
+        return 'E';
+	}
+}
+
+void GameBoard::emptyPoint(int i, int j) {
+	this->board[i][j] = ' ';
 }
 
 /***************************************************************************

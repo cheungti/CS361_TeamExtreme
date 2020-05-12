@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
-#include "Logger.h"
-#include "Player.h"
-#include "GameBoard.h"
+#include "Logger.hpp"
+#include "Player.hpp"
+#include "GameBoard.hpp"
 
 //instantiate class variables
 Logger* io;
@@ -28,7 +28,7 @@ void Avoidance() {
 	//setup player
 	player = new Player();
 	//setup game board
-	board = new GameBoard(*player);
+	board = new GameBoard(player);
 	board->printBoard(); //draw gameboard
 
 
@@ -56,9 +56,7 @@ int main(int argc, char** argv) {
 		}
 	}
 
-	io->Debug("hello world");
-	//io->Debug("This is string 1", "This is string 2");
-	//io->Error("Invalid Type Exception");
+	//io->Debug("hello world");
 	Avoidance();
 
 	return 0;
