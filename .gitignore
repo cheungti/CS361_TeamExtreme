@@ -1,7 +1,7 @@
 #AutoGen'd files
 
 *.DS_Store     #I'm on MacOS, let's keep the repo clean from clutter!
-
+.DS_Store	   #in case adding the * ruins it
 
 #Unimportant Dirs
 # Build results
