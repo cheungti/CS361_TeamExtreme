@@ -12,8 +12,7 @@
 ** Description: Default constructor
 *********************************************************************/
 Police::Police() {
-
-	Cpu::setType("Police");	// Initialize type Police
+	setType(Entity::EntityType::Police);	// Initialize type Police
 	setFine(50);
 }
 
@@ -21,7 +20,6 @@ Police::Police() {
 ** Description: Return fine amount
 *********************************************************************/
 int Police::getFine() {
-
 	return fine;
 }
 
@@ -29,7 +27,6 @@ int Police::getFine() {
 ** Description: set fine amount
 *********************************************************************/
 void Police::setFine(int anAmount) {
-
 	fine = anAmount;
 }
 

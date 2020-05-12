@@ -13,7 +13,7 @@
 *********************************************************************/
 Bystander::Bystander() {
 
-	Entity::setType("Bystander");	// Initialize type Bystander
+	this->setType(Entity::EntityType::Bystander);	// Initialize type Bystander
 	infected = false;
 }
 

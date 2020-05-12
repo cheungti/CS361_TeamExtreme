@@ -29,7 +29,10 @@ void Avoidance() {
 	player = new Player();
 	//setup game board
 	board = new GameBoard(player);
-	board->printBoard(); //draw gameboard
+	
+	
+	//temporarily remove for debug
+	//board->printBoard(); //draw gameboard
 
 
 	//setup rooms

@@ -177,15 +177,15 @@ char** GameBoard::createBoard() {
     board = new char*[boardHeight]; //define y value size
 
     for (int i = 0; i < boardHeight; i++) { //columns
-        if (i > 10) { //fill the gameboard with temp t's
+        //if (i > 10) { //fill the gameboard with temp t's
             board[i] = new char[boardWidth]; //define x value size
             for (int j = 0; j < boardWidth; j++) { //rows
                 board[i][j] = 't'; //thats the tea
             }
-        } else {  //make a box in the first 10 spaces
+        //} else {  //make a box in the first 10 spaces
             //print user hud
-            board[i] = drawBox(0, 0, boardWidth, 10, i);
-        }
+         //   board[i] = drawBox(0, 0, boardWidth, 10, i);
+        //}
     }
 	return board;
 }

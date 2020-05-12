@@ -10,8 +10,7 @@
 #include "Entity.hpp"
 #include <string>
 
-class Police : public Entity
-{
+class Police : public Entity {
 
 public:
 	Police();				// Default constructor

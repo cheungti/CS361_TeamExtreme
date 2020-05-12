@@ -24,9 +24,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Avoidance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -36,11 +33,23 @@
     <ClCompile Include="GameBoard.cpp">
       <Filter>Source Files\Board</Filter>
     </ClCompile>
-    <ClCompile Include="Cpu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Bystander.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Police.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Die.cpp">
+      <Filter>Source Files\Board</Filter>
+    </ClCompile>
+    <ClCompile Include="Buildings.cpp">
+      <Filter>Source Files\Board</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -49,9 +58,6 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Cpu.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameBoard.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -62,6 +68,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Bystander.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Police.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Die.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Buildings.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
