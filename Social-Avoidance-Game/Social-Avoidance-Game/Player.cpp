@@ -13,17 +13,7 @@
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 void Player::Step() {
-	//testing, move one to right and down 1 every step
-    updateLocation(getX() + 1, getY() - 1);
-
-    //check for interactables in current room
-
-    //check for entities in current room
-
-    //get user input in console
-
-    //update location if necessary
-
+	
 }
 
 /***************************************************************************
@@ -36,6 +26,8 @@ void Player::Step() {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 Player::Player() {
+    dice = new Die();
+    setType(Entity::EntityType::Player);
     updateHealth(100);
     updateMoney(0);
     updateLocation(0, 0); //start at 0, 0 -> board can go into the negatives
@@ -65,6 +57,18 @@ Player::~Player() {
 void Player::updateLocation(int x, int y) {
     this->x = x;
     this->y = y;
+}
+
+/***************************************************************************
+ *							    Move Location			    			   *
+ *	The function will move the players relative (x, y) integer coordinates *
+ *																		   *
+ *	Params: int x defines the X increase, int y defines the Y increase     *
+ *	Return: N/A															   *
+ *	Author: Bryce Hahn, Jonathan Dressel								   *
+ ***************************************************************************/
+void Player::move(int xMove, int yMove) {
+    updateLocation(getX() + xMove, getY() + yMove);
 }
 
 /***************************************************************************

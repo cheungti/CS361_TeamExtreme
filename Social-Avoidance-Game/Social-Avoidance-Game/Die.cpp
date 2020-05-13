@@ -4,17 +4,14 @@
 ** Description: Cpu.cpp is the class implementation file for
 ** the Cpu base class.  Member methods are defined within.
 *********************************************************************/
-
 #include "Die.hpp"
-#include <cstdlib>
-#include <ctime>
-#include <iostream>
 
 /*********************************************************************
 ** Description: Default constructor for Cpu class
 *********************************************************************/
 Die::Die() {
 	srand(static_cast<unsigned int>(time(0)));	// Seed random number generator
+	srand(time(NULL));
 }
 
 /*********************************************************************
@@ -24,6 +21,10 @@ Die::Die() {
 *********************************************************************/
 int Die::dieRoll(int high, int low) {
 	return rand() % high + low;				// Return roll value
+}
+
+int Die::randPosition(int axisConstraint) {
+	return rand() % axisConstraint + 1;
 }
 
 /*********************************************************************

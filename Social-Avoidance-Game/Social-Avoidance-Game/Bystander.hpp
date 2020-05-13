@@ -7,12 +7,12 @@
 *********************************************************************/
 #ifndef Bystander_hpp
 #define Bystander_hpp
+#include <iostream>
+#include <string>
 #include "Die.hpp"
 #include "Entity.hpp"
-#include <string>
 
-class Bystander : public Entity
-{
+class Bystander : public Entity {
 
 public:
 	Bystander();				// Default constructor
@@ -23,7 +23,6 @@ public:
 private:
 	bool infected;
 	int infectionRadius; //how close another entity needs to be to get infected
-	Die dice;
 	bool isInfected();
 	void setInfected(bool);
 

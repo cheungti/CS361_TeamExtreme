@@ -6,12 +6,13 @@
 ** class.  Member methods are defined within.
 *********************************************************************/
 #include "Police.hpp"
-#include <iostream>
 
 /*********************************************************************
 ** Description: Default constructor
 *********************************************************************/
 Police::Police() {
+	dice = new Die();
+	updateLocation(dice->randPosition(100), dice->randPosition(100));
 	setType(Entity::EntityType::Police);	// Initialize type Police
 	setFine(50);
 }

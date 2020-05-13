@@ -5,21 +5,22 @@
 ** Cpu class.  Cpu is a base class for all cpu characters.
 ** Member methods defined in separate implementation file.
 *********************************************************************/
-
 #ifndef Die_hpp
 #define Die_hpp
 
+#include <cstdlib>
+#include <ctime>
+#include <iostream>
 #include <string>
 
-class Die
-{
+class Die {
 
 public:
 	Die();
 	~Die();
 
-	int dieRoll(int high, int low);
-
+	int dieRoll(int, int);
+	int randPosition(int);
 };
 
 #endif

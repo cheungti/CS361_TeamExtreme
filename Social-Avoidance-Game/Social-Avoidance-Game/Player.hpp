@@ -21,6 +21,7 @@ public:
 	~Player();
 	void Step();
 	void updateLocation(int x, int y);
+	void move(int x, int y);
 	tuple<int, int> getLocation();
 	int getX();
 	int getY();

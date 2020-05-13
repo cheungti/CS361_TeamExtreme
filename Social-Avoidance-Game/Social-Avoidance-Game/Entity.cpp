@@ -10,6 +10,10 @@ Entity::Entity() {
 
 }
 
+Entity::~Entity() {
+    delete dice;
+}
+
 /*********************************************************************
 ** Description: Parameter constructor for Entity class
 *********************************************************************/
@@ -17,7 +21,7 @@ Entity::Entity(EntityType type) {
 	this->type = type;		        // Initialize type
 
     //generate random position
-	updateLocation(0, 0); // -> Change this to random x and y
+	updateLocation(0, 0); // -> Change this to random x and y in their respected child classes
 }
 
 /***************************************************************************
@@ -64,10 +68,7 @@ void Entity::setInfectionRadius(int r) {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 void Entity::updateLocation(int x, int y) {
-    //empty old placement on board
-
     //update new placement on board
-
     this->x = x;
     this->y = y;
 }
@@ -116,6 +117,10 @@ int Entity::getY() {
  *	Return: N/A									                           *
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
-void Entity::setType(Entity::EntityType type1) {
+void Entity::setType(Entity::EntityType type) {
     this->type = type;
+}
+
+Entity::EntityType Entity::getType() {
+    return this->type;
 }

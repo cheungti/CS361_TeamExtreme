@@ -14,23 +14,25 @@ const int boardHeight = 60;
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 GameBoard::GameBoard(Player* player) {
-    this->board = createBoard();
-
 	this->player = player;
-//Spawn the 5 CPU on the board
+    //Instantiate 5 new CPUs
 	for (int i = 0; i < 5; i++) {
-		bystander.push_back(new Bystander());
 		entities.push_back(new Bystander());
 	}
 
-	entities.push_back(new Police());
-	police = new Police();
+    //instantiate 3 new police officers
+    for (int i = 0; i < 3; i++) {
+        entities.push_back(new Police());
+    }
+
+    //create gameboard
+    this->board = createBoard();
 }
 
 
 /***************************************************************************
-*								bystander PLAYER INTERACTION			   *
-*	This function will check to see if the player and the CPU are in       *
+*						    Entity Interaction                             *
+*	This function will check to see if the player and a given CPU are in   *
 *		interaction range												   *
 *                                                                          *
 *																		   *
@@ -39,17 +41,8 @@ GameBoard::GameBoard(Player* player) {
 *	Author: Bryce Hahn, Tinron Cheung									   *
 ***************************************************************************/
 bool GameBoard::checkBystanderInteraction() {
-
-	int playerXcoord = this->player->getX();
-	int playerYcoord = this->player->getY();
-	int bystanderXcoord = 0;
-	int bystanderYcoord = 0;
-
-	for (int i = 0; i < 5; i++) {
-		bystanderXcoord = this->bystander.at(i)->getX();
-		bystanderYcoord = this->bystander.at(i)->getY();
-
-		//checks if player is 1 tile or on same tile as bystander
+	for (int i = 0; i < entities.size(); i++) {
+		//checks if player is within the infection radius of a cpu
 
         if (overlappingRadius(this->player, this->entities[i])) {
             return true;
@@ -58,48 +51,6 @@ bool GameBoard::checkBystanderInteraction() {
 	//false if player is not 1 tile away or on same tile as bystander
 	return false;
 }
-
-
-/***************************************************************************
-*								police PLAYER INTERACTION				   *
-*	This function will check to see if the player and the CPU are in       *
-*		interaction range												   *
-*                                                                          *
-*																		   *
-*	Params: N/A															   *
-*	Return: N/A															   *
-*	Author: Bryce Hahn, Tinron Cheung									   *
-***************************************************************************/
-bool GameBoard::checkPoliceInteraction() {
-	int playerXcoord = this->player->getX();
-	int playerYcoord = this->player->getY();
-
-	int policeXcoord = this->police->getX();
-	int policeYcoord = this->police->getY();
-
-
-
-	//checks if player is 1 tile or on same tile as police
-	if (playerXcoord == policeXcoord)
-	{
-		if (playerYcoord == policeYcoord or playerYcoord == (policeYcoord + 1) or playerYcoord == (policeYcoord - 1))
-		{
-			return true;
-		}
-	}
-
-	if (playerYcoord == policeYcoord)
-	{
-		if (playerXcoord == policeXcoord or playerXcoord == (policeXcoord + 1) or playerXcoord == (policeXcoord - 1))
-		{
-			return true;
-		}
-	}
-	
-	//false if player is not 1 tile away or on same tile as police
-	return false;
-}
-
 
 
 
@@ -135,6 +86,8 @@ bool GameBoard::overlappingRadius(Entity* e1, Entity* e2) {
 GameBoard::~GameBoard() {
     delete board;
     delete player;
+
+    entities.clear(); //delete the vector efficiently
 }
 
 /***************************************************************************
@@ -149,16 +102,63 @@ GameBoard::~GameBoard() {
  ***************************************************************************/
 void GameBoard::Step() {
     //clear gameboard
+    q
+    //clear console
+    system("clear");
 
     //redraw board
+    printBoard();
 
-    //clear console
+    //player movements
+    handleKeybinds();
 
-    //redraw console
+    //cpu movements
 
-    //clear HUD/Inventory
+    //check collisions
+    checkBystanderInteraction();
+}
 
-    //redraw HUD/Inventory
+/***************************************************************************
+ *								User Input								   *
+ *	Pause the thread to wait for user input for player movement. If user   *
+ *      enter's anything other than an acceptable movement key, throw an   *
+ *      error and let the player know what their options are.              *
+ *																		   *
+ *	Params: N/A															   *
+ *	Return: N/A															   *
+ *	Author: Bryce Hahn, Jonathan Dresel									   *
+ ***************************************************************************/
+void GameBoard::handleKeybinds() {
+    int ascii = 0;
+
+    //getch() returns an ASCII value. That's why I have an int for getting the input.
+    printf("Move (w,a,s,d): ");
+    ascii = _getch();
+    printf("\n");
+    if(ascii == 'w') {      //if the character is a 'w'
+        //move up
+        updateBoard(*player, player->getX(), player->getY() + 1);
+        player->move(0, 1);
+    }
+    else if(ascii == 'a') {  //if the character is an 'a'
+        //move left
+        updateBoard(*player, player->getX() - 1, player->getY());
+        player->move(-1, 0);
+    }
+    else if(ascii == 's') { //if the character is an 's'
+        //move down
+        updateBoard(*player, player->getX(), player->getY() - 1);
+        player->move(0, -1);
+    }
+    else if(ascii == 'd') { //if the character is a 'd'
+        //move right
+        updateBoard(*player, player->getX() + 1, player->getY());
+        player->move(1, 0);
+    }
+    else {
+        //dont' move
+        printf("Error, invalid move key %c! Please use W, A, S or D", (char)ascii);
+    }
 
 }
 
@@ -177,34 +177,45 @@ char** GameBoard::createBoard() {
     board = new char*[boardHeight]; //define y value size
 
     for (int i = 0; i < boardHeight; i++) { //columns
-        //if (i > 10) { //fill the gameboard with temp t's
-            board[i] = new char[boardWidth]; //define x value size
-            for (int j = 0; j < boardWidth; j++) { //rows
-                board[i][j] = 't'; //thats the tea
-            }
-        //} else {  //make a box in the first 10 spaces
-            //print user hud
-         //   board[i] = drawBox(0, 0, boardWidth, 10, i);
-        //}
+        board[i] = new char[boardWidth]; //define x value size
+        for (int j = 0; j < boardWidth; j++) { //rows
+            board[i][j] = 't'; //thats the tea
+        }
+    }
+
+    //set player's position on board
+    board[player->getX()][player->getY()] = getEntityChar(Entity::EntityType::Player);
+
+    //set cpus positions on board
+    for (int i = 0; i < entities.size(); i++) {
+        printf("test: %i -> %c\n", i, getEntityChar(entities[i]->getType()));
+        board[entities[i]->getX()][entities[i]->getY()] = getEntityChar(entities[i]->getType());
     }
 	return board;
 }
 
-void GameBoard::updateBoard(Entity::EntityType type, int i, int j) {
-	this->board[i][j] = getEntityChar(type);
+
+
+void GameBoard::updateBoard(Entity e, int newX, int newY) {
+    emptyPoint(e.getX(), e.getY()); //empty old position
+	this->board[newX][newY] = getEntityChar(e.getType()); //set entity char at new x,y
 }
+
+
+
 
 char GameBoard::getEntityChar(Entity::EntityType type) {
     if (type == Entity::EntityType::Bystander) {
-		return 'b';
+		return 'B';
 	} else if (type == Entity::EntityType::Police) {
-		return 'p';
+		return 'P';
 	} else if (type == Entity::EntityType::Player) {
 		return '\@';
 	} else {
         return 'E';
 	}
 }
+
 
 void GameBoard::emptyPoint(int i, int j) {
 	this->board[i][j] = ' ';

@@ -8,6 +8,7 @@
 #ifndef Police_hpp
 #define Police_hpp
 #include "Entity.hpp"
+#include <iostream>
 #include <string>
 
 class Police : public Entity {

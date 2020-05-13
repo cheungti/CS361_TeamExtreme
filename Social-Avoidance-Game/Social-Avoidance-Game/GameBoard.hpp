@@ -7,7 +7,9 @@
 #include "Buildings.hpp"
 #include "Entity.hpp"
 #include "Police.hpp"
+#include "Windows.h"
 #include <cmath>
+#include <conio.h>
 #include <vector>
 
 using namespace std;
@@ -16,8 +18,6 @@ class GameBoard {
 private:
 	//entities
 	Player* player;
-	Police* police;
-	vector<Bystander*> bystander;
 	vector<Entity*> entities;
 
 	char **board;
@@ -25,20 +25,20 @@ private:
 	//Room * rooms;
 	int infectAmount;
 	char* drawBox(int, int, int, int, int);
-	char getEntityChar(Entity::EntityType type);		//created
+	char getEntityChar(Entity::EntityType);		//created
+	void handleKeybinds();
 
 public:
 	GameBoard();
-	GameBoard(Player* player);
+	GameBoard(Player*);
 	~GameBoard();
 	char** createBoard();
-	void updateBoard(Entity::EntityType, int, int);
+	void updateBoard(Entity, int, int);
 	void printBoard();
 	void Step();
 	bool checkBystanderInteraction();
-	bool overlappingRadius(Entity* e1, Entity* e2);
-	bool checkPoliceInteraction();
-	void emptyPoint(int i, int j);
+	bool overlappingRadius(Entity*, Entity*);
+	void emptyPoint(int, int);
 };
 
 #endif

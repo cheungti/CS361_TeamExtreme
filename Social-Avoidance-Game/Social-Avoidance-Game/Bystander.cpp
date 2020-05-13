@@ -6,14 +6,14 @@
 ** class.  Member methods are defined within.
 *********************************************************************/
 #include "Bystander.hpp"
-#include <iostream>
 
 /*********************************************************************
 ** Description: Default constructor
 *********************************************************************/
 Bystander::Bystander() {
-
-	this->setType(Entity::EntityType::Bystander);	// Initialize type Bystander
+	dice = new Die();
+	updateLocation(dice->randPosition(100), dice->randPosition(100));
+	setType(Entity::EntityType::Bystander);	// Initialize type Bystander
 	infected = false;
 }
 
