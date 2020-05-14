@@ -1,8 +1,7 @@
 #include "GameBoard.hpp"
 
-const int boardWidth = 100;
-const int boardHeight = 60;
-
+const int boardWidth = 101;
+const int boardHeight = 61;
 
 /***************************************************************************
  *				        	  Default Constructor						   *
@@ -20,20 +19,23 @@ GameBoard::GameBoard(Player* player) {
 		entities.push_back(new Bystander());
 	}
 
-    //instantiate 3 new police officers
+    // Instantiate 3 new police officers
     for (int i = 0; i < 3; i++) {
+
         entities.push_back(new Police());
+
     }
 
-	buildings.push_back(new Building('rx'));
-	buildings.push_back(new Building('work'));
-	buildings.push_back(new Building('dr'));
-	buildings.push_back(new Building('food'));
-
+    // Initialize all buildings on game board
+    home = new Buildings("home", 60, 50);
+    pharmacy = new Buildings("pharmacy", 30, 0);
+    grocery = new Buildings("grocery", 0, 0);
+    police = new Buildings("police", 0, 50);
+    doctor = new Buildings("doctor", 0, 100);
+    work = new Buildings("work", 30, 100);
 
     //create gameboard
     this->board = createBoard();
-
 	
 }
 
@@ -110,7 +112,7 @@ GameBoard::~GameBoard() {
  ***************************************************************************/
 void GameBoard::Step() {
     //clear gameboard
-    q
+
     //clear console
     system("clear");
 

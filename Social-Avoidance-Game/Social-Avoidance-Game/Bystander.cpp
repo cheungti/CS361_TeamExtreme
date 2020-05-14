@@ -1,5 +1,5 @@
 /*********************************************************************
-** Author: William Dam, Daniel Mesa
+** Author: William Dam, Daniel Mesa, Tinron Cheung
 ** Date: 05-05-2020
 ** Description: Bystander.cpp is the class implementation file for the
 ** Bystander class.  Bystander is a derived class of the Character base

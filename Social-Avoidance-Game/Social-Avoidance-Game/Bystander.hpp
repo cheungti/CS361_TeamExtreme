@@ -1,5 +1,5 @@
 /*********************************************************************
-** Author: William Dam, Daniel Mesa
+** Author: William Dam, Daniel Mesa, Tinron Cheung
 ** Date: 05-05-2020
 ** Description: Bystander.hpp is the class specification file for the
 ** Bystander class.  Bystander is a derived class of the Cpu base
@@ -22,7 +22,7 @@ public:
 
 private:
 	bool infected;
-	int infectionRadius; //how close another entity needs to be to get infected
+	int infectionRadius;		// How close another entity needs to be to get infected
 	bool isInfected();
 	void setInfected(bool);
 

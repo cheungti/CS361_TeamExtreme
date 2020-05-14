@@ -19,7 +19,12 @@ private:
 	//entities
 	Player* player;
 	vector<Entity*> entities;
-	vector<Buildings*> buildings;
+	Buildings* home;
+	Buildings* pharmacy;
+	Buildings* grocery;
+	Buildings* police;
+	Buildings* doctor;
+	Buildings* work;
 
 	char **board;
 	char movement;

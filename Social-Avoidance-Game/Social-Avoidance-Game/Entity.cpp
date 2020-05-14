@@ -4,14 +4,15 @@
 ** Description: Default constructor for Entity class
 *********************************************************************/
 Entity::Entity() {
+
 	type = EntityType::null;		// Initialize type
     
-    //generate default position
+    // Generate default position
 
 }
 
 Entity::~Entity() {
-    delete dice;
+
 }
 
 /*********************************************************************
@@ -20,8 +21,9 @@ Entity::~Entity() {
 Entity::Entity(EntityType type) {
 	this->type = type;		        // Initialize type
 
-    //generate random position
+    // Generate random position
 	updateLocation(0, 0); // -> Change this to random x and y in their respected child classes
+
 }
 
 /***************************************************************************
@@ -36,26 +38,31 @@ Entity::Entity(EntityType type) {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 void Entity::Step() {
-    //testing, move one to right and down 1 every step
+
+    // Testing, move one to right and down 1 every step
     updateLocation(getX() + 1, getY() - 1);
 
-    //check for interactables in current room
+    // Check for interactables in current room
 
-    //check for entities in current room
+    // Check for entities in current room
 
-    //get user input in console
+    // Get user input in console
 
-    //update location if necessary
+    // Update location if necessary
 
 }
 
 
 int Entity::getInfectionRadius() {
+
     return this->infectionRadius;
+
 }
 
 void Entity::setInfectionRadius(int r) {
+
     this->infectionRadius = r;
+
 }
 
 
@@ -68,9 +75,11 @@ void Entity::setInfectionRadius(int r) {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 void Entity::updateLocation(int x, int y) {
-    //update new placement on board
+
+    // Update new placement on board
     this->x = x;
     this->y = y;
+
 }
 
 /***************************************************************************
@@ -82,7 +91,9 @@ void Entity::updateLocation(int x, int y) {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 tuple<int, int> Entity::getLocation() {
+
     return tuple<int, int>(this->x, this->y);
+
 }
 
 /***************************************************************************
@@ -94,7 +105,9 @@ tuple<int, int> Entity::getLocation() {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 int Entity::getX() {
+
     return this->x;
+
 }
 
 /***************************************************************************
@@ -106,7 +119,9 @@ int Entity::getX() {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 int Entity::getY() {
+
     return this->y;
+
 }
 
 /***************************************************************************
@@ -118,9 +133,13 @@ int Entity::getY() {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 void Entity::setType(Entity::EntityType type) {
+
     this->type = type;
+
 }
 
 Entity::EntityType Entity::getType() {
+
     return this->type;
+
 }

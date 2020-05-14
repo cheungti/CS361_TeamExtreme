@@ -5,10 +5,8 @@
 #include <tuple>
 #include <string>
 
-
 using namespace std;
 
-#pragma once
 class Entity {
 
 public:
