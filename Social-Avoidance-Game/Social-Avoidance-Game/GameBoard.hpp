@@ -19,6 +19,7 @@ private:
 	//entities
 	Player* player;
 	vector<Entity*> entities;
+	vector<Buildings*> buildings;
 
 	char **board;
 	char movement;

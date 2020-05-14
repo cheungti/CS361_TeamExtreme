@@ -25,8 +25,16 @@ GameBoard::GameBoard(Player* player) {
         entities.push_back(new Police());
     }
 
+	buildings.push_back(new Building('rx'));
+	buildings.push_back(new Building('work'));
+	buildings.push_back(new Building('dr'));
+	buildings.push_back(new Building('food'));
+
+
     //create gameboard
     this->board = createBoard();
+
+	
 }
 
 
