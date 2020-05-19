@@ -143,7 +143,7 @@ void GameBoard::handleKeybinds() {
 
     //getch() returns an ASCII value. That's why I have an int for getting the input.
     printf("Move (w,a,s,d): ");
-    ascii = _getch();
+    ascii = getch();
     printf("\n");
     if(ascii == 'w') {      //if the character is a 'w'
         //move up

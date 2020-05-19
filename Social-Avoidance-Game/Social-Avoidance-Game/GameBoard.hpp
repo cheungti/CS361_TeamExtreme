@@ -6,10 +6,11 @@
 #include "Bystander.hpp"
 #include "Buildings.hpp"
 #include "Entity.hpp"
+#include <ncurses.h>
 #include "Police.hpp"
-#include "Windows.h"
+
 #include <cmath>
-#include <conio.h>
+
 #include <vector>
 
 using namespace std;
