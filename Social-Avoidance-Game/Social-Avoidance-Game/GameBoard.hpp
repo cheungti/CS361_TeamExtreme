@@ -37,17 +37,18 @@ public:
 	GameBoard(Player*);
 	~GameBoard();
 	string** createBoard();
-	void updateBoard(Entity* player, int, int);
+	void updateBoard(Entity*, int, int);
 	void printBoard();
 	void Step();
 	bool checkBystanderInteraction();
 	bool overlappingRadius(Entity*, Entity*);
 	void emptyPoint(int, int);
-    bool occupied(int row, int column);
-    void randomLocation(Entity* anEntity);
-    void randomLocation(Buildings* anEntity);
-    void updateLocation(string aChar, int row, int column);
+    bool occupied(int, int);
+    void randomLocation(Entity*);
+    void randomLocation(Buildings*);
+    void updateLocation(string, int, int);
     void moveCPUs();
+	bool outOfBounds(int, int);
 };
 
 #endif
