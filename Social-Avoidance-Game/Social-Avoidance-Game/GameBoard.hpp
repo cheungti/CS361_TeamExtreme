@@ -21,13 +21,8 @@ private:
 	//entities
 	Player* player;
 	vector<Entity*> entities;
-	Buildings* home;
-	Buildings* pharmacy;
-	Buildings* grocery;
-	Buildings* station;
-	Buildings* doctor;
-	Buildings* work;
-    Die* die;
+	vector<Buildings*> buildings;
+	Die* die;
 
 	string **board;
 	char movement;

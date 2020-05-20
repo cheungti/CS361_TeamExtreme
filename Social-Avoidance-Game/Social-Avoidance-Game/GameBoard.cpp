@@ -26,30 +26,25 @@ GameBoard::GameBoard(Player* player) {
 
     }
     
-    die = new Die();
+    this->die = new Die();
     
     //set die height and width
-    die->setHeightWidth(boardHeight-1, boardWidth-1);
+    this->die->setHeightWidth(boardHeight-1, boardWidth-1);
     
     //create gameboard
     this->board = createBoard();
 
     // Initialize all buildings on game board & update their char on the board
-    home = new Buildings("home", "H", 20, 15); 
-    updateLocation(home->getBuildingChar(), 20, 15);
-    pharmacy = new Buildings("pharmacy", "J", 25, 1);
-    updateLocation(pharmacy->getBuildingChar(), 25, 1);
-    grocery = new Buildings("grocery", "G", 1, 1);
-    updateLocation(grocery->getBuildingChar(), 1, 1);
-    station = new Buildings("station", "S", 1, 20);
-    updateLocation(station->getBuildingChar(), 1, 20);
-    doctor = new Buildings("doctor", "D", 1, 25);
-    updateLocation(doctor->getBuildingChar(), 1, 25);
-    work = new Buildings("work","W", 15, 20);
-    updateLocation(work->getBuildingChar(), 15, 20);
-    
+    buildings.push_back(new Buildings("home", "H", 20, 15));
+    buildings.push_back(new Buildings("pharmacy", "J", 25, 1));
+    buildings.push_back(new Buildings("grocery", "G", 1, 1));
+    buildings.push_back(new Buildings("station", "S", 1, 20));
+    buildings.push_back(new Buildings("doctor", "D", 1, 25));
+    buildings.push_back(new Buildings("work","W", 15, 20));
 
-    
+    for (int i = 0; i < buildings.size(); i++) {
+        updateLocation(buildings[i]->getBuildingChar(), buildings[i]->getX(), buildings[i]->getY());
+	}
     
      //Randomize entity locations
      for (int i = 0; i < entities.size(); i++){
@@ -208,9 +203,6 @@ void GameBoard::handleKeybinds() {
     }
     
     moveCPUs();
-    
-    
-
 }
 
 /***************************************************************************

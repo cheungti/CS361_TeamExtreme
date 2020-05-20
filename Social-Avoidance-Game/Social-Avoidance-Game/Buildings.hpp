@@ -27,6 +27,8 @@ public:
 	int getRow();									// Get x coordinate
 	int getCol();									// Get y coordinate
     void updateLocation(int x, int y);
+	int getX();
+	int getY();
 	bool isLocked();
 	bool ifVisited();
     string getBuildingChar();

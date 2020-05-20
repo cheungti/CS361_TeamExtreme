@@ -99,3 +99,11 @@ void Buildings::updateLocation(int x, int y) {
 Buildings::~Buildings() {
 
 }
+
+int Buildings::getX() {
+	return row;
+}
+
+int Buildings::getY() {
+	return col;
+}
