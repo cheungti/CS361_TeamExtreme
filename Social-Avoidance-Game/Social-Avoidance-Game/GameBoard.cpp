@@ -347,28 +347,28 @@ void GameBoard::moveCPUs(){
         while(!moved && looped < 20){
             int rand1 = die->dieRoll100()%4;
             switch (rand1) {
-                case 1:
+                case 0:
                     //move up
                     if(!occupied(entities[i]->getX()-1, entities[i]->getY())){
                        updateBoard(entities[i], entities[i]->getX()-1, entities[i]->getY());
                         moved = true;
                     }
                     break;
-                case 2:
+                case 1:
                     //move down
                     if(!occupied(entities[i]->getX()+1, entities[i]->getY())){
                        updateBoard(entities[i], entities[i]->getX()+1, entities[i]->getY());
                         moved = true;
                     }
                     break;
-                case 3:
+                case 2:
                     //move left
                     if(!occupied(entities[i]->getX(), entities[i]->getY() - 1)){
                        updateBoard(entities[i], entities[i]->getX(), entities[i]->getY()-1);
                         moved = true;
                     }
                     break;
-                case 4:
+                case 3:
                     //move right
                     if(!occupied(entities[i]->getX(), entities[i]->getY()+1)){
                        updateBoard(entities[i], entities[i]->getX(), entities[i]->getY()+1);
