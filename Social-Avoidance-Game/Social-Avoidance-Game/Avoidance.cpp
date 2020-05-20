@@ -2,14 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
-#include "Logger.hpp"
+//#include "Logger.hpp"
+//#include "Windows.h"
+//#include <conio.h>
+#include <curses.h>
 #include "Player.hpp"
 #include "GameBoard.hpp"
 
-//instantiate class variables
-Logger* io;
-Player* player;
-GameBoard* board;
 
 //define function declarations
 void Avoidance();
@@ -25,10 +24,18 @@ void Avoidance();
  *	Author: Bryce Hahn, Tinron Cheung, 									   *
  ***************************************************************************/
 void Avoidance() {
+	Player* player;
+	GameBoard* board;
+
 	//setup player
 	player = new Player();
 	//setup game board
 	board = new GameBoard(player);
+    
+    while(true){
+        board->Step();
+    }
+    
 	
 	
 	//temporarily remove for debug
@@ -40,16 +47,16 @@ void Avoidance() {
 	//setup entities
 
 	//main game loop
-	while (true) {
+	/*while (true) {
 		player->Step();
 		board->Step();
 		//printf("Player POS: (x, y) ->[%i, %i]\n", player->getX(), player->getY()); //this should eventually be sent to gameboard hug to update player's X,Y print debug
-	}
+	}*/
 }
 
 
 int main(int argc, char** argv) {
-	io = new Logger(true);
+/*	io = new Logger(true);
 	if (argc > 0) {
 		for (int i = 0; i < argc; i++) {
 			if (argv[i] == "-d") { //debug mode
@@ -58,7 +65,7 @@ int main(int argc, char** argv) {
 			}
 		}
 	}
-
+*/
 	//io->Debug("hello world");
 	Avoidance();
 

@@ -14,13 +14,20 @@
 #include <string>
 
 class Die {
+    
+private:
+    int height;
+    int width;
 
 public:
 	Die();
 	~Die();
 
-	int dieRoll(int, int);
+	int dieRollHeight();
+    int dieRollWidth();
 	int randPosition(int);
+    void setHeightWidth(int aHeight, int aWidth);
+    int dieRoll100();
 };
 
 #endif

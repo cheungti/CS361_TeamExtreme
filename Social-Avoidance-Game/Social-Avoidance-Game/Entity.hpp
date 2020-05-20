@@ -22,20 +22,20 @@ public:
 
 	void Step();
 	void updateLocation(int x, int y);	//created
-	tuple<int, int> getLocation();
 	int getInfectionRadius();			//created
 	void setInfectionRadius(int r);		//created
 	int getX();							//created
 	int getY();							//created
+    string getChar();
+    void setChar(string aChar);
 
-	//public classes
-	Die* dice;
 	
 private:
 	int x;
 	int y;
 	int infectionRadius;
 	EntityType type;
+    string entChar;
 };
 
 #endif

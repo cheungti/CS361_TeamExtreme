@@ -11,8 +11,7 @@
 ** Description: Default constructor
 *********************************************************************/
 Bystander::Bystander() {
-	dice = new Die();
-	updateLocation(dice->randPosition(100), dice->randPosition(100));
+    setChar("ф");
 	setType(Entity::EntityType::Bystander);	// Initialize type Bystander
 	infected = false;
 }

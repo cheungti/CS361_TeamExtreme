@@ -13,27 +13,31 @@
 #include <tuple>
 #include "Die.hpp"
 
-typedef std::vector< std::tuple<int,int> > tupleList;
+using namespace std;
+
 
 class Buildings {
+
 public:
-	Buildings(std::string aType, int x, int y);
+	Buildings(std::string aType, string aBuildingChar, int x, int y);
 	~Buildings();
 
 	void setBuildingName(std::string name);		// Set building type
 	std::string getBuildingName();				// Get building type
 	int getRow();									// Get x coordinate
 	int getCol();									// Get y coordinate
+    void updateLocation(int x, int y);
 	bool isLocked();
 	bool ifVisited();
+    string getBuildingChar();
 
 private:
 	std::string buildingType;					// Building type
+    string buildingChar;                          //char for board
 	int row;									// row location of building
 	int col;									// col location of building
 	bool locked;
 	bool visited;
-	bool hasBathroom;
 
 };
 

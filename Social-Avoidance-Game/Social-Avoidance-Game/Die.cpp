@@ -19,12 +19,27 @@ Die::Die() {
 ** value.  Receives 2 args for high and low, for example, 6 sided
 ** die would be sent as dieRoll(6, 1).
 *********************************************************************/
-int Die::dieRoll(int high, int low) {
-	return rand() % high + low;				// Return roll value
+int Die::dieRollHeight() {
+    //rand() % (max_number - minimum_number) + minimum_number
+    return rand() % height + 1;
+}
+
+int Die::dieRollWidth() {
+    //rand() % (max_number - minimum_number) + minimum_number
+    return rand() % width + 1 ;               // Return roll value
 }
 
 int Die::randPosition(int axisConstraint) {
 	return rand() % axisConstraint + 1;
+}
+
+void Die::setHeightWidth(int aHeight, int aWidth) {
+    height = aHeight;
+    width = aWidth;
+}
+
+int Die::dieRoll100(){
+    return rand() % 100 + 1 ;
 }
 
 /*********************************************************************

@@ -1,7 +1,7 @@
-﻿#include "GameBoard.hpp"
+#include "GameBoard.hpp"
 
-const int boardWidth = 14; //101;
-const int boardHeight = 26; //61;
+const int boardWidth = 51;
+const int boardHeight = 27;
 
 /***************************************************************************
  *				        	  Default Constructor						   *
@@ -25,19 +25,53 @@ GameBoard::GameBoard(Player* player) {
         entities.push_back(new Police());
 
     }
-
-    // Initialize all buildings on game board
-
-    buildings.push_back(new Buildings("home", 60, 50));
-    buildings.push_back(new Buildings("pharmacy", 30, 0));
-    buildings.push_back(new Buildings("grocery", 0, 0));
-    buildings.push_back(new Buildings("police", 0, 50));
-    buildings.push_back(new Buildings("doctor", 0, 100));
-    buildings.push_back(new Buildings("work", 30, 100));
-
+    
+    die = new Die();
+    
+    //set die height and width
+    die->setHeightWidth(boardHeight-1, boardWidth-1);
+    
     //create gameboard
-    createBoard();
+    this->board = createBoard();
+
+    // Initialize all buildings on game board & update their char on the board
+    home = new Buildings("home", "H", 20, 15); 
+    updateLocation(home->getBuildingChar(), 20, 15);
+    pharmacy = new Buildings("pharmacy", "J", 25, 1);
+    updateLocation(pharmacy->getBuildingChar(), 25, 1);
+    grocery = new Buildings("grocery", "G", 1, 1);
+    updateLocation(grocery->getBuildingChar(), 1, 1);
+    station = new Buildings("station", "S", 1, 20);
+    updateLocation(station->getBuildingChar(), 1, 20);
+    doctor = new Buildings("doctor", "D", 1, 25);
+    updateLocation(doctor->getBuildingChar(), 1, 25);
+    work = new Buildings("work","W", 15, 20);
+    updateLocation(work->getBuildingChar(), 15, 20);
+    
+
+    
+    
+     //Randomize entity locations
+     for (int i = 0; i < entities.size(); i++){
+         randomLocation(entities[i]);
+         //set entity position on board
+         board[entities[i]->getX()][entities[i]->getY()] = entities[i]->getChar();
+     }
+     
+     
+     //Randomize Player location
+     randomLocation(player);
+     
+     //set player's position on board
+     board[player->getX()][player->getY()] = player->getChar();
+
+    this->printBoard();
+    cout<<endl;
 	
+}
+
+void GameBoard::updateLocation(string aChar, int row, int column){
+    board[row][column] = aChar;
 }
 
 
@@ -95,12 +129,10 @@ bool GameBoard::overlappingRadius(Entity* e1, Entity* e2) {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 GameBoard::~GameBoard() {
-    
     delete board;
     delete player;
 
-    entities.clear(); //delete the vectors efficiently
-    buildings.clear();
+    entities.clear(); //delete the vector efficiently
 }
 
 /***************************************************************************
@@ -115,21 +147,21 @@ GameBoard::~GameBoard() {
  ***************************************************************************/
 void GameBoard::Step() {
     //clear gameboard
-
-    //clear console
-    //system("clear");
-
-    //redraw board
-    printBoard();
     
+
     //player movements
     handleKeybinds();
+    
+    //clear console
+    system("clear");
+    
+    //redraw board
+    printBoard();
 
     //cpu movements
 
-
     //check collisions
-    checkBystanderInteraction();
+    //checkBystanderInteraction();
 }
 
 /***************************************************************************
@@ -142,64 +174,44 @@ void GameBoard::Step() {
  *	Return: N/A															   *
  *	Author: Bryce Hahn, Jonathan Dresel									   *
  ***************************************************************************/
-void GameBoard::handleKeybinds() {
+void GameBoard::handleKeybinds() { 
     char ascii = 0;
-
+        
+    
     //getch() returns an ASCII value. That's why I have an int for getting the input.
     printf("Move (w,a,s,d): ");
-    cin >> ascii;
-    printf("\n");
+    ascii = inputValidationChar();
     if(ascii == 'w') {      //if the character is a 'w'
         //move up
-        if (outOfBounds(player->getX(), player->getY() - 1)) {
-            updateBoard(*player, player->getX(), player->getY() - 1);
-            player->move(0, -1);
-        }
+        cout << player->getX();
+        cout << " " << player->getY() <<endl;
+        updateBoard(player, player->getX()-1, player->getY());
+        cout << player->getX();
+        cout << " " << player->getY() <<endl;
+        
     }
     else if(ascii == 'a') {  //if the character is an 'a'
         //move left
-        if (outOfBounds(player->getX() - 1, player->getY())) {
-            updateBoard(*player, player->getX() - 1, player->getY());
-            player->move(-1, 0);
-        }
+        updateBoard(player, player->getX(), player->getY()-1);
     }
     else if(ascii == 's') { //if the character is an 's'
         //move down
-        if (outOfBounds(player->getX(), player->getY() + 1)) {
-            updateBoard(*player, player->getX(), player->getY() + 1);
-            player->move(0, 1);
-        }
+        updateBoard(player, player->getX()+1, player->getY());
     }
     else if(ascii == 'd') { //if the character is a 'd'
         //move right
-        if (outOfBounds(player->getX() + 1, player->getY())) {
-            updateBoard(*player, player->getX() + 1, player->getY());
-            player->move(1, 0);
-        }
-    } else { //dont' move
-        printf("Error, invalid move key %c! Please use W, A, S or D\n", (char)ascii);
+        updateBoard(player, player->getX(), player->getY()+1);
     }
+    else {
+        //dont' move
+        //printf("Error, invalid move key %c! Please use W, A, S or D", (char)ascii);
+    }
+    
+    moveCPUs();
+    
+    
 
 }
-
-/***************************************************************************
- *							    Out of Bounds							   *
- * This function will initialize the 2D array of chars used to represent   *
- *      the gameboard, hud, console and inventory. Once initialized, will  *
- *      then fill the board with (currently) TEMPORARY values.             *
- *                                                                         *
- *	Params: N/A															   *
- *	Return: 2D array of chars representing the renderable board            *
- *	Author: Bryce Hahn, Jonathan Dressel								   *
- ***************************************************************************/
-bool GameBoard::outOfBounds(int x, int y) {
-    if(x >= boardWidth || x < 0 || y >= boardHeight || y < 0) {
-        printf("Error, failed to move player to (%i, %i). Position is out of bounds!\n", x, y);
-        return false;
-    }
-    return true;
-}
-
 
 /***************************************************************************
  *							    Create Board							   *
@@ -211,31 +223,62 @@ bool GameBoard::outOfBounds(int x, int y) {
  *	Return: 2D array of chars representing the renderable board            *
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
-void GameBoard::createBoard() {
-    this->board = new char*[boardHeight]; //define y value size
+string** GameBoard::createBoard() {
+    string** board = 0;
+    board = new string*[boardHeight]; //define y value size
 
     for (int i = 0; i < boardHeight; i++) { //columns
-        this->board[i] = new char[boardWidth]; //define x value size
+        board[i] = new string[boardWidth]; //define x value size
         for (int j = 0; j < boardWidth; j++) { //rows
-            this->board[i][j] = 't'; //thats the tea
+            if(i == 0){
+                board[i][j] = '-';
+            }else if(i == boardHeight-1){
+                board[i][j] = '-';
+            }else if(j == 0 || j == boardWidth - 1){
+                board[i][j] = '|';
+            }else{
+                board[i][j] = ' '; //thats the tea
+            }
+            
         }
     }
 
-    //set player's position on board
-    this->board[player->getX()][player->getY()] = getEntityChar(Entity::EntityType::Player);
+	return board;
+}
 
-    //set cpus positions on board
-    //for (int i = 0; i < entities.size(); i++) {
-        //printf("test: %i -> %c\n", i, getEntityChar(entities[i]->getType()));
-     //   this->board[entities[i]->getX()][entities[i]->getY()] = getEntityChar(entities[i]->getType());
-   // }
+void GameBoard::randomLocation(Entity* anEntity) {
+    int row = die->dieRollHeight();
+    int column = die->dieRollWidth();
+    
+    while(occupied(row, column)){
+        row = die->dieRollHeight();
+        column = die->dieRollWidth();
+    }
+    
+    anEntity->updateLocation(row, column);
+}
+
+void GameBoard::randomLocation(Buildings* aBuilding){
+    int row = die->dieRollHeight();
+    int column = die->dieRollWidth();
+    
+    while(occupied(row, column)){
+        row = die->dieRollHeight();
+        column = die->dieRollWidth();
+    }
+    
+    aBuilding->updateLocation(row, column);
 }
 
 
 
-void GameBoard::updateBoard(Entity e, int newX, int newY) {
-    emptyPoint(e.getX(), e.getY()); //empty old position
-	this->board[newX][newY] = getEntityChar(e.getType()); //set entity char at new x,y
+void GameBoard::updateBoard(Entity* e, int newX, int newY) {
+    if(!occupied(newX, newY)){
+        emptyPoint(e->getX(), e->getY()); //empty old position
+        this->board[newX][newY] = e->getChar(); //set entity char at new x,y
+        e->updateLocation(newX, newY);
+    }
+    
 }
 
 
@@ -247,7 +290,7 @@ char GameBoard::getEntityChar(Entity::EntityType type) {
 	} else if (type == Entity::EntityType::Police) {
 		return 'P';
 	} else if (type == Entity::EntityType::Player) {
-		return '☺';
+		return '\@';
 	} else {
         return 'E';
 	}
@@ -255,40 +298,9 @@ char GameBoard::getEntityChar(Entity::EntityType type) {
 
 
 void GameBoard::emptyPoint(int i, int j) {
-	this->board[i][j] = ' ';
+	this->board[i][j] = " ";
 }
 
-/***************************************************************************
-*							        Draw Box							   *
- * This function will initialize the 1D array of chars which will then be  *
- *      filled with a desired box of characters. Implementation involves   *
- *      an external loop to call this function for the height of the box   *
- *      since the board is a 2D array and this function works on one row   *
- *      at a time before returning.                                        *
- *                                                                         *
- *	Params: x,y as the starting positions in the board 2D array. Width,    *
- *              Height representing the size of the box. Iter representing *
- *              the current place in the external loop call.               *
- *	Return: 1D array of chars representing the renderable box row          *
- *	Author: Bryce Hahn, Tinron Cheung									   *
- ***************************************************************************/
-char* GameBoard::drawBox(int x, int y, int width, int height, int iter) {
-    char* ret = new char[width]; //define box width
-    if (iter == y || iter == y + height) { //top or bottom row (only ------- chars)
-        for (int i = 0; i < width; i++) {
-            ret[i] = '-';
-        }
-    } else {
-        for (int i = 0; i < width; i++) {
-            if (i == 0 || i == (width - 1)) {
-                ret[i] = '|';
-            } else {
-                ret[i] = ' ';
-            }
-        }
-    }
-    return ret;
-}
 
 /***************************************************************************
  *								Print Board								   *
@@ -300,63 +312,77 @@ char* GameBoard::drawBox(int x, int y, int width, int height, int iter) {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 void GameBoard::printBoard() {
-    /*for (int i = 0; i < boardWidth; i++) {
-        for (int j = 0; j < boardHeight; j++) {
-            printf("%c", this->board[i][j]);
+    for (int i = 0; i < boardHeight; i++) {
+        for (int j = 0; j < boardWidth; j++) {
+            cout << this->board[i][j];
+            
         }
-        if ((i + 1) <= boardWidth) {
+        if ((i + 1) <= boardHeight) {
             printf("\n");
         }
-    }*/
-    //board = new char*[14];
-	//for(int i = 0; i < 14; i++) {
-	//	board[i] = new char[26];
-	//}
-    //std::locale::global(std::locale("☺"));
-	
-	for(int i = 1; i < boardWidth; i++) {
-		for(int j = 0; j < boardHeight; j++) {
-			board[i][j] = ' ';
-		}
-	}
-	
-	for(int j = 0; j < boardHeight; j++) {
-		board[0][j] = '═';
-		board[13][j] = '═';
-	}
-	
-	for(int i = 0; i < boardWidth; i++) {
-		board[i][0] = '|';
-		board[i][25] = '|';
-	}
-	
-	for(int k = 0; k < 25; k+=5) {
-		for(int i = 0; i < 3; i++) {
-			board[i][k] = '|';
-			board[i][k] = '|';
-			board[i][k] = '|';
-		}
-	}	
-	for(int k = 0; k < boardHeight; k+=5) {
-		for(int j = k; j < k+4; j++) {
-			board[2][j] = '═';
-		}
-	}
-	
-	for(int j = 0; j < 5; j++) {
-		board[7][j] = '═';
-		board[9][j] = '═';
-	}
-
-	board[this->player->getY()][this->player->getX()] = '@';
-	
-    for(int i = 0; i < boardWidth; i++) {
-		for(int j = 0; j < boardHeight; j++) {
-			cout << board[i][j];
-		}
-		cout << endl;
-	}
-	cout << endl;
-
+    }
 }
 
+/***************************************************************************
+*                                Occupied                             *
+                                   
+***************************************************************************/
+bool GameBoard::occupied(int row, int column){
+    if(board[row][column] != " "){
+        return true;
+    }else{
+        return false;
+    }
+        
+}
+
+/***************************************************************************
+*                                Move CPUs                         *
+                                   
+***************************************************************************/
+void GameBoard::moveCPUs(){
+    for(int i = 0; i < entities.size(); i++){
+        bool moved = false;
+        int looped = 0;
+        while(!moved && looped < 20){
+            int rand1 = die->dieRoll100()%4;
+            switch (rand1) {
+                case 1:
+                    //move up
+                    if(!occupied(entities[i]->getX()-1, entities[i]->getY())){
+                       updateBoard(entities[i], entities[i]->getX()-1, entities[i]->getY());
+                        moved = true;
+                    }
+                    break;
+                case 2:
+                    //move down
+                    if(!occupied(entities[i]->getX()+1, entities[i]->getY())){
+                       updateBoard(entities[i], entities[i]->getX()+1, entities[i]->getY());
+                        moved = true;
+                    }
+                    break;
+                case 3:
+                    //move left
+                    if(!occupied(entities[i]->getX(), entities[i]->getY() - 1)){
+                       updateBoard(entities[i], entities[i]->getX(), entities[i]->getY()-1);
+                        moved = true;
+                    }
+                    break;
+                case 4:
+                    //move right
+                    if(!occupied(entities[i]->getX(), entities[i]->getY()+1)){
+                       updateBoard(entities[i], entities[i]->getX(), entities[i]->getY()+1);
+                        moved = true;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            
+            looped++;
+        }
+        
+    }
+    
+}
+    
