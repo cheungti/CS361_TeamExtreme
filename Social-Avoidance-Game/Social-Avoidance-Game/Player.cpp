@@ -69,6 +69,7 @@ void Player::updateLocation(int x, int y) {
  ***************************************************************************/
 void Player::move(int xMove, int yMove) {
     updateLocation(getX() + xMove, getY() + yMove);
+    printf("Player moved to (%i, %i)\n", getX(), getY());
 }
 
 /***************************************************************************

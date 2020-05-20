@@ -2,16 +2,15 @@
 #define GAMEBOARD_H
 //class imports
 #include <stdio.h>
+#include <cmath>
+#include <vector>
+//#include <ncurses.h>
 #include "Player.hpp"
 #include "Bystander.hpp"
 #include "Buildings.hpp"
 #include "Entity.hpp"
-#include <ncurses.h>
 #include "Police.hpp"
 
-#include <cmath>
-
-#include <vector>
 
 using namespace std;
 
@@ -20,12 +19,7 @@ private:
 	//entities
 	Player* player;
 	vector<Entity*> entities;
-	Buildings* home;
-	Buildings* pharmacy;
-	Buildings* grocery;
-	Buildings* police;
-	Buildings* doctor;
-	Buildings* work;
+	vector<Buildings*> buildings;
 
 	char **board;
 	char movement;
@@ -33,13 +27,14 @@ private:
 	int infectAmount;
 	char* drawBox(int, int, int, int, int);
 	char getEntityChar(Entity::EntityType);		//created
+	bool outOfBounds(int, int);
 	void handleKeybinds();
 
 public:
 	GameBoard();
 	GameBoard(Player*);
 	~GameBoard();
-	char** createBoard();
+	void createBoard();
 	void updateBoard(Entity, int, int);
 	void printBoard();
 	void Step();

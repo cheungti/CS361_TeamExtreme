@@ -16,7 +16,6 @@
 typedef std::vector< std::tuple<int,int> > tupleList;
 
 class Buildings {
-
 public:
 	Buildings(std::string aType, int x, int y);
 	~Buildings();
@@ -34,6 +33,7 @@ private:
 	int col;									// col location of building
 	bool locked;
 	bool visited;
+	bool hasBathroom;
 
 };
 
