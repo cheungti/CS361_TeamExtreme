@@ -26,25 +26,30 @@ GameBoard::GameBoard(Player* player) {
 
     }
     
-    this->die = new Die();
+    die = new Die();
     
     //set die height and width
-    this->die->setHeightWidth(boardHeight-1, boardWidth-1);
+    die->setHeightWidth(boardHeight-1, boardWidth-1);
     
     //create gameboard
     this->board = createBoard();
 
     // Initialize all buildings on game board & update their char on the board
-    buildings.push_back(new Buildings("home", "H", 20, 15));
-    buildings.push_back(new Buildings("pharmacy", "J", 25, 1));
-    buildings.push_back(new Buildings("grocery", "G", 1, 1));
-    buildings.push_back(new Buildings("station", "S", 1, 20));
-    buildings.push_back(new Buildings("doctor", "D", 1, 25));
-    buildings.push_back(new Buildings("work","W", 15, 20));
+    home = new Buildings("home", "H", 20, 15); 
+    updateLocation(home->getBuildingChar(), 20, 15);
+    pharmacy = new Buildings("pharmacy", "J", 25, 1);
+    updateLocation(pharmacy->getBuildingChar(), 25, 1);
+    grocery = new Buildings("grocery", "G", 1, 1);
+    updateLocation(grocery->getBuildingChar(), 1, 1);
+    station = new Buildings("station", "S", 1, 20);
+    updateLocation(station->getBuildingChar(), 1, 20);
+    doctor = new Buildings("doctor", "D", 1, 25);
+    updateLocation(doctor->getBuildingChar(), 1, 25);
+    work = new Buildings("work","W", 15, 20);
+    updateLocation(work->getBuildingChar(), 15, 20);
+    
 
-    for (int i = 0; i < buildings.size(); i++) {
-        updateLocation(buildings[i]->getBuildingChar(), buildings[i]->getX(), buildings[i]->getY());
-	}
+    
     
      //Randomize entity locations
      for (int i = 0; i < entities.size(); i++){
@@ -203,6 +208,9 @@ void GameBoard::handleKeybinds() {
     }
     
     moveCPUs();
+    
+    
+
 }
 
 /***************************************************************************
@@ -339,28 +347,28 @@ void GameBoard::moveCPUs(){
         while(!moved && looped < 20){
             int rand1 = die->dieRoll100()%4;
             switch (rand1) {
-                case 0:
+                case 1:
                     //move up
                     if(!occupied(entities[i]->getX()-1, entities[i]->getY())){
                        updateBoard(entities[i], entities[i]->getX()-1, entities[i]->getY());
                         moved = true;
                     }
                     break;
-                case 1:
+                case 2:
                     //move down
                     if(!occupied(entities[i]->getX()+1, entities[i]->getY())){
                        updateBoard(entities[i], entities[i]->getX()+1, entities[i]->getY());
                         moved = true;
                     }
                     break;
-                case 2:
+                case 3:
                     //move left
                     if(!occupied(entities[i]->getX(), entities[i]->getY() - 1)){
                        updateBoard(entities[i], entities[i]->getX(), entities[i]->getY()-1);
                         moved = true;
                     }
                     break;
-                case 3:
+                case 4:
                     //move right
                     if(!occupied(entities[i]->getX(), entities[i]->getY()+1)){
                        updateBoard(entities[i], entities[i]->getX(), entities[i]->getY()+1);

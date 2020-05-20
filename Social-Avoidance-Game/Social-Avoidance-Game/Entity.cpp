@@ -82,7 +82,19 @@ void Entity::updateLocation(int x, int y) {
 
 }
 
+/***************************************************************************
+ *							    Get Location			    			   *
+ *	The function will return the entitys (x, y) integer coordinates        *
+ *																		   *
+ *	Params: N/A                                                            *
+ *	Return: tuple<int, int> of the entitys (x, y) coordinates respectively *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+tuple<int, int> Entity::getLocation() {
 
+    return tuple<int, int>(this->x, this->y);
+
+}
 
 /***************************************************************************
  *							       Get X			    	    		   *

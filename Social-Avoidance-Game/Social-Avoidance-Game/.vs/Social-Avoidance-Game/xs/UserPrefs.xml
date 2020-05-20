@@ -1,0 +1,27 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Social-Avoidance-Game/Avoidance.cpp">
+    <Files>
+      <File FileName="Social-Avoidance-Game/GameBoard.cpp" Line="1" Column="1" />
+      <File FileName="Social-Avoidance-Game/Avoidance.cpp" Line="53" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Social-Avoidance-Game" expanded="True">
+            <Node name="Social-Avoidance-Game" expanded="True">
+              <Node name="Avoidance.cpp" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x64" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/dam/Desktop/CS361_TeamExtreme-master 2/Social-Avoidance-Game/Social-Avoidance-Game/Avoidance.cpp" relfile="Social-Avoidance-Game/Avoidance.cpp" line="52" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

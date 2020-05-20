@@ -22,6 +22,7 @@ public:
 
 	void Step();
 	void updateLocation(int x, int y);	//created
+	tuple<int, int> getLocation();
 	int getInfectionRadius();			//created
 	void setInfectionRadius(int r);		//created
 	int getX();							//created
