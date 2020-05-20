@@ -9,8 +9,6 @@ using namespace std;
 #pragma once
 class Player : public Entity {
 private:
-	int x;
-	int y;
 	int health;
 	int money;
 	int infectionRadius; //how close another entity needs to be to get infected
@@ -20,11 +18,7 @@ public:
 	Player();
 	~Player();
 	void Step();
-	void updateLocation(int x, int y);
 	void move(int x, int y);
-	tuple<int, int> getLocation();
-	int getX();
-	int getY();
 	void updateHealth(int);
 	int getHealth();
 	void updateMoney(int);

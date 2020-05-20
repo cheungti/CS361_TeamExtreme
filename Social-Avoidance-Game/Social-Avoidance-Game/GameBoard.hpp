@@ -2,15 +2,17 @@
 #define GAMEBOARD_H
 //class imports
 #include <stdio.h>
-#include <cmath>
-#include <vector>
-//#include <ncurses.h>
 #include "Player.hpp"
 #include "Bystander.hpp"
 #include "Buildings.hpp"
 #include "Entity.hpp"
 #include "Police.hpp"
+#include "Die.hpp"
+#include "InputValidation.hpp"
 
+#include <cmath>
+
+#include <vector>
 
 using namespace std;
 
@@ -20,27 +22,32 @@ private:
 	Player* player;
 	vector<Entity*> entities;
 	vector<Buildings*> buildings;
+	Die* die;
 
-	char **board;
+	string **board;
 	char movement;
 	//Room * rooms;
 	int infectAmount;
 	char* drawBox(int, int, int, int, int);
 	char getEntityChar(Entity::EntityType);		//created
-	bool outOfBounds(int, int);
 	void handleKeybinds();
 
 public:
 	GameBoard();
 	GameBoard(Player*);
 	~GameBoard();
-	void createBoard();
-	void updateBoard(Entity, int, int);
+	string** createBoard();
+	void updateBoard(Entity* player, int, int);
 	void printBoard();
 	void Step();
 	bool checkBystanderInteraction();
 	bool overlappingRadius(Entity*, Entity*);
 	void emptyPoint(int, int);
+    bool occupied(int row, int column);
+    void randomLocation(Entity* anEntity);
+    void randomLocation(Buildings* anEntity);
+    void updateLocation(string aChar, int row, int column);
+    void moveCPUs();
 };
 
 #endif

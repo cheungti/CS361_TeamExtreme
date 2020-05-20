@@ -11,9 +11,10 @@
 /*********************************************************************
 ** Description: Parameter constructor for Buildings class
 *********************************************************************/
-Buildings::Buildings(std::string aType, int buildingRow, int buildingCol) {
-
+Buildings::Buildings(std::string aType, string aBuildingChar, int buildingRow, int buildingCol) {
+    
 	buildingType = aType;
+    buildingChar = aBuildingChar;
 	row = buildingRow;
 	col = buildingCol;
 	visited = false;
@@ -36,6 +37,15 @@ void Buildings::setBuildingName(std::string buildingName) {
 std::string Buildings::getBuildingName() {
 
 	return buildingType;
+
+}
+
+/*********************************************************************
+** Description: Get building Char
+*********************************************************************/
+string Buildings::getBuildingChar() {
+
+    return buildingChar;
 
 }
 
@@ -75,9 +85,25 @@ int Buildings::getCol() {
 
 }
 
+void Buildings::updateLocation(int x, int y) {
+
+    // Update new placement on board
+    row = x;
+    col = y;
+
+}
+
 /*********************************************************************
 ** Description: Class destructor
 *********************************************************************/
 Buildings::~Buildings() {
 
+}
+
+int Buildings::getX() {
+	return row;
+}
+
+int Buildings::getY() {
+	return col;
 }

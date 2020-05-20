@@ -26,7 +26,7 @@ void Player::Step() {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 Player::Player() {
-    dice = new Die();
+    setChar("Δ");
     setType(Entity::EntityType::Player);
     updateHealth(100);
     updateMoney(0);
@@ -46,67 +46,6 @@ Player::~Player() {
     //nothing?
 }
 
-/***************************************************************************
- *							  Update Location			    			   *
- *	The function will update the players (x, y) integer coordinates        *
- *																		   *
- *	Params: int x defines new X position, int y defines new Y position     *
- *	Return: N/A															   *
- *	Author: Bryce Hahn, Tinron Cheung									   *
- ***************************************************************************/
-void Player::updateLocation(int x, int y) {
-    this->x = x;
-    this->y = y;
-}
-
-/***************************************************************************
- *							    Move Location			    			   *
- *	The function will move the players relative (x, y) integer coordinates *
- *																		   *
- *	Params: int x defines the X increase, int y defines the Y increase     *
- *	Return: N/A															   *
- *	Author: Bryce Hahn, Jonathan Dressel								   *
- ***************************************************************************/
-void Player::move(int xMove, int yMove) {
-    updateLocation(getX() + xMove, getY() + yMove);
-    printf("Player moved to (%i, %i)\n", getX(), getY());
-}
-
-/***************************************************************************
- *							    Get Location			    			   *
- *	The function will return the players (x, y) integer coordinates        *
- *																		   *
- *	Params: N/A                                                            *
- *	Return: tuple<int, int> of the players (x, y) coordinates respectively *
- *	Author: Bryce Hahn, Tinron Cheung									   *
- ***************************************************************************/
-tuple<int, int> Player::getLocation() {
-    return tuple<int, int>(this->x, this->y);
-}
-
-/***************************************************************************
- *							       Get X			    	    		   *
- *	The function will return the player's x integer coordinate             *
- *																		   *
- *	Params: N/A                                                            *
- *	Return: the player's x coordinate									   *
- *	Author: Bryce Hahn, Tinron Cheung									   *
- ***************************************************************************/
-int Player::getX() {
-    return this->x;
-}
-
-/***************************************************************************
- *							       Get Y			    	    		   *
- *	The function will return the player's y integer coordinate             *
- *																		   *
- *	Params: N/A                                                            *
- *	Return: the player's y coordinate									   *
- *	Author: Bryce Hahn, Tinron Cheung									   *
- ***************************************************************************/
-int Player::getY() {
-    return this->y;
-}
 
 /***************************************************************************
  *							  Update Health 			    			   *
@@ -192,3 +131,4 @@ bool Player::isInfected() {
 void Player::setInfected(bool infectionStatus) {
     this->infected = infectionStatus;
 }
+
