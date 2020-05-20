@@ -1,7 +1,6 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 //includes
-#include <tuple>
 #include "Entity.hpp" 
 
 using namespace std;
@@ -18,7 +17,7 @@ public:
 	Player();
 	~Player();
 	void Step();
-	void move(int x, int y);
+	void move(int, int);
 	void updateHealth(int);
 	int getHealth();
 	void updateMoney(int);

@@ -8,25 +8,25 @@
 #ifndef Buildings_hpp
 #define Buildings_hpp
 
+#include <iostream>
 #include <string>
 #include <vector>
-#include <tuple>
-#include "Die.hpp"
 
 using namespace std;
-typedef std::vector< std::tuple<int,int> > tupleList;
 
 class Buildings {
 
 public:
-	Buildings(std::string aType, string aBuildingChar, int x, int y);
+	Buildings(string aType, string aBuildingChar, int x, int y);
 	~Buildings();
 
-	void setBuildingName(std::string name);		// Set building type
+	void setBuildingName(string name);		// Set building type
 	std::string getBuildingName();				// Get building type
 	int getRow();									// Get x coordinate
 	int getCol();									// Get y coordinate
     void updateLocation(int x, int y);
+	int getX();
+	int getY();
 	bool isLocked();
 	bool ifVisited();
     string getBuildingChar();

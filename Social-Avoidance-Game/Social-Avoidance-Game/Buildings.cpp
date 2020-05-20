@@ -5,21 +5,18 @@
 ** the Buildings class.  Member methods are defined within.
 *********************************************************************/
 #include "Buildings.hpp"
-#include <iostream>
 #include <string>
 
 /*********************************************************************
 ** Description: Parameter constructor for Buildings class
 *********************************************************************/
-Buildings::Buildings(std::string aType, string aBuildingChar, int buildingRow, int buildingCol) {
-    
+Buildings::Buildings(string aType, string aBuildingChar, int buildingRow, int buildingCol) {
 	buildingType = aType;
     buildingChar = aBuildingChar;
 	row = buildingRow;
 	col = buildingCol;
 	visited = false;
 	locked = false;
-
 }
 
 /*********************************************************************
@@ -67,30 +64,26 @@ bool Buildings::ifVisited() {
 
 }
 
-/*********************************************************************
-** Description: Get x coordinate position
-*********************************************************************/
-int Buildings::getRow() {
-
-	return row;
-
-}
-
-/*********************************************************************
-** Description: Get y coordinate position
-*********************************************************************/
-int Buildings::getCol() {
-
-	return col;
-
-}
-
 void Buildings::updateLocation(int x, int y) {
 
     // Update new placement on board
     row = x;
     col = y;
 
+}
+
+/*********************************************************************
+** Description: Get x coordinate position
+*********************************************************************/
+int Buildings::getX() {
+	return row;
+}
+
+/*********************************************************************
+** Description: Get y coordinate position
+*********************************************************************/
+int Buildings::getY() {
+	return col;
 }
 
 /*********************************************************************

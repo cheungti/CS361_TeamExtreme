@@ -8,7 +8,6 @@
 #include "Entity.hpp"
 #include "Police.hpp"
 #include "Die.hpp"
-#include "InputValidation.hpp"
 
 #include <cmath>
 
@@ -21,12 +20,7 @@ private:
 	//entities
 	Player* player;
 	vector<Entity*> entities;
-	Buildings* home;
-	Buildings* pharmacy;
-	Buildings* grocery;
-	Buildings* station;
-	Buildings* doctor;
-	Buildings* work;
+	vector<Buildings*> buildings;
     Die* die;
 
 	string **board;
@@ -34,7 +28,6 @@ private:
 	//Room * rooms;
 	int infectAmount;
 	char* drawBox(int, int, int, int, int);
-	char getEntityChar(Entity::EntityType);		//created
 	void handleKeybinds();
 
 public:
@@ -43,6 +36,7 @@ public:
 	~GameBoard();
 	string** createBoard();
 	void updateBoard(Entity*, int, int);
+	void printInstructions();
 	void printBoard();
 	void Step();
 	bool checkBystanderInteraction();

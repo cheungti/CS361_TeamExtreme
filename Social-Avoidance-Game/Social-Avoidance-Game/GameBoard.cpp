@@ -21,35 +21,28 @@ GameBoard::GameBoard(Player* player) {
 
     // Instantiate 3 new police officers
     for (int i = 0; i < 3; i++) {
-
         entities.push_back(new Police());
-
     }
     
-    die = new Die();
-    
     //set die height and width
+    die = new Die();
     die->setHeightWidth(boardHeight-1, boardWidth-1);
     
     //create gameboard
     this->board = createBoard();
 
     // Initialize all buildings on game board & update their char on the board
-    home = new Buildings("home", "H", 20, 15); 
-    updateLocation(home->getBuildingChar(), 20, 15);
-    pharmacy = new Buildings("pharmacy", "J", 25, 1);
-    updateLocation(pharmacy->getBuildingChar(), 25, 1);
-    grocery = new Buildings("grocery", "G", 1, 1);
-    updateLocation(grocery->getBuildingChar(), 1, 1);
-    station = new Buildings("station", "S", 1, 20);
-    updateLocation(station->getBuildingChar(), 1, 20);
-    doctor = new Buildings("doctor", "D", 1, 25);
-    updateLocation(doctor->getBuildingChar(), 1, 25);
-    work = new Buildings("work","W", 15, 20);
-    updateLocation(work->getBuildingChar(), 15, 20);
-    
+	buildings.push_back(new Buildings("home", "H", 20, 15));
+	buildings.push_back(new Buildings("pharmacy", "J", 25, 1));
+	buildings.push_back(new Buildings("grocery", "G", 1, 1));
+	buildings.push_back(new Buildings("station", "S", 1, 20));
+	buildings.push_back(new Buildings("doctor", "D", 1, 25));
+	buildings.push_back(new Buildings("work","W", 15, 20));
 
-    
+    //update board building locations
+	for (int i = 0; i < buildings.size(); i++) {
+		updateLocation(buildings[i]->getBuildingChar(), buildings[i]->getX(), buildings[i]->getY());
+	}
     
      //Randomize entity locations
      for (int i = 0; i < entities.size(); i++){
@@ -132,7 +125,8 @@ GameBoard::~GameBoard() {
     delete board;
     delete player;
 
-    entities.clear(); //delete the vector efficiently
+    entities.clear(); //delete the vectors efficiently
+    buildings.clear();
 }
 
 /***************************************************************************
@@ -146,19 +140,14 @@ GameBoard::~GameBoard() {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 void GameBoard::Step() {
-    //clear gameboard
-    
-
     //player movements
     handleKeybinds();
     
     //clear console
-    system("clear");
+    //system("clear"); //system only works on windows
     
     //redraw board
     printBoard();
-
-    //cpu movements
 
     //check collisions
     //checkBystanderInteraction();
@@ -175,13 +164,20 @@ void GameBoard::Step() {
  *	Author: Bryce Hahn, Jonathan Dresel									   *
  ***************************************************************************/
 void GameBoard::handleKeybinds() { 
-    char ascii = 0;
-        
+    char ascii = 0;   
     
     //getch() returns an ASCII value. That's why I have an int for getting the input.
     printf("Move (w,a,s,d): ");
-    ascii = inputValidationChar();
-    if(ascii == 'w') {      //if the character is a 'w'
+	printf("\n");
+    
+
+	system("/bin/stty raw");
+	ascii = tolower(getchar());
+    system("/bin/stty cooked");
+
+    
+
+    if (ascii == 'w') {      //if the character is a 'w'
         //move up
         cout << player->getX();
         cout << " " << player->getY() <<endl;
@@ -189,28 +185,22 @@ void GameBoard::handleKeybinds() {
         cout << player->getX();
         cout << " " << player->getY() <<endl;
         
-    }
-    else if(ascii == 'a') {  //if the character is an 'a'
+    } else if (ascii == 'a') {  //if the character is an 'a'
         //move left
         updateBoard(player, player->getX(), player->getY()-1);
-    }
-    else if(ascii == 's') { //if the character is an 's'
+    } else if (ascii == 's') { //if the character is an 's'
         //move down
         updateBoard(player, player->getX()+1, player->getY());
-    }
-    else if(ascii == 'd') { //if the character is a 'd'
+    } else if(ascii == 'd') { //if the character is a 'd'
         //move right
         updateBoard(player, player->getX(), player->getY()+1);
-    }
-    else {
+    } else {
         //dont' move
-        //printf("Error, invalid move key %c! Please use W, A, S or D", (char)ascii);
+        printf("Error, invalid move key! '%c' -> Please use W, A, S or D", (char)ascii);
     }
     
     moveCPUs();
     
-    
-
 }
 
 /***************************************************************************
@@ -230,18 +220,32 @@ string** GameBoard::createBoard() {
     for (int i = 0; i < boardHeight; i++) { //columns
         board[i] = new string[boardWidth]; //define x value size
         for (int j = 0; j < boardWidth; j++) { //rows
-            if(i == 0){
-                board[i][j] = '-';
-            }else if(i == boardHeight-1){
-                board[i][j] = '-';
-            }else if(j == 0 || j == boardWidth - 1){
-                board[i][j] = '|';
-            }else{
-                board[i][j] = ' '; //thats the tea
-            }
-            
-        }
+            if (i == 0) {
+                if (j == 0) {
+				    board[i][j] = "╔";
+				} else if (j > 0 && j < boardWidth - 1) {
+                    board[i][j] = "═";
+				} else if (j == boardWidth - 1) {
+                    board[i][j] = "╗";
+				}
+            } else if (i > 0 && i < boardHeight - 1) {
+                if (j == 0 || j == boardWidth - 1) {
+                    board[i][j] = "║";
+				} else {
+				    board[i][j] = " ";
+			    }
+			} else if (i == boardHeight - 1) {
+                if (j == 0) {
+				    board[i][j] = "╚";
+				} else if (j > 0 && j < boardWidth - 1) {
+                    board[i][j] = "═";
+				} else if (j == boardWidth - 1) {
+                    board[i][j] = "╝";
+				}
+			}
+		}
     }
+
 
 	return board;
 }
@@ -278,22 +282,6 @@ void GameBoard::updateBoard(Entity* e, int newX, int newY) {
         this->board[newX][newY] = e->getChar(); //set entity char at new x,y
         e->updateLocation(newX, newY);
     }
-    
-}
-
-
-
-
-char GameBoard::getEntityChar(Entity::EntityType type) {
-    if (type == Entity::EntityType::Bystander) {
-		return 'B';
-	} else if (type == Entity::EntityType::Police) {
-		return 'P';
-	} else if (type == Entity::EntityType::Player) {
-		return '\@';
-	} else {
-        return 'E';
-	}
 }
 
 
@@ -301,6 +289,14 @@ void GameBoard::emptyPoint(int i, int j) {
 	this->board[i][j] = " ";
 }
 
+void GameBoard::printInstructions() {
+    //system("CLS");
+    printf("\n----------------------------------------------\n");
+    printf("Police - ₱      Player - Δ      CPU - ф\n   ");
+    printf("Home - H        RX - J          Doctor - D\n");
+    printf("Store - G       Station - S     Work - W\n  ");
+    printf("----------------------------------------------\n");
+}
 
 /***************************************************************************
  *								Print Board								   *
@@ -312,6 +308,7 @@ void GameBoard::emptyPoint(int i, int j) {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 void GameBoard::printBoard() {
+    printInstructions();
     for (int i = 0; i < boardHeight; i++) {
         for (int j = 0; j < boardWidth; j++) {
             cout << this->board[i][j];
@@ -327,25 +324,23 @@ void GameBoard::printBoard() {
 *                                Occupied                             *
                                    
 ***************************************************************************/
-bool GameBoard::occupied(int row, int column){
-    if(board[row][column] != " "){
+bool GameBoard::occupied(int row, int column) {
+    if (board[row][column] != " ") {
         return true;
-    }else{
-        return false;
     }
-        
+    return false;
 }
 
 /***************************************************************************
 *                                Move CPUs                         *
                                    
 ***************************************************************************/
-void GameBoard::moveCPUs(){
-    for(int i = 0; i < entities.size(); i++){
+void GameBoard::moveCPUs() {
+    for(int i = 0; i < entities.size(); i++) {
         bool moved = false;
         int looped = 0;
-        while(!moved && looped < 20){
-            int rand1 = die->dieRoll100()%4;
+        while(!moved && looped < 20) {
+            int rand1 = die->dieRoll100()%8;
             switch (rand1) {
                 case 0:
                     //move up
@@ -375,14 +370,38 @@ void GameBoard::moveCPUs(){
                         moved = true;
                     }
                     break;
+                case 4:
+                    //move top right (diag.)
+                    if(!occupied(entities[i]->getX()+1, entities[i]->getY()-1)) {
+                        updateBoard(entities[i], entities[i]->getX()+1, entities[i]->getY()-1);
+                        moved = true;
+                    }
+                    break;
+                case 5:
+                    //move top left (diag.)
+                    if(!occupied(entities[i]->getX()-1, entities[i]->getY()-1)) {
+                        updateBoard(entities[i], entities[i]->getX()-1, entities[i]->getY()-1);
+                        moved = true;
+                    }
+                    break;
+                case 6:
+                    //move bottom right (diag.)
+                    if(!occupied(entities[i]->getX()+1, entities[i]->getY()+1)) {
+                        updateBoard(entities[i], entities[i]->getX()+1, entities[i]->getY()+1);
+                        moved = true;
+                    }
+                    break;
+                case 7:
+                    //move top left (diag.)
+                    if(!occupied(entities[i]->getX()-1, entities[i]->getY()+1)) {
+                        updateBoard(entities[i], entities[i]->getX()-1, entities[i]->getY()+1);
+                        moved = true;
+                    }
+                    break;
                 default:
                     break;
             }
-            
             looped++;
         }
-        
     }
-    
 }
-    

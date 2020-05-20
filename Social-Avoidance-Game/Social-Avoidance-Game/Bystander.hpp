@@ -9,7 +9,6 @@
 #define Bystander_hpp
 #include <iostream>
 #include <string>
-#include "Die.hpp"
 #include "Entity.hpp"
 
 class Bystander : public Entity {
