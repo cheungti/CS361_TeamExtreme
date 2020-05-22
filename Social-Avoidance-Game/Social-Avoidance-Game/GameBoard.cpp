@@ -32,12 +32,16 @@ GameBoard::GameBoard(Player* player) {
     this->board = createBoard();
 
     // Initialize all buildings on game board & update their char on the board
-	buildings.push_back(new Buildings("home", "H", 20, 15));
+	buildings.push_back(new Buildings("home", "H", 24, 25));
 	buildings.push_back(new Buildings("pharmacy", "J", 25, 1));
 	buildings.push_back(new Buildings("grocery", "G", 1, 1));
 	buildings.push_back(new Buildings("station", "S", 1, 20));
 	buildings.push_back(new Buildings("doctor", "D", 1, 25));
 	buildings.push_back(new Buildings("work","W", 15, 20));
+
+    for (int i = 0; i < buildings.size(); i++) {
+        printBuildingWalls(buildings[i]);
+    }
 
     //update board building locations
 	for (int i = 0; i < buildings.size(); i++) {
@@ -320,6 +324,28 @@ void GameBoard::printBoard() {
     }
 }
 
+/*********************************************************************
+** Description: Print borders around each building
+** Arguments: Buildings*
+** Return: Void
+** Author: William Dam
+*********************************************************************/
+void GameBoard::printBuildingWalls(Buildings* building) {
+
+    for (int i = -1; i < 2; i++) {
+        if (i == 0) {
+            board[building->getX()][building->getY() - 1] = "*";
+            board[building->getX()][building->getY() + 1] = "*";
+        }
+        else {
+            for (int j = -1; j < 2; j++) {
+                board[building->getX() + i][building->getY() + j] = "*";
+            }
+        }
+    }
+
+}
+
 /***************************************************************************
 *                                Occupied                             *
                                    
@@ -405,3 +431,4 @@ void GameBoard::moveCPUs() {
         }
     }
 }
+

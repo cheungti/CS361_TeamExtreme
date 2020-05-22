@@ -22,8 +22,6 @@ public:
 
 	void setBuildingName(string name);		// Set building type
 	std::string getBuildingName();				// Get building type
-	int getRow();									// Get x coordinate
-	int getCol();									// Get y coordinate
     void updateLocation(int x, int y);
 	int getX();
 	int getY();

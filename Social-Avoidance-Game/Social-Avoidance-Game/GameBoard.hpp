@@ -55,6 +55,7 @@ public:
     void updateLocation(string, int, int);
     void moveCPUs();
 	bool outOfBounds(int, int);
+	void printBuildingWalls(Buildings* building);
 };
 
 #endif
