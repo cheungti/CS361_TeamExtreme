@@ -33,11 +33,11 @@ GameBoard::GameBoard(Player* player) {
 
     // Initialize all buildings on game board & update their char on the board
 	buildings.push_back(new Buildings("home", "H", 24, 25));
-	buildings.push_back(new Buildings("pharmacy", "J", 25, 1));
-	buildings.push_back(new Buildings("grocery", "G", 1, 1));
-	buildings.push_back(new Buildings("station", "S", 1, 20));
-	buildings.push_back(new Buildings("doctor", "D", 1, 25));
-	buildings.push_back(new Buildings("work","W", 15, 20));
+	buildings.push_back(new Buildings("pharmacy", "J", 13, 2));
+	buildings.push_back(new Buildings("grocery", "G", 2, 2));
+	buildings.push_back(new Buildings("station", "S", 2, 25));
+	buildings.push_back(new Buildings("doctor", "D", 2, 48));
+	buildings.push_back(new Buildings("work","W", 13, 48));
 
     for (int i = 0; i < buildings.size(); i++) {
         printBuildingWalls(buildings[i]);
@@ -179,8 +179,6 @@ void GameBoard::handleKeybinds() {
 	ascii = tolower(getchar());
     system("/bin/stty cooked");
 
-    
-
     if (ascii == 'w') {      //if the character is a 'w'
         //move up
         cout << player->getX();
@@ -189,16 +187,20 @@ void GameBoard::handleKeybinds() {
         cout << player->getX();
         cout << " " << player->getY() <<endl;
         
-    } else if (ascii == 'a') {  //if the character is an 'a'
+    } 
+    else if (ascii == 'a') {  //if the character is an 'a'
         //move left
         updateBoard(player, player->getX(), player->getY()-1);
-    } else if (ascii == 's') { //if the character is an 's'
+    } 
+    else if (ascii == 's') { //if the character is an 's'
         //move down
         updateBoard(player, player->getX()+1, player->getY());
-    } else if(ascii == 'd') { //if the character is a 'd'
+    } 
+    else if (ascii == 'd') { //if the character is a 'd'
         //move right
         updateBoard(player, player->getX(), player->getY()+1);
-    } else {
+    }
+    else {
         //dont' move
         printf("Error, invalid move key! '%c' -> Please use W, A, S or D", (char)ascii);
     }

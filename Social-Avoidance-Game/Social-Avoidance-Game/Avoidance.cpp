@@ -29,7 +29,8 @@ void Avoidance() {
 	board = new GameBoard(player);
     
 	//main game loop
-    while(true){
+
+    while(true) {
         board->Step();
     }
     
