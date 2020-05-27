@@ -30,12 +30,16 @@ private:
 	vector<Buildings*> buildings;
     Die* die;
 
+	const int boardWidth = 51;
+	const int boardHeight = 27;
+
 	string **board;
 	char movement;
 	//Room * rooms;
 	int infectAmount;
 	char* drawBox(int, int, int, int, int);
-	void handleKeybinds();
+	bool handleKeybinds();
+	void deleteGameboard();
 
 public:
 	GameBoard();
@@ -45,7 +49,7 @@ public:
 	void updateBoard(Entity*, int, int);
 	void printInstructions();
 	void printBoard();
-	void Step();
+	int Step();
 	bool checkBystanderInteraction();
 	bool overlappingRadius(Entity*, Entity*);
 	void emptyPoint(int, int);

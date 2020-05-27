@@ -16,6 +16,7 @@ void Player::Step() {
 	
 }
 
+
 /***************************************************************************
  *							Player Constructor							   *
  *	The default player class constructor will initialize the Player entity *
@@ -32,6 +33,7 @@ Player::Player() {
     updateMoney(0);
     updateLocation(0, 0); //start at 0, 0 -> board can go into the negatives
 }
+
 
 /***************************************************************************
  *							Player Deconstructor						   *
@@ -59,6 +61,7 @@ void Player::updateHealth(int newhealth) {
     this->health = newhealth;
 }
 
+
 /***************************************************************************
  *							     Get Health    			    			   *
  *	The function will return the players health value                      *
@@ -71,6 +74,7 @@ int Player::getHealth() {
     return this->health;
 }
 
+
 /***************************************************************************
  *							    Update Money 			    			   *
  *	The function will update the players integer money value               *
@@ -82,6 +86,7 @@ int Player::getHealth() {
 void Player::updateMoney(int money) {
     this->money = money;
 }
+
 
 /***************************************************************************
  *							      Add Money 			    		  	   *
@@ -96,6 +101,7 @@ void Player::addMoney(int additionalmoney) {
     this->money += additionalmoney;
 }
 
+
 /***************************************************************************
  *							     Get Money    			    			   *
  *	The function will return the players money value                       *
@@ -106,7 +112,8 @@ void Player::addMoney(int additionalmoney) {
  ***************************************************************************/
 int Player::getMoney() {
     return this->money;
-};
+}
+
 
 /***************************************************************************
  *							   Is Infected    			    			   *
@@ -120,6 +127,7 @@ bool Player::isInfected() {
     return this->infected;
 }
 
+
 /***************************************************************************
  *							   Set Infected    			    			   *
  *	The function will update the players infection status                  *
@@ -131,4 +139,3 @@ bool Player::isInfected() {
 void Player::setInfected(bool infectionStatus) {
     this->infected = infectionStatus;
 }
-

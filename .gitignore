@@ -23,6 +23,9 @@ bld/
 # Visual Studio 2015/2017 cache/options directory
 Social-Avoidance-Game/.vs/
 
+#Debug Build Executables
+Social-Avoidance-Game/Social-Avoidance-Game.exe
+
 # Files built by Visual Studio
 *_i.c
 *_p.c

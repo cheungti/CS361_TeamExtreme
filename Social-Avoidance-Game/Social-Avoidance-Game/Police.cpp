@@ -7,32 +7,57 @@
 *********************************************************************/
 #include "Police.hpp"
 
-/*********************************************************************
-** Description: Default constructor
-*********************************************************************/
+
+/***************************************************************************
+ *						      Police Constructor						   *
+ *	The default Police class constructor will initialize the Polices'      *
+ *      default values                                                     *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: N/A															   *
+ *	Author: William Dam, Daniel Mesa                                       *
+ ***************************************************************************/
 Police::Police() {
 	setType(Entity::EntityType::Police);	// Initialize type Police
     setChar("₱");
 	setFine(50);
 }
 
-/*********************************************************************
-** Description: Return fine amount
-*********************************************************************/
-int Police::getFine() {
-	return fine;
-}
 
-/*********************************************************************
-** Description: set fine amount
-*********************************************************************/
-void Police::setFine(int anAmount) {
-	fine = anAmount;
-}
-
-/*********************************************************************
-** Description: Class destructor
-*********************************************************************/
+/***************************************************************************
+ *						    Police Deconstructor						   *
+ *	The Police class deconstructor will destroy all of the Police values   *
+ *                                                                         *
+ *	Params: N/A                                                            *
+ *	Return: N/A															   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
 Police::~Police() {
 
+}
+
+
+/***************************************************************************
+ *						        Get Police Fine				     		   *
+ *	Return a value for the fine                                            *
+ *                                                                         *
+ *	Params: N/A                                                            *
+ *	Return: The current fine value										   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
+int Police::getFine() {
+	return this->fine;
+}
+
+
+/***************************************************************************
+ *						        Set Police Fine				     		   *
+ *	Modify a new value for the fine                                        *
+ *                                                                         *
+ *	Params: The new fine value                                             *
+ *	Return: N/A															   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
+void Police::setFine(int anAmount) {
+	this->fine = anAmount;
 }

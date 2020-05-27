@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
-#include <curses.h>
+#include <csignal>
 #include "Player.hpp"
 #include "GameBoard.hpp"
 
@@ -12,7 +12,7 @@ GameBoard* board;
 
 //define function declarations
 void Avoidance();
-
+void signalHandler(int);
 
 /***************************************************************************
  *								Avoidance							       *
@@ -28,12 +28,35 @@ void Avoidance() {
 	player = new Player();
 	//setup game board
 	board = new GameBoard(player);
+
+    //game ending input registers
+    signal(SIGINT, signalHandler);
+    int tickReturn = 0;
     
 	//main game loop
-    while(true){
-        board->Step();
+    while (tickReturn == 0) {
+        tickReturn = board->Step();
     }
-    
+}
+
+
+/***************************************************************************
+ *								Signal Handler							   *
+ *	Interpret and return signal int for a user break call                  *
+ *																		   *
+ *	Params: signum representing type of quit signal to send                *
+ *	Return: N/A															   *
+ *	Author: Bryce Hahn                                                     *
+ ***************************************************************************/
+void signalHandler(int signum) {
+    cout << "Interrupt signal (" << signum << ") received.\n";
+
+    // cleanup and close up stuff here
+    delete board;
+    delete player;
+
+    // terminate program  
+    exit(signum);
 }
 
 

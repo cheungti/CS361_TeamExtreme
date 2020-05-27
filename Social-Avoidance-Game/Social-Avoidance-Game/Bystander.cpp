@@ -7,34 +7,58 @@
 *********************************************************************/
 #include "Bystander.hpp"
 
-/*********************************************************************
-** Description: Default constructor
-*********************************************************************/
+
+/***************************************************************************
+ *						    Bystander Constructor						   *
+ *	The default Bystander class constructor will initialize the Bystander  *
+ *      character symbol, and entity type, with an infected value of false *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: N/A															   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
 Bystander::Bystander() {
     setChar("ф");
 	setType(Entity::EntityType::Bystander);	// Initialize type Bystander
-	infected = false;
+    setInfection(false);
 }
 
-/*********************************************************************
-** Description: Set function sets infection true/false
-*********************************************************************/
-void Bystander::setInfection(bool infect) {
 
-	infected = infect;
-
-}
 /***************************************************************************
- ** Description: return infected or not								   *
+ *						    Bystander Deconstructor						   *
+ *	The Bystander class deconstructor will destroy all of the bystander    *
+ *      values.                                                            *
+ *                                                                         *
+ *	Params: N/A                                                            *
+ *	Return: N/A															   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
  ***************************************************************************/
-bool Bystander::isInfected() {
-    return infected;
-}
-
-
-/*********************************************************************
-** Description: Class destructor
-*********************************************************************/
 Bystander::~Bystander() {
 
+}
+
+
+/***************************************************************************
+ *						    Bystander Infection                            *
+ *	Modify the Bystander's infection status                                *
+ *                                                                         *
+ *	Params: the new infection value										   *
+ *	Return: N/A															   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
+void Bystander::setInfection(bool infect) {
+	this->infected = infect;
+}
+
+
+/***************************************************************************
+ *						    Bystander Infection                            *
+ *	Get the Bystander's infection status                                   *
+ *                                                                         *
+ *	Params: N/A                                                            *
+ *	Return: the current infection value								       *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
+bool Bystander::isInfected() {
+    return this->infected;
 }

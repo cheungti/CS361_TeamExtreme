@@ -17,7 +17,7 @@ public:
 	Police();				// Default constructor
 	~Police();				// Destructor
 	int getFine();			
-	void setFine(int anAmount);
+	void setFine(int);
 
 private:
 	int fine;
