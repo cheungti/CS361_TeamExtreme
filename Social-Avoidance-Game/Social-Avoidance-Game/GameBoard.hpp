@@ -58,8 +58,7 @@ public:
     void moveCPUs();
 	bool outOfBounds(int, int);
 	void printBuildingWalls(Buildings* building);
-	string** createTextBox();
-	void printTextBox();
+
 };
 
 #endif

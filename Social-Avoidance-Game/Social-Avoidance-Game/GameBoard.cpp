@@ -32,8 +32,7 @@ GameBoard::GameBoard(Player* player) {
     //create gameboard
     this->board = createBoard();
 
-    //create textBox
-    //this->textBox = createTextBox();
+
 
     // Initialize all buildings on game board & update their char on the board
 	buildings.push_back(new Buildings("home", "H", 24, 25));
@@ -384,7 +383,6 @@ void GameBoard::printBoard() {
         cout << endl;
     }
 
-    //printTextBox();
 }
 
 /*********************************************************************
@@ -496,62 +494,4 @@ void GameBoard::moveCPUs() {
 }
 
 
-/***************************************************************************
-*                               Create Text Box                        *
-                                   
-***************************************************************************/
- string** GameBoard::createTextBox(){
-    string** box = 0;
-    box = new string*[boxHeight]; //define y value size
 
-    for (int i = 0; i < boxHeight; i++) { //columns
-        box[i] = new string[boardWidth]; //define x value size
-        for (int j = 0; j < boardWidth; j++) { //rows
-            if (i == 0) {
-                if (j == 0) {
-				    box[i][j] = "╔";
-				} else if (j > 0 && j < boardWidth - 1) {
-                    box[i][j] = "═";
-				} else if (j == boardWidth - 1) {
-                    box[i][j] = "╗";
-				}
-            } else if (i > 0 && i < boxHeight - 1) {
-                if (j == 0 || j == boardWidth - 1) {
-                    box[i][j] = "║";
-				} else {
-				    box[i][j] = " ";
-			    }
-			} else if (i == boxHeight - 1) {
-                if (j == 0) {
-				    box[i][j] = "╚";
-				} else if (j > 0 && j < boardWidth - 1) {
-                    box[i][j] = "═";
-				} else if (j == boardWidth - 1) {
-                    box[i][j] = "╝";
-				}
-			}
-		}
-    }
-
-    return box;
- }
-
- /***************************************************************************
-*                               Print Text Box                        *                     
-***************************************************************************/
-void GameBoard::printTextBox(){
-    for (int i = 0; i < boxHeight; i++) {
-        for (int j = 0; j < boardWidth; j++) {
-            if(i == 1 && j == 1){
-                textBox[i][j] = "water";
-            }
-            cout << this->textBox[i][j];
-
-            
-            
-        }
-        if ((i + 1) <= boxHeight) {
-            printf("\n");
-        }
-    }
-}
