@@ -13,7 +13,9 @@
 Bystander::Bystander() {
     setChar("ф");
 	setType(Entity::EntityType::Bystander);	// Initialize type Bystander
-	infected = false;
+	infected = true;
+	setHealthDecline(20);
+	setInfectionRadius(2);
 }
 
 /*********************************************************************
@@ -38,3 +40,41 @@ bool Bystander::isInfected() {
 Bystander::~Bystander() {
 
 }
+
+/*********************************************************************
+** Description: Penalty
+** Penalize player for being within radius
+*********************************************************************/
+void Bystander::penalty(Player* player){
+
+	if(isInfected()){
+
+		int currentHealth = player->getHealth();
+		int newHealth = currentHealth - healthDecline;
+
+		if(newHealth < 0){
+			newHealth = 0;
+		}
+
+		player->updateHealth(newHealth);
+	}
+	
+}
+
+/*********************************************************************
+** Description: Set Health Decline
+** set deduction to health for infected Bystanders
+*********************************************************************/
+
+void Bystander::setHealthDecline(int deduction){
+	healthDecline = deduction;
+}
+
+/*********************************************************************
+** Description: Get Health Decline
+** get deduction to health for infected Bystanders
+*********************************************************************/
+int Bystander::getHealthDecline(){
+	return healthDecline;
+}
+

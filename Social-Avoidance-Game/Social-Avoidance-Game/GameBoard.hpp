@@ -28,6 +28,7 @@ private:
 	Player* player;
 	vector<Entity*> entities;
 	vector<Buildings*> buildings;
+	vector<string> text;
     Die* die;
 
 	string **board;
@@ -36,6 +37,7 @@ private:
 	int infectAmount;
 	char* drawBox(int, int, int, int, int);
 	void handleKeybinds();
+	string **textBox;
 
 public:
 	GameBoard();
@@ -46,7 +48,7 @@ public:
 	void printInstructions();
 	void printBoard();
 	void Step();
-	bool checkBystanderInteraction();
+	void checkBystanderInteraction();
 	bool overlappingRadius(Entity*, Entity*);
 	void emptyPoint(int, int);
     bool occupied(int, int);
@@ -56,6 +58,8 @@ public:
     void moveCPUs();
 	bool outOfBounds(int, int);
 	void printBuildingWalls(Buildings* building);
+	string** createTextBox();
+	void printTextBox();
 };
 
 #endif

@@ -12,6 +12,8 @@ private:
 	int money;
 	int infectionRadius; //how close another entity needs to be to get infected
 	bool infected;
+	bool hasTickets;
+
 
 public:
 	Player();
@@ -25,6 +27,8 @@ public:
 	int getMoney();
 	bool isInfected();
 	void setInfected(bool);
+	void setTickets(bool);
+	bool getHasTickets();
 };
 
 #endif

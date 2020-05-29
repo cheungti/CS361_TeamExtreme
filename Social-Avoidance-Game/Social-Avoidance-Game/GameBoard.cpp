@@ -2,6 +2,7 @@
 
 const int boardWidth = 51;
 const int boardHeight = 27;
+const int boxHeight = 5;
 
 /***************************************************************************
  *				        	  Default Constructor						   *
@@ -30,6 +31,9 @@ GameBoard::GameBoard(Player* player) {
     
     //create gameboard
     this->board = createBoard();
+
+    //create textBox
+    //this->textBox = createTextBox();
 
     // Initialize all buildings on game board & update their char on the board
 	buildings.push_back(new Buildings("home", "H", 24, 25));
@@ -63,7 +67,7 @@ GameBoard::GameBoard(Player* player) {
      board[player->getX()][player->getY()] = player->getChar();
 
     this->printBoard();
-    cout<<endl;
+    
 	
 }
 
@@ -82,16 +86,43 @@ void GameBoard::updateLocation(string aChar, int row, int column){
 *	Return: N/A															   *
 *	Author: Bryce Hahn, Tinron Cheung									   *
 ***************************************************************************/
-bool GameBoard::checkBystanderInteraction() {
+void GameBoard::checkBystanderInteraction() {
 	for (int i = 0; i < entities.size(); i++) {
 		//checks if player is within the infection radius of a cpu
 
         if (overlappingRadius(this->player, this->entities[i])) {
-            return true;
+            //penalty
+            if(entities[i]->getChar() == "₱"){
+                //if police is in radius
+                Police* policeman = static_cast<Police*>(entities[i]); 
+
+                //check if Bystander is also in radius
+                for(int j = 0; j < entities.size(); j++){
+                    if(j!=i){
+                        if(overlappingRadius(this->entities[j], policeman)){
+                        policeman->penalty(this->player);
+                        text.push_back("Police caught you near a Bystander. Fined: " + std::to_string(policeman->getFine()));
+                    }
+                        
+
+                    }
+                    
+                }
+            }
+
+            else if(entities[i]->getChar() == "ф"){
+                Bystander* aBystander = static_cast<Bystander*>(entities[i]); 
+                aBystander->penalty(this->player);
+
+                text.push_back("You got too close to a Bystander. Health Deducted: " + std::to_string(aBystander->getHealthDecline()));
+
+            }
+
+
         }
 	}
-	//false if player is not 1 tile away or on same tile as bystander
-	return false;
+	
+	
 }
 
 
@@ -108,12 +139,16 @@ bool GameBoard::checkBystanderInteraction() {
 *	Author: Bryce Hahn, Tinron Cheung									   *
 ***************************************************************************/
 bool GameBoard::overlappingRadius(Entity* e1, Entity* e2) {
-    int distanceSquared  = pow((e2->getX() - e1->getX()), 2) + pow((e2->getY() - e1->getY()), 2);
-    int radiusSumSquared = pow((e1->getInfectionRadius() + e2->getInfectionRadius()), 2);
-    if (distanceSquared >= radiusSumSquared)
-        return false;
+    int x = e1->getX();
+    int y = e1->getY();
+    int circle_x = e2->getX();
+    int circle_y = e2->getY();
+    int rad = e2->getInfectionRadius();
+    if ((x - circle_x) * (x - circle_x) + 
+        (y - circle_y) * (y - circle_y) <= rad * rad) 
+        return true; 
     else
-        return true;
+        return false; 
 }
 
 /***************************************************************************
@@ -149,12 +184,14 @@ void GameBoard::Step() {
     
     //clear console
     //system("clear"); //system only works on windows
+
+    //check collisions
+    checkBystanderInteraction();
     
     //redraw board
     printBoard();
 
-    //check collisions
-    //checkBystanderInteraction();
+    
 }
 
 /***************************************************************************
@@ -324,6 +361,30 @@ void GameBoard::printBoard() {
             printf("\n");
         }
     }
+
+    cout <<"Health: " <<this->player->getHealth() <<"   ";
+    cout <<"Coins: " <<this->player->getMoney() << "   ";
+    cout <<"Fines: ";
+    if(this->player->getHasTickets()){
+        cout<<"Yes" <<endl;
+    }else{
+        cout<<"No" <<endl;
+    }
+
+    int enters = 5;
+    
+    for (vector<string>::const_iterator i = text.begin(); i != text.end(); ++i){
+        cout << *i <<endl;
+        enters--;
+    }
+
+    text.clear();
+    
+    for(int i =0; i < enters; i++){
+        cout << endl;
+    }
+
+    //printTextBox();
 }
 
 /*********************************************************************
@@ -434,3 +495,63 @@ void GameBoard::moveCPUs() {
     }
 }
 
+
+/***************************************************************************
+*                               Create Text Box                        *
+                                   
+***************************************************************************/
+ string** GameBoard::createTextBox(){
+    string** box = 0;
+    box = new string*[boxHeight]; //define y value size
+
+    for (int i = 0; i < boxHeight; i++) { //columns
+        box[i] = new string[boardWidth]; //define x value size
+        for (int j = 0; j < boardWidth; j++) { //rows
+            if (i == 0) {
+                if (j == 0) {
+				    box[i][j] = "╔";
+				} else if (j > 0 && j < boardWidth - 1) {
+                    box[i][j] = "═";
+				} else if (j == boardWidth - 1) {
+                    box[i][j] = "╗";
+				}
+            } else if (i > 0 && i < boxHeight - 1) {
+                if (j == 0 || j == boardWidth - 1) {
+                    box[i][j] = "║";
+				} else {
+				    box[i][j] = " ";
+			    }
+			} else if (i == boxHeight - 1) {
+                if (j == 0) {
+				    box[i][j] = "╚";
+				} else if (j > 0 && j < boardWidth - 1) {
+                    box[i][j] = "═";
+				} else if (j == boardWidth - 1) {
+                    box[i][j] = "╝";
+				}
+			}
+		}
+    }
+
+    return box;
+ }
+
+ /***************************************************************************
+*                               Print Text Box                        *                     
+***************************************************************************/
+void GameBoard::printTextBox(){
+    for (int i = 0; i < boxHeight; i++) {
+        for (int j = 0; j < boardWidth; j++) {
+            if(i == 1 && j == 1){
+                textBox[i][j] = "water";
+            }
+            cout << this->textBox[i][j];
+
+            
+            
+        }
+        if ((i + 1) <= boxHeight) {
+            printf("\n");
+        }
+    }
+}

@@ -14,6 +14,7 @@ Police::Police() {
 	setType(Entity::EntityType::Police);	// Initialize type Police
     setChar("₱");
 	setFine(50);
+	setInfectionRadius(6);
 }
 
 /*********************************************************************
@@ -35,4 +36,17 @@ void Police::setFine(int anAmount) {
 *********************************************************************/
 Police::~Police() {
 
+}
+
+/*********************************************************************
+** Description: Penalty
+** Penalize player for being within radius
+*********************************************************************/
+void Police::penalty(Player* player){
+
+	player->setTickets(true);
+	int currentMoney = player->getMoney();
+	int newMoney = currentMoney - fine;
+
+	player->updateMoney(newMoney);
 }

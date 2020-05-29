@@ -8,6 +8,7 @@
 #ifndef Police_hpp
 #define Police_hpp
 #include "Entity.hpp"
+#include "Player.hpp"
 #include <iostream>
 #include <string>
 
@@ -18,6 +19,7 @@ public:
 	~Police();				// Destructor
 	int getFine();			
 	void setFine(int anAmount);
+	void penalty(Player* player);
 
 private:
 	int fine;

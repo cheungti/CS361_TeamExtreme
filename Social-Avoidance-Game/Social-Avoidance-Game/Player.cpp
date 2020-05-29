@@ -29,7 +29,7 @@ Player::Player() {
     setChar("Δ");
     setType(Entity::EntityType::Player);
     updateHealth(100);
-    updateMoney(0);
+    updateMoney(100);
     updateLocation(0, 0); //start at 0, 0 -> board can go into the negatives
 }
 
@@ -130,5 +130,21 @@ bool Player::isInfected() {
  ***************************************************************************/
 void Player::setInfected(bool infectionStatus) {
     this->infected = infectionStatus;
+}
+
+/***************************************************************************
+ *							   Set Tickets   			    			   *
+ *	The function will update the players tickets                           *
+ ***************************************************************************/
+void Player::setTickets(bool ticket){
+    hasTickets = ticket;
+}
+
+/***************************************************************************
+ *							   Get Tickets    			    			   *
+ *	The function will return true if player has tickets                    *
+ ***************************************************************************/
+bool Player::getHasTickets(){
+    return hasTickets;
 }
 

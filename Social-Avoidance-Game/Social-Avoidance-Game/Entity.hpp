@@ -4,6 +4,8 @@
 #include <tuple>
 #include <string>
 
+
+
 using namespace std;
 
 class Entity {
@@ -28,6 +30,7 @@ public:
 	int getY();							//created
     string getChar();
     void setChar(string aChar);
+	
 
 	
 private:

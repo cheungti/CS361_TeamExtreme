@@ -152,3 +152,6 @@ string Entity::getChar(){
 void Entity::setChar(string aChar){
     entChar = aChar;
 }
+
+
+
