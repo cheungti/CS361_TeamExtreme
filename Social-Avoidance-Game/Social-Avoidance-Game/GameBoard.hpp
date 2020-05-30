@@ -33,17 +33,17 @@ private:
 	char movement;
 	//Room * rooms;
 	int infectAmount;
-	char* drawBox(int, int, int, int, int);
 	bool handleKeybinds();
 	string** textBox;
 
 public:
-	GameBoard();
 	GameBoard(Player*);
 	~GameBoard();
 	string** createBoard();
+	string** createBoardWindows();
 	void updateBoard(Entity*, int, int);
 	void printInstructions();
+	void printInstructionsWindows();
 	void printBoard();
 	bool Step();
 	void checkBystanderInteraction();
@@ -55,7 +55,7 @@ public:
 	void updateLocation(string, int, int);
 	void moveCPUs();
 	bool outOfBounds(int, int);
-	void printBuildingWalls(Buildings* building);
+	void printBuildingWalls(Buildings*);
 	bool checkBuildingInteraction();
 	bool buildingRadius(Entity*, Buildings*);
 	bool playerHome();

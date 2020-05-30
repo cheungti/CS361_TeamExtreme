@@ -12,6 +12,12 @@
 #include "Entity.hpp"
 #include "Player.hpp"
 
+#if defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS_)
+	#define PLATFORM_NAME "windows" // Windows
+#elif defined(__APPLE__) || defined(__linux__)
+	#define PLATFORM_NAME "apple" // apple
+#endif
+
 class Bystander : public Entity {
 
 public:

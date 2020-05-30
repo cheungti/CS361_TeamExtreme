@@ -11,7 +11,10 @@
 ** Description: Default constructor
 *********************************************************************/
 Bystander::Bystander() {
-    setChar("ф");
+	if (PLATFORM_NAME == "windows")
+		setChar("B");
+	else
+		setChar("ф");
 	setType(Entity::EntityType::Bystander);	// Initialize type Bystander
 	infected = true;
 	setHealthDecline(10);

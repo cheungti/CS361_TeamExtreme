@@ -4,6 +4,14 @@ const int boardWidth = 51;
 const int boardHeight = 27;
 const int boxHeight = 5;
 
+#if defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS_)
+    #define PLATFORM_NAME "windows" // Windows
+    #include <conio.h>
+#elif defined(__APPLE__) || defined(__linux__)
+    #define PLATFORM_NAME "apple" // apple
+#endif
+
+
 /***************************************************************************
  *				        	  Default Constructor						   *
  * The default constructor instantiates a new gameboard object and defaults*
@@ -30,8 +38,11 @@ GameBoard::GameBoard(Player* player) {
     die = new Die();
     die->setHeightWidth(boardHeight - 1, boardWidth - 1);
 
-    // Create gameboard
-    this->board = createBoard();
+    // Get OS system and create gameboard
+    if (PLATFORM_NAME == "windows")
+        this->board = createBoardWindows();
+    else
+        this->board = createBoard();
 
     // Initialize all buildings on game board & update their char on the board
     buildings.push_back(new Buildings("home", "H", 24, 25));
@@ -191,47 +202,48 @@ bool GameBoard::Step() {
  ***************************************************************************/
 bool GameBoard::handleKeybinds() {
     char ascii = 0;
+    bool movement = false;
 
     //getch() returns an ASCII value. That's why I have an int for getting the input.
     printf("w = up, a = left, s = down, d = right, q = Quit Game\n");
     printf("Enter your move (w,a,s,d): ");
 
-    system("/bin/stty raw");
-    ascii = tolower(getchar());
-    system("/bin/stty cooked");
+    if (PLATFORM_NAME == "windows") {
+        //ascii = tolower(_getch());
+        ascii = tolower(getchar());
+    } else {
+        system("/bin/stty raw");
+        ascii = tolower(getchar());
+        system("/bin/stty cooked");
+    }
 
     if (ascii == 'w') {      //if the character is a 'w'
         //move up
-        cout << player->getX();
-        cout << " " << player->getY() << endl;
+        movement = occupied(player->getX() - 1, player->getY());
         updateBoard(player, player->getX() - 1, player->getY());
-        cout << player->getX();
-        cout << " " << player->getY() << endl;
-
-    }
-    else if (ascii == 'a') {  //if the character is an 'a'
+    } else if (ascii == 'a') {  //if the character is an 'a'
         //move left
+        movement = occupied(player->getX(), player->getY() - 1);
         updateBoard(player, player->getX(), player->getY() - 1);
-    }
-    else if (ascii == 's') { //if the character is an 's'
+    } else if (ascii == 's') { //if the character is an 's'
         //move down
+        movement = occupied(player->getX() + 1, player->getY());
         updateBoard(player, player->getX() + 1, player->getY());
-    }
-    else if (ascii == 'd') { //if the character is a 'd'
+    } else if (ascii == 'd') { //if the character is a 'd'
         //move right
+        movement = occupied(player->getX(), player->getY() + 1);
         updateBoard(player, player->getX(), player->getY() + 1);
-    }
-    else if (ascii == 'q') {
+    } else if (ascii == 'q') {
         return false;
-    }
-    else {
+    } else {
         //dont' move
         printf("Error, invalid move key! '%c' -> Please use W, A, S or D", (char)ascii);
     }
 
-    moveCPUs();
-    player->updateHealth(player->getHealth() - 1);
-
+    if (movement == false) {
+        player->updateHealth(player->getHealth() - 1);
+        moveCPUs();
+    }
     return true;
 }
 
@@ -289,6 +301,32 @@ string** GameBoard::createBoard() {
     return board;
 }
 
+string** GameBoard::createBoardWindows() {
+    string** board = 0;
+    board = new string * [boardHeight]; //define y value size
+
+    for (int i = 0; i < boardHeight; i++) { //columns
+        board[i] = new string[boardWidth]; //define x value size
+        for (int j = 0; j < boardWidth; j++) { //rows
+            if (i == 0) {
+                board[i][j] = "-";
+            }
+            else if (i > 0 && i < boardHeight - 1) {
+                if (j == 0 || j == boardWidth - 1) {
+                    board[i][j] = "|";
+                }
+                else {
+                    board[i][j] = " ";
+                }
+            }
+            else if (i == boardHeight - 1) {
+                board[i][j] = "-";
+            }
+        }
+    }
+    return board;
+}
+
 void GameBoard::randomLocation(Entity* anEntity) {
     int row = die->dieRollHeight();
     int column = die->dieRollWidth();
@@ -337,6 +375,15 @@ void GameBoard::printInstructions() {
     printf("----------------------------------------------\n");
 }
 
+void GameBoard::printInstructionsWindows() {
+    printf("\n----------------------------------------------\n");
+    printf("Police - P      Player - Y      Bystander - B\n");
+    printf("Home - H        Pharmacy - J    Doctor - D\n");
+    printf("Grocery - G     Station - S     Work - W\n");
+    printf("Handwash Station (recharge health) - N\n");
+    printf("----------------------------------------------\n");
+}
+
 /***************************************************************************
  *								Print Board								   *
  * This function will call a redraw on the gameboard to update new room    *
@@ -347,7 +394,11 @@ void GameBoard::printInstructions() {
  *	Author: Bryce Hahn, Tinron Cheung, William Dam						   *
  ***************************************************************************/
 void GameBoard::printBoard() {
-    printInstructions();
+    if (PLATFORM_NAME == "windows")
+        printInstructionsWindows();
+    else
+        printInstructions();
+
     for (int i = 0; i < boardHeight; i++) {
         for (int j = 0; j < boardWidth; j++) {
             cout << this->board[i][j];
@@ -424,8 +475,8 @@ void GameBoard::printBuildingWalls(Buildings* building) {
 *                                Occupied                             *
 
 ***************************************************************************/
-bool GameBoard::occupied(int row, int column) {
-    if (board[row][column] != " ") {
+bool GameBoard::occupied(int col, int row) {
+    if (board[col][row] != " ") {
         return true;
     }
     return false;

@@ -16,7 +16,10 @@
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 Player::Player() {
-    setChar("Δ");
+    if (PLATFORM_NAME == "windows")
+        setChar("Y");
+    else
+        setChar("Δ");
     setType(Entity::EntityType::Player);
     updateHealth(100);
     updateLocation(22, 25); // Start at home building

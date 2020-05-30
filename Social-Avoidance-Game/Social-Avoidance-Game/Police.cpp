@@ -12,7 +12,10 @@
 *********************************************************************/
 Police::Police() {
 	setType(Entity::EntityType::Police);	// Initialize type Police
-    setChar("₱");
+	if (PLATFORM_NAME == "windows")
+		setChar("P");
+	else
+		setChar("₱");
 	setInfectionRadius(6);
 }
 
