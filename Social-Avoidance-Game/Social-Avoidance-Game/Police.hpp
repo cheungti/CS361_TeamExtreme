@@ -17,12 +17,10 @@ class Police : public Entity {
 public:
 	Police();				// Default constructor
 	~Police();				// Destructor
-	int getFine();			
-	void setFine(int anAmount);
 	void penalty(Player* player);
 
 private:
-	int fine;
+
 };
 
 #endif

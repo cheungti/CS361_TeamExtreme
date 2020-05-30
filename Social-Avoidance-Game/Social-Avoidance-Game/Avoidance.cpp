@@ -23,21 +23,41 @@ void Avoidance();
  *	Author: Bryce Hahn, Tinron Cheung, 									   *
  ***************************************************************************/
 void Avoidance() {
+
 	//setup player
 	player = new Player();
+
 	//setup game board
 	board = new GameBoard(player);
     
 	//main game loop
-
     while(true) {
-        board->Step();
+        
+        if (player->getHealth() > 0) {
+
+            board->Step();
+            
+
+            // Win game if player returns home, errands done, and no tickets (fines)
+            if (board->playerHome() == true && board->errandsDone() == true && player->getHasTickets() == false) {
+                std::cout << "You made it home alive!  YOU WIN!!!\n";
+                break;
+            }
+            
+        }
+        else {
+            std::cout << "You ran out of health and died!  GAME OVER :(\n";
+            break;
+        }
+        
     }
     
 }
 
 
 int main(int argc, char** argv) {
+
 	Avoidance();
+
 	return 0;
 }

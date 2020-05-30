@@ -87,6 +87,42 @@ int Buildings::getY() {
 }
 
 /*********************************************************************
+** Description: Set visted to true
+** Arguments: None
+** Return: Void
+** Author: Tinron Cheung
+*********************************************************************/
+void Buildings::setVisited() {
+
+	this->visited = true;
+
+}
+
+/*********************************************************************
+** Description: Set visted to false
+** Arguments: None
+** Return: Void
+** Author: Tinron Cheung
+*********************************************************************/
+void Buildings::unsetVisited() {
+
+	this->visited = false;
+
+}
+
+/*********************************************************************
+** Description: Get visted status
+** Arguments: None
+** Return: bool visited or not
+** Author: William Dam
+*********************************************************************/
+bool Buildings::getVisited() {
+
+	return this->visited;
+
+}
+
+/*********************************************************************
 ** Description: Class destructor
 *********************************************************************/
 Buildings::~Buildings() {

@@ -14,7 +14,7 @@ Bystander::Bystander() {
     setChar("ф");
 	setType(Entity::EntityType::Bystander);	// Initialize type Bystander
 	infected = true;
-	setHealthDecline(20);
+	setHealthDecline(10);
 	setInfectionRadius(2);
 }
 
@@ -26,11 +26,13 @@ void Bystander::setInfection(bool infect) {
 	infected = infect;
 
 }
-/***************************************************************************
- ** Description: return infected or not								   *
- ***************************************************************************/
+/*********************************************************************
+ ** Description: return infected or not
+*********************************************************************/
 bool Bystander::isInfected() {
+
     return infected;
+
 }
 
 

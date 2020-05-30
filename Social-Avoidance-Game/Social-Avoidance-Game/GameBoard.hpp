@@ -58,7 +58,10 @@ public:
     void moveCPUs();
 	bool outOfBounds(int, int);
 	void printBuildingWalls(Buildings* building);
-
+	bool checkBuildingInteraction();
+	bool buildingRadius(Entity*, Buildings*);
+	bool playerHome();
+	bool errandsDone();
 };
 
 #endif

@@ -13,22 +13,7 @@
 Police::Police() {
 	setType(Entity::EntityType::Police);	// Initialize type Police
     setChar("₱");
-	setFine(50);
 	setInfectionRadius(6);
-}
-
-/*********************************************************************
-** Description: Return fine amount
-*********************************************************************/
-int Police::getFine() {
-	return fine;
-}
-
-/*********************************************************************
-** Description: set fine amount
-*********************************************************************/
-void Police::setFine(int anAmount) {
-	fine = anAmount;
 }
 
 /*********************************************************************
@@ -45,8 +30,5 @@ Police::~Police() {
 void Police::penalty(Player* player){
 
 	player->setTickets(true);
-	int currentMoney = player->getMoney();
-	int newMoney = currentMoney - fine;
 
-	player->updateMoney(newMoney);
 }

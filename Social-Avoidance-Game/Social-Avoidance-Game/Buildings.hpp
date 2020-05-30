@@ -28,6 +28,9 @@ public:
 	bool isLocked();
 	bool ifVisited();
     string getBuildingChar();
+	void setVisited();
+	void unsetVisited();
+	bool getVisited();
 
 private:
 	std::string buildingType;					// Building type

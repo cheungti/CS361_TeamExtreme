@@ -15,24 +15,23 @@ const int boxHeight = 5;
  ***************************************************************************/
 GameBoard::GameBoard(Player* player) {
 	this->player = player;
-    //Instantiate 5 new CPUs
+
+    // Instantiate bystanders
 	for (int i = 0; i < 5; i++) {
 		entities.push_back(new Bystander());
 	}
 
-    // Instantiate 3 new police officers
+    // Instantiate police officers
     for (int i = 0; i < 3; i++) {
         entities.push_back(new Police());
     }
     
-    //set die height and width
+    // Set die height and width
     die = new Die();
     die->setHeightWidth(boardHeight-1, boardWidth-1);
     
-    //create gameboard
+    // Create gameboard
     this->board = createBoard();
-
-
 
     // Initialize all buildings on game board & update their char on the board
 	buildings.push_back(new Buildings("home", "H", 24, 25));
@@ -41,6 +40,7 @@ GameBoard::GameBoard(Player* player) {
 	buildings.push_back(new Buildings("station", "S", 2, 25));
 	buildings.push_back(new Buildings("doctor", "D", 2, 48));
 	buildings.push_back(new Buildings("work","W", 13, 48));
+    buildings.push_back(new Buildings("handwash", "N", 13, 25));
 
     for (int i = 0; i < buildings.size(); i++) {
         printBuildingWalls(buildings[i]);
@@ -57,10 +57,6 @@ GameBoard::GameBoard(Player* player) {
          //set entity position on board
          board[entities[i]->getX()][entities[i]->getY()] = entities[i]->getChar();
      }
-     
-     
-     //Randomize Player location
-     randomLocation(player);
      
      //set player's position on board
      board[player->getX()][player->getY()] = player->getChar();
@@ -100,7 +96,7 @@ void GameBoard::checkBystanderInteraction() {
                     if(j!=i){
                         if(overlappingRadius(this->entities[j], policeman)){
                         policeman->penalty(this->player);
-                        text.push_back("Police caught you near a Bystander. Fined: " + std::to_string(policeman->getFine()));
+                        text.push_back("Police caught you near a Bystander. You received a fine!");
                     }
                         
 
@@ -109,11 +105,12 @@ void GameBoard::checkBystanderInteraction() {
                 }
             }
 
+            // Health deduction for getting too close to bystander
             else if(entities[i]->getChar() == "ф"){
                 Bystander* aBystander = static_cast<Bystander*>(entities[i]); 
                 aBystander->penalty(this->player);
 
-                text.push_back("You got too close to a Bystander. Health Deducted: " + std::to_string(aBystander->getHealthDecline()));
+                text.push_back("You got too close to a bystander! Health Deducted: " + std::to_string(aBystander->getHealthDecline()));
 
             }
 
@@ -186,6 +183,7 @@ void GameBoard::Step() {
 
     //check collisions
     checkBystanderInteraction();
+    checkBuildingInteraction();
     
     //redraw board
     printBoard();
@@ -207,9 +205,8 @@ void GameBoard::handleKeybinds() {
     char ascii = 0;   
     
     //getch() returns an ASCII value. That's why I have an int for getting the input.
-    printf("Move (w,a,s,d): ");
-	printf("\n");
-    
+    printf("up = w, left = a, down = s, right = d\n");
+    printf("Enter your move (w,a,s,d): ");
 
 	system("/bin/stty raw");
 	ascii = tolower(getchar());
@@ -242,6 +239,7 @@ void GameBoard::handleKeybinds() {
     }
     
     moveCPUs();
+    player->updateHealth(player->getHealth() - 1);
     
 }
 
@@ -317,7 +315,6 @@ void GameBoard::randomLocation(Buildings* aBuilding){
 }
 
 
-
 void GameBoard::updateBoard(Entity* e, int newX, int newY) {
     if(!occupied(newX, newY)){
         emptyPoint(e->getX(), e->getY()); //empty old position
@@ -334,9 +331,10 @@ void GameBoard::emptyPoint(int i, int j) {
 void GameBoard::printInstructions() {
     //system("CLS");
     printf("\n----------------------------------------------\n");
-    printf("Police - ₱      Player - Δ      CPU - ф\n   ");
-    printf("Home - H        RX - J          Doctor - D\n");
-    printf("Store - G       Station - S     Work - W\n  ");
+    printf("Police - ₱      Player - Δ      Bystander - ф\n");
+    printf("Home - H        Pharmacy - J    Doctor - D\n");
+    printf("Grocery - G     Station - S     Work - W\n");
+    printf("Handwash Station (recharge health) - N\n");
     printf("----------------------------------------------\n");
 }
 
@@ -347,7 +345,7 @@ void GameBoard::printInstructions() {
  *                                                                         *
  *	Params: N/A															   *
  *	Return: N/A															   *
- *	Author: Bryce Hahn, Tinron Cheung									   *
+ *	Author: Bryce Hahn, Tinron Cheung, William Dam						   *
  ***************************************************************************/
 void GameBoard::printBoard() {
     printInstructions();
@@ -361,19 +359,35 @@ void GameBoard::printBoard() {
         }
     }
 
-    cout <<"Health: " <<this->player->getHealth() <<"   ";
-    cout <<"Coins: " <<this->player->getMoney() << "   ";
-    cout <<"Fines: ";
-    if(this->player->getHasTickets()){
-        cout<<"Yes" <<endl;
-    }else{
-        cout<<"No" <<endl;
+    // Display player health score
+    cout << "Health: " << this->player->getHealth() << endl;
+
+    // Display message if player has received a fine
+    if (this->player->getHasTickets()) {
+
+        cout << "Visit Police Station to pay your fine!" << endl;
+
     }
+    
+    cout << "Visited: ";
+    for (int i = 0; i < buildings.size(); i++) {
+        
+        // Mark visited, except home and handwash station
+        if (buildings[i]->getBuildingName() != "home" && buildings[i]->getBuildingName() != "handwash") {
+
+            if (buildings[i]->getVisited() == true) {
+                cout << buildings[i]->getBuildingName() << "  ";
+            }
+
+        }
+
+    }
+    cout << endl;
 
     int enters = 5;
     
     for (vector<string>::const_iterator i = text.begin(); i != text.end(); ++i){
-        cout << *i <<endl;
+        cout << *i << endl;
         enters--;
     }
 
@@ -493,5 +507,120 @@ void GameBoard::moveCPUs() {
     }
 }
 
+/*********************************************************************
+** Description: This function will check to see if the player and 
+** building are in interaction range will set building visited to true.
+** Arguments: None
+** Return: bool
+** Author: Tinron Cheung
+*********************************************************************/
+
+bool GameBoard::checkBuildingInteraction() {
+
+    for (int i = 0; i < buildings.size(); i++) {
+        
+        if (buildingRadius(this->player, this->buildings[i])) {
+            this->buildings[i]->setVisited();
+
+            // Pay ticket at police station
+            if (this->player->getHasTickets() && this->buildings[i]->getBuildingName() == "station") {
+                this->player->setTickets(false);
+            }
+
+            // Recharge health by washing hands
+            if (this->buildings[i]->getBuildingName() == "handwash") {
+                this->player->updateHealth(100);
+                text.push_back("You washed your hands.  Health restored to 100!\n");
+            }
+
+            // Can't go home without finishing errands
+            if (playerHome() == true) {
+                if (errandsDone() == false) {
+                    text.push_back("You can't go home yet! You must visit: ");
+                    for (int i = 0; i < this->buildings.size(); i++) {
+                        if (i != 0 && i != 6) {
+                            if (this->buildings[i]->getVisited() == false) {
+                                
+                                text.push_back(this->buildings[i]->getBuildingName());
+                            }
+                        }
+                    }
+                }
+                else if (errandsDone() == true && this->player->getHasTickets() == true) {
+                    text.push_back("You can't go home yet!\nGo to the police station to pay your fine.");
+                }
+            }
+            
+
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/*********************************************************************
+** Description: This function will check to see if player is on the 
+** border of building.
+** Arguments: e1 as player e2 as the  building
+** Return: true if the player is at building boundary
+** Author: Tinron Cheung
+*********************************************************************/
+bool GameBoard::buildingRadius(Entity* e1, Buildings* e2) {
+    int playerXcoord = e1->getX();
+    int playerYcoord = e1->getY();
+
+    int buildingXcoord = e2->getX();
+    int buildingYcoord = e2->getY();
 
 
+    if ((playerYcoord == buildingYcoord + 2) || (playerYcoord == buildingYcoord - 2))
+    {
+        if ((playerXcoord == buildingXcoord - 1) || (playerXcoord == buildingXcoord + 1) || (playerXcoord == buildingXcoord))
+        {
+            return true;
+        }
+    }
+    if ((playerXcoord == buildingXcoord + 2) || (playerXcoord == buildingXcoord - 2))
+    {
+        if ((playerYcoord == buildingYcoord - 1) || (playerYcoord == buildingYcoord + 1) || (playerYcoord == buildingYcoord))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+/*********************************************************************
+** Description: Check to see if player is home
+** Arguments: None
+** Return: bool
+** Author: William Dam
+*********************************************************************/
+bool GameBoard::playerHome() {
+
+    if (buildingRadius(this->player, this->buildings[0])) {
+        return true;
+    }
+
+    return false;
+}
+
+/*********************************************************************
+** Description: Check to see if errands are done.  Errands considered
+** done if all buildings have been visited.  Note: Handwash station
+** and home are not counted.
+** Arguments: None
+** Return: bool
+** Author: William Dam
+*********************************************************************/
+bool GameBoard::errandsDone() {
+
+    for (int i = 0; i < buildings.size(); i++) {
+        if (i != 0 && i != 6 && buildings[i]->getVisited() == false) {
+            return false;
+        }
+    }
+
+    return true;
+}
