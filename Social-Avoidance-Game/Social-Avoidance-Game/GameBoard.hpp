@@ -36,7 +36,7 @@ private:
 	//Room * rooms;
 	int infectAmount;
 	char* drawBox(int, int, int, int, int);
-	void handleKeybinds();
+	bool handleKeybinds();
 	string **textBox;
 
 public:
@@ -47,7 +47,7 @@ public:
 	void updateBoard(Entity*, int, int);
 	void printInstructions();
 	void printBoard();
-	void Step();
+	bool Step();
 	void checkBystanderInteraction();
 	bool overlappingRadius(Entity*, Entity*);
 	void emptyPoint(int, int);

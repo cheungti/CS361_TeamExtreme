@@ -174,21 +174,27 @@ GameBoard::~GameBoard() {
  *	Return: N/A															   *
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
-void GameBoard::Step() {
+bool GameBoard::Step() {
+
+    bool keepPlaying = false;
+
     //player movements
-    handleKeybinds();
+    keepPlaying = handleKeybinds();
     
     //clear console
     //system("clear"); //system only works on windows
 
     //check collisions
-    checkBystanderInteraction();
-    checkBuildingInteraction();
-    
-    //redraw board
-    printBoard();
+    if (keepPlaying == true) {
+        checkBystanderInteraction();
+        checkBuildingInteraction();
 
+        //redraw board
+        printBoard();
+    }
     
+
+    return keepPlaying;
 }
 
 /***************************************************************************
@@ -201,11 +207,11 @@ void GameBoard::Step() {
  *	Return: N/A															   *
  *	Author: Bryce Hahn, Jonathan Dresel									   *
  ***************************************************************************/
-void GameBoard::handleKeybinds() { 
+bool GameBoard::handleKeybinds() { 
     char ascii = 0;   
     
     //getch() returns an ASCII value. That's why I have an int for getting the input.
-    printf("up = w, left = a, down = s, right = d\n");
+    printf("w = up, a = left, s = down, d = right, q = Quit Game\n");
     printf("Enter your move (w,a,s,d): ");
 
 	system("/bin/stty raw");
@@ -233,6 +239,9 @@ void GameBoard::handleKeybinds() {
         //move right
         updateBoard(player, player->getX(), player->getY()+1);
     }
+    else if (ascii == 'q') {
+        return false;
+    }
     else {
         //dont' move
         printf("Error, invalid move key! '%c' -> Please use W, A, S or D", (char)ascii);
@@ -241,6 +250,7 @@ void GameBoard::handleKeybinds() {
     moveCPUs();
     player->updateHealth(player->getHealth() - 1);
     
+    return true;
 }
 
 /***************************************************************************

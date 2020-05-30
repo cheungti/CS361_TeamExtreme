@@ -31,12 +31,13 @@ void Avoidance() {
 	board = new GameBoard(player);
     
 	//main game loop
-    while(true) {
+    bool keepPlaying = true;
+
+    while(keepPlaying == true) {
         
         if (player->getHealth() > 0) {
 
-            board->Step();
-            
+            keepPlaying = board->Step();
 
             // Win game if player returns home, errands done, and no tickets (fines)
             if (board->playerHome() == true && board->errandsDone() == true && player->getHasTickets() == false) {
@@ -52,6 +53,9 @@ void Avoidance() {
         
     }
     
+    if (keepPlaying == false) {
+        std::cout << "\nYou have quit the game.  GOODBYE!\n";
+    }
 }
 
 
