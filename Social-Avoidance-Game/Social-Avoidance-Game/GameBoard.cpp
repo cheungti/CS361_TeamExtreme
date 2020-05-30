@@ -11,7 +11,7 @@ const int boxHeight = 5;
  *                                                                         *
  *	Params: N/A															   *
  *	Return: N/A															   *
- *	Author: Bryce Hahn, Tinron Cheung									   *
+ *	Author: Bryce Hahn, Tinron Cheung, William Dam						   *
  ***************************************************************************/
 GameBoard::GameBoard(Player* player) {
     this->player = player;
@@ -122,7 +122,6 @@ void GameBoard::checkBystanderInteraction() {
 }
 
 
-
 /***************************************************************************
 *				            Entity Radius Overlap					       *
 *	This function will check to see if two entities overlap at the         *
@@ -145,23 +144,6 @@ bool GameBoard::overlappingRadius(Entity* e1, Entity* e2) {
         return true;
     else
         return false;
-}
-
-/***************************************************************************
- *				        	  Class Deconstructor						   *
- * The default deconstructor destroys the memory for the gameboard pointer *
- *      starting values.                                                   *
- *                                                                         *
- *	Params: N/A															   *
- *	Return: N/A															   *
- *	Author: Bryce Hahn, Tinron Cheung									   *
- ***************************************************************************/
-GameBoard::~GameBoard() {
-    delete board;
-    delete player;
-
-    entities.clear(); //delete the vectors efficiently
-    buildings.clear();
 }
 
 /***************************************************************************
@@ -529,7 +511,7 @@ void GameBoard::moveCPUs() {
 ** building are in interaction range will set building visited to true.
 ** Arguments: None
 ** Return: bool
-** Author: Tinron Cheung
+** Author: Tinron Cheung, William Dam
 *********************************************************************/
 
 bool GameBoard::checkBuildingInteraction() {
@@ -640,4 +622,28 @@ bool GameBoard::errandsDone() {
     }
 
     return true;
+}
+
+/*********************************************************************
+** Description: The default deconstructor destroys the memory for the 
+** gameboard pointer starting values.    
+** Arguments: None
+** Return: None
+** Author: Bryce Hahn, Tinron Cheung	
+*********************************************************************/
+GameBoard::~GameBoard() {
+
+    // Delete board 2d array
+    for (int i = 0; i < boardWidth; i++) {
+        delete[] board[i];
+    }
+
+    delete[] board;
+
+    delete player;
+
+    entities.clear(); // delete the vectors efficiently
+    buildings.clear();
+
+    
 }

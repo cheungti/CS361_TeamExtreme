@@ -1,6 +1,5 @@
 #ifndef GAMEBOARD_H
 #define GAMEBOARD_H
-//class imports
 #include <stdio.h>
 #include <cmath>
 #include <vector>
@@ -10,7 +9,6 @@
 #include "Entity.hpp"
 #include "Police.hpp"
 #include "Die.hpp"
-
 
 #define C_RED     "\x1b[31m"
 #define C_GREEN   "\x1b[32m"

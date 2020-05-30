@@ -12,7 +12,6 @@ GameBoard* board;
 //define function declarations
 void Avoidance();
 
-
 /***************************************************************************
  *								Avoidance							       *
  *	Initialization function to setup the start of the game and call the	   *
@@ -20,7 +19,7 @@ void Avoidance();
  *																		   *
  *	Params: N/A															   *
  *	Return: N/A															   *
- *	Author: Bryce Hahn, Tinron Cheung, 									   *
+ *	Author: Bryce Hahn, Tinron Cheung, William Dam                         *
  ***************************************************************************/
 void Avoidance() {
 
@@ -58,7 +57,9 @@ void Avoidance() {
     }
 }
 
-
+/*********************************************************************
+** Description: Main function
+*********************************************************************/
 int main(int argc, char** argv) {
 
 	Avoidance();
