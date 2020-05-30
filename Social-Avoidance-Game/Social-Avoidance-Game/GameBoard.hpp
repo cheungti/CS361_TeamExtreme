@@ -29,15 +29,15 @@ private:
 	vector<Entity*> entities;
 	vector<Buildings*> buildings;
 	vector<string> text;
-    Die* die;
+	Die* die;
 
-	string **board;
+	string** board;
 	char movement;
 	//Room * rooms;
 	int infectAmount;
 	char* drawBox(int, int, int, int, int);
 	bool handleKeybinds();
-	string **textBox;
+	string** textBox;
 
 public:
 	GameBoard();
@@ -51,11 +51,11 @@ public:
 	void checkBystanderInteraction();
 	bool overlappingRadius(Entity*, Entity*);
 	void emptyPoint(int, int);
-    bool occupied(int, int);
-    void randomLocation(Entity*);
-    void randomLocation(Buildings*);
-    void updateLocation(string, int, int);
-    void moveCPUs();
+	bool occupied(int, int);
+	void randomLocation(Entity*);
+	void randomLocation(Buildings*);
+	void updateLocation(string, int, int);
+	void moveCPUs();
 	bool outOfBounds(int, int);
 	void printBuildingWalls(Buildings* building);
 	bool checkBuildingInteraction();

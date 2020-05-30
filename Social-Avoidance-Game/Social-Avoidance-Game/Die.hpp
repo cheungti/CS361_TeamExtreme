@@ -14,19 +14,19 @@
 #include <string>
 
 class Die {
-    
+
 private:
     int height;
     int width;
 
 public:
-	Die();
-    Die(int, int);
-	~Die();
+    Die();
+    ~Die();
 
-	int dieRollHeight();
+    int dieRollHeight();
     int dieRollWidth();
-    void setBoardSize(int, int);
+    int randPosition(int);
+    void setHeightWidth(int aHeight, int aWidth);
     int dieRoll100();
 };
 
