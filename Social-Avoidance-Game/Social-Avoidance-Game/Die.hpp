@@ -21,12 +21,12 @@ private:
 
 public:
     Die();
-    ~Die();
+    Die(int, int);
 
+    void setBoardSize(int, int);
     int dieRollHeight();
     int dieRollWidth();
     int randPosition(int);
-    void setHeightWidth(int aHeight, int aWidth);
     int dieRoll100();
 };
 

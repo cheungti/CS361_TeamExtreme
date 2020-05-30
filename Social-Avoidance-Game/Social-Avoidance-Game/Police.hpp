@@ -16,11 +16,7 @@ class Police : public Entity {
 
 public:
 	Police();				// Default constructor
-	~Police();				// Destructor
 	void penalty(Player* player);
-
-private:
-
 };
 
 #endif

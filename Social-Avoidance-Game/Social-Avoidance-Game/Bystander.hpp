@@ -16,22 +16,17 @@ class Bystander : public Entity {
 
 public:
 	Bystander();				// Default constructor
-	~Bystander();				// Destructor
 	
-	void setInfection(bool n);
-	void penalty(Player* player);
+	void setInfection(bool);
+	void penalty(Player*);
 	bool isInfected();
-	void setInfected(bool);
-	void setHealthDecline(int deduction);
+	void setHealthDecline(int);
 	int getHealthDecline();
 
 private:
 	bool infected;
 	int infectionRadius;		// How close another entity needs to be to get infected
 	int healthDecline;
-	
-	
-
 };
 
 #endif

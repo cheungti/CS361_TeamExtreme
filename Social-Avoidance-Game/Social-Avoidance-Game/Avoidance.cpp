@@ -5,9 +5,6 @@
 #include "Player.hpp"
 #include "GameBoard.hpp"
 
-
-
-
 //instantiate class variables
 Player* player;
 GameBoard* board;
@@ -62,10 +59,6 @@ void Avoidance() {
     }
 }
 
-
-/*********************************************************************
-** Description: Main function
-*********************************************************************/
 int main(int argc, char** argv) {
 
 	Avoidance();

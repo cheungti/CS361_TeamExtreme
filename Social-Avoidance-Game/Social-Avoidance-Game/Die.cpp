@@ -6,43 +6,101 @@
 *********************************************************************/
 #include "Die.hpp"
 
-/*********************************************************************
-** Description: Default constructor for Die class
-*********************************************************************/
+
+/***************************************************************************
+ *							    Dice Constructor						   *
+ *	The default Dice class constructor will initialize the random seed time*
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: N/A															   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
 Die::Die() {
     srand(static_cast<unsigned int>(time(0)));	// Seed random number generator
-    height = 5;
-    width = 5;
+    setBoardSize(5, 5);
 }
 
+
+/***************************************************************************
+ *							    Dice Constructor						   *
+ *	The sized Dice class constructor will initialize the random seed time  *
+ *      and initialize the width and height values                         *
+ *                                                                         *
+ *	Params: width for boardWidth, height for boardHeight    			   *
+ *	Return: N/A															   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
+Die::Die(int width, int height) {
+    srand(static_cast<unsigned int>(time(0)));	// Seed random number generator
+    setBoardSize(width, height);
+}
+
+
+/***************************************************************************
+ *							   Dice Set Size                               *
+ *	Modify the Die Width Height constraints                                *
+ *                                                                         *
+ *	Params: Width for the width const, height for the height const		   *
+ *	Return: N/A                       									   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
+void Die::setBoardSize(int width, int height) {
+    this->width = width;
+    this->height = height;
+}
+
+
+/***************************************************************************
+ *							Dice Roll Height                               *
+ *	Roll for a random height based on the Board Height constraint          *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: Randomly rolled height										   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
 int Die::dieRollHeight() {
 
     return rand() % height + 1;
 
 }
 
+
+/***************************************************************************
+ *							 Dice Roll Width                               *
+ *	Roll for a random width based on the Board Width constraint            *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: Randomly rolled width   									   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
 int Die::dieRollWidth() {
 
     return rand() % width + 1;               // Return roll value
 
 }
 
+
+/***************************************************************************
+ *						  Dice Rand Position                               *
+ *	Roll for a random position on the gameboard                            *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: Randomly rolled int from 1 to 100							   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
 int Die::randPosition(int axisConstraint) {
     return rand() % axisConstraint + 1;
 }
 
-void Die::setHeightWidth(int aHeight, int aWidth) {
-    height = aHeight;
-    width = aWidth;
-}
 
+/***************************************************************************
+ *							  Dice Roll 100                                *
+ *	Roll for a random number int he 1 to 100 range                         *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: Randomly rolled int from 1 to 100							   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
 int Die::dieRoll100() {
     return rand() % 100 + 1;
-}
-
-/*********************************************************************
-** Description: Class destructor
-*********************************************************************/
-Die::~Die() {
-
 }

@@ -12,13 +12,13 @@ const int boxHeight = 5;
 #endif
 
 /***************************************************************************
- *				        	  Default Constructor						   *
- * The default constructor instantiates a new gameboard object and defaults*
- *      starting values.                                                   *
+ *				        	  GameBoard Constructor						   *
+ * The player constructor instantiates a new gameboard object and defaults *
+ *      starting values with the addition to a player pointer.             *
  *                                                                         *
- *	Params: N/A															   *
+ *	Params: Player pointer to the instantiated player object from avoidance*
  *	Return: N/A															   *
- *	Author: Bryce Hahn, Tinron Cheung, William Dam						   *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 GameBoard::GameBoard(Player* player) {
     this->player = player;
@@ -34,8 +34,7 @@ GameBoard::GameBoard(Player* player) {
     }
 
     // Set die height and width
-    die = new Die();
-    die->setHeightWidth(boardHeight - 1, boardWidth - 1);
+    die = new Die(boardHeight - 1, boardWidth - 1);
 
     // Get OS system and create gameboard
     if(PLATFORM_NAME == "windows")
@@ -74,8 +73,42 @@ GameBoard::GameBoard(Player* player) {
     this->printBoard();
 }
 
-void GameBoard::updateLocation(string aChar, int row, int column) {
-    board[row][column] = aChar;
+
+/***************************************************************************
+ *				           GameBoard Deconstructor						   *
+ * The default deconstructor destroys the memory for the gameboard pointer *
+ *      starting values.                                                   *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: N/A															   *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+GameBoard::~GameBoard() {
+    delete this->player;
+    delete this->die;
+
+    this->entities.clear(); //delete the vectors efficiently
+    this->buildings.clear();
+
+    deleteGameboard();
+}
+
+
+/***************************************************************************
+ *				           GameBoard Deconstructor						   *
+ * Delete all values from the board 2D array ensuring no mem leaks         *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: N/A															   *
+ *	Author: Bryce Hahn              									   *
+ ***************************************************************************/
+void GameBoard::deleteGameboard() {
+    for (int i = 0; i < boardWidth; i++) {
+        for (int j = 0; j < boardHeight; j++) {
+            delete[] board[j];
+        }
+        delete[] board[i];
+    }
 }
 
 
@@ -86,7 +119,7 @@ void GameBoard::updateLocation(string aChar, int row, int column) {
 *                                                                          *
 *																		   *
 *	Params: N/A															   *
-*	Return: N/A															   *
+*	Return: True if any entity radius collides with player radius		   *
 *	Author: Bryce Hahn, Tinron Cheung									   *
 ***************************************************************************/
 void GameBoard::checkBystanderInteraction() {
@@ -146,6 +179,7 @@ bool GameBoard::overlappingRadius(Entity* e1, Entity* e2) {
         return false;
 }
 
+
 /***************************************************************************
  *								Player Step								   *
  *	Every game tick the gameboard class takes a Step loop. This function   *
@@ -157,7 +191,6 @@ bool GameBoard::overlappingRadius(Entity* e1, Entity* e2) {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 bool GameBoard::Step() {
-
     bool keepPlaying = false;
 
     //player movements
@@ -172,9 +205,9 @@ bool GameBoard::Step() {
         printBoard();
     }
 
-
     return keepPlaying;
 }
+
 
 /***************************************************************************
  *								User Input								   *
@@ -238,11 +271,12 @@ bool GameBoard::handleKeybinds() {
     return true;
 }
 
+
 /***************************************************************************
  *							    Create Board							   *
  * This function will initialize the 2D array of chars used to represent   *
  *      the gameboard, hud, console and inventory. Once initialized, will  *
- *      then fill the board with (currently) TEMPORARY values.             *
+ *      then fill the board with meeded values                             *
  *                                                                         *
  *	Params: N/A															   *
  *	Return: 2D array of chars representing the renderable board            *
@@ -290,6 +324,18 @@ string** GameBoard::createBoard() {
     return board;
 }
 
+
+/***************************************************************************
+ *						   Create Board Windows							   *
+ * This function will initialize the 2D array of chars used to represent   *
+ *      the gameboard, hud, console and inventory. Once initialized, will  *
+ *      then fill the board with meeded values. Only difference is DOS     *
+ *      compatible characters..
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: 2D array of chars representing the renderable board            *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
 string** GameBoard::createBoardWindows() {
     string** board = 0;
     board = new string * [boardHeight]; //define y value size
@@ -313,6 +359,15 @@ string** GameBoard::createBoardWindows() {
     return board;
 }
 
+
+/***************************************************************************
+ *							 Random Entity Location						   *
+ *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: Entity pointer to the entity we wish to move                   *
+ *	Author:                         									   *
+ ***************************************************************************/
 void GameBoard::randomLocation(Entity* anEntity) {
     int row = die->dieRollHeight();
     int column = die->dieRollWidth();
@@ -325,6 +380,15 @@ void GameBoard::randomLocation(Entity* anEntity) {
     anEntity->updateLocation(row, column);
 }
 
+
+/***************************************************************************
+ *						 Random Building Location						   *
+ *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: Building pointer to the building we wish to move               *
+ *	Author:                         									   *
+ ***************************************************************************/
 void GameBoard::randomLocation(Buildings* aBuilding) {
     int row = die->dieRollHeight();
     int column = die->dieRollWidth();
@@ -338,6 +402,15 @@ void GameBoard::randomLocation(Buildings* aBuilding) {
 }
 
 
+/***************************************************************************
+ *							    Update Board						       *
+ *  Update the board after the movement of an entity. Cleans up entity's   *
+ *      old location and modifies the new xy the entity has moved to       *
+ *                                                                         *
+ *	Params: e for the moved entity, newX/newY for the new x,y locations	   *
+ *	Return: N/A                                                            *
+ *	Author: Bryce Hahn              									   *
+ ***************************************************************************/
 void GameBoard::updateBoard(Entity* e, int newX, int newY) {
     if (!occupied(newX, newY)) {
         emptyPoint(e->getX(), e->getY()); //empty old position
@@ -347,10 +420,42 @@ void GameBoard::updateBoard(Entity* e, int newX, int newY) {
 }
 
 
+/***************************************************************************
+ *							    Update Location						       *
+ *  Similar to updateBoard, will modify the x,y char value on the board arr*
+ *                                                                         *
+ *	Params: aChar as the new char to print, row/column to show x,y location*
+ *      on the board array.                                                *
+ *	Return: N/A                                                            *
+ *	Author:                           									   *
+ ***************************************************************************/
+void GameBoard::updateLocation(string aChar, int column, int row) {
+    board[column][row] = aChar;
+}
+
+
+/***************************************************************************
+ *							    Empty Point 						       *
+ *  Set the x,y location on the board to an empty space (open)             *
+ *                                                                         *
+ *	Params: the x,y locations to empty                                	   *
+ *	Return: N/A                                                            *
+ *	Author: Bryce Hahn              									   *
+ ***************************************************************************/
 void GameBoard::emptyPoint(int i, int j) {
     this->board[i][j] = " ";
 }
 
+
+/***************************************************************************
+ *							    Print Key						           *
+ *  Loop through the vector of buildings and print their name and          *
+ *      respective char value to a key box.                                *
+ *                                                                         *
+ *	Params: N/A                                                     	   *
+ *	Return: N/A                                                            *
+ *	Author: Bryce Hahn              									   *
+ ***************************************************************************/
 void GameBoard::printInstructions() {
     printf("\n----------------------------------------------\n");
     printf("Police - ₱      Player - Δ      Bystander - ф\n");
@@ -360,6 +465,17 @@ void GameBoard::printInstructions() {
     printf("----------------------------------------------\n");
 }
 
+
+/***************************************************************************
+ *					        Print Key Windows	 					       *
+ *  Loop through the vector of buildings and print their name and          *
+ *      respective char value to a key box. Only difference is DOS         *
+ *      compatible characters.                                             *
+ *                                                                         *
+ *	Params: N/A                                                     	   *
+ *	Return: N/A                                                            *
+ *	Author: Bryce Hahn              									   *
+ ***************************************************************************/
 void GameBoard::printInstructionsWindows() {
     printf("\n----------------------------------------------\n");
     printf("Police - P      Player - Y      Bystander - B\n");
@@ -368,6 +484,7 @@ void GameBoard::printInstructionsWindows() {
     printf("Handwash Station (recharge health) - N\n");
     printf("----------------------------------------------\n");
 }
+
 
 /***************************************************************************
  *								Print Board								   *
@@ -433,6 +550,7 @@ void GameBoard::printBoard() {
 
 }
 
+
 /*********************************************************************
 ** Description: Print borders around each building
 ** Arguments: Buildings*
@@ -440,25 +558,27 @@ void GameBoard::printBoard() {
 ** Author: William Dam
 *********************************************************************/
 void GameBoard::printBuildingWalls(Buildings* building) {
-
     for (int i = -1; i < 2; i++) {
         if (i == 0) {
             board[building->getX()][building->getY() - 1] = "*";
             board[building->getX()][building->getY() + 1] = "*";
-        }
-        else {
+        } else {
             for (int j = -1; j < 2; j++) {
                 board[building->getX() + i][building->getY() + j] = "*";
             }
         }
     }
-
 }
 
-/***************************************************************************
-*                                Occupied                             *
 
-***************************************************************************/
+/***************************************************************************
+ *						      Point Occupied							   *
+ * Ensure the desired position is marked as empty.                         *
+ *                                                                         *
+ *	Params: column as move X, row as move Y								   *
+ *	Return: N/A															   *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
 bool GameBoard::occupied(int column, int row) {
     if (board[column][row] != " ") {
         return true;
@@ -466,10 +586,16 @@ bool GameBoard::occupied(int column, int row) {
     return false;
 }
 
-/***************************************************************************
-*                                Move CPUs                         *
 
-***************************************************************************/
+/***************************************************************************
+ *						        Move CPUs						           *
+ *  Call a move on all entities, based on a random dice roll to choose     *
+ *      what direction the entity will move.                               *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: N/A                                                            *
+ *	Author:                         									   *
+ ***************************************************************************/
 void GameBoard::moveCPUs() {
     for (int i = 0; i < entities.size(); i++) {
         bool moved = false;
@@ -541,16 +667,18 @@ void GameBoard::moveCPUs() {
     }
 }
 
-/*********************************************************************
-** Description: This function will check to see if the player and
-** building are in interaction range will set building visited to true.
-** Arguments: None
-** Return: bool
-** Author: Tinron Cheung, William Dam
-*********************************************************************/
 
+/***************************************************************************
+*						   Building Interaction                            *
+*	This function will check to see if the player and building are in      *
+*       interaction range will set building visited to true.		       *
+*                                                                          *
+*																		   *
+*	Params: N/A															   *
+*	Return: True if any building radius collides with player radius		   *
+*	Author: William Dam, Tinron Cheung									   *
+***************************************************************************/
 bool GameBoard::checkBuildingInteraction() {
-
     for (int i = 0; i < buildings.size(); i++) {
 
         if (buildingRadius(this->player, this->buildings[i])) {
@@ -583,17 +711,13 @@ bool GameBoard::checkBuildingInteraction() {
                             }
                         }
                     }
-                }
-                else if (errandsDone() == true && this->player->getHasTickets() == true) {
+                } else if (errandsDone() == true && this->player->getHasTickets() == true) {
                     text.push_back("You can't go home yet!\nGo to the police station to pay your fine.");
                 }
             }
-
-
             return true;
         }
     }
-
     return false;
 }
 
@@ -661,28 +785,4 @@ bool GameBoard::errandsDone() {
     }
 
     return true;
-}
-
-/*********************************************************************
-** Description: The default deconstructor destroys the memory for the 
-** gameboard pointer starting values.    
-** Arguments: None
-** Return: None
-** Author: Bryce Hahn, Tinron Cheung	
-*********************************************************************/
-GameBoard::~GameBoard() {
-
-    // Delete board 2d array
-    for (int i = 0; i < boardWidth; i++) {
-        delete[] board[i];
-    }
-
-    delete[] board;
-
-    delete player;
-
-    entities.clear(); // delete the vectors efficiently
-    buildings.clear();
-
-    
 }

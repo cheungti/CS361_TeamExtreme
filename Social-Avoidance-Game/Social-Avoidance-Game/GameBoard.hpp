@@ -28,26 +28,16 @@ private:
 	vector<Buildings*> buildings;
 	vector<string> text;
 	Die* die;
-
 	string** board;
 	char movement;
-	//Room * rooms;
-	int infectAmount;
-	char* drawBox(int, int, int, int, int);
-	bool handleKeybinds();
 	string** textBox;
+	int infectAmount;
 
-public:
-	GameBoard();
-	GameBoard(Player*);
-	~GameBoard();
-	string** createBoard();
-	string** createBoardWindows();
-	void updateBoard(Entity*, int, int);
+
+	bool handleKeybinds();
+	void deleteGameboard();
 	void printInstructions();
 	void printInstructionsWindows();
-	void printBoard();
-	bool Step();
 	void checkBystanderInteraction();
 	bool overlappingRadius(Entity*, Entity*);
 	void emptyPoint(int, int);
@@ -56,12 +46,21 @@ public:
 	void randomLocation(Buildings*);
 	void updateLocation(string, int, int);
 	void moveCPUs();
-	bool outOfBounds(int, int);
-	void printBuildingWalls(Buildings* building);
+	void printBuildingWalls(Buildings*);
 	bool checkBuildingInteraction();
 	bool buildingRadius(Entity*, Buildings*);
 	bool playerHome();
 	bool errandsDone();
+
+public:
+	GameBoard(Player*);
+	~GameBoard();
+
+	string** createBoard();
+	string** createBoardWindows();
+	void updateBoard(Entity*, int, int);
+	void printBoard();
+	bool Step();
 };
 
 #endif

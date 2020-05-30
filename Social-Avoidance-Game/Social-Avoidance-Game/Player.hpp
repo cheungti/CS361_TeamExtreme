@@ -21,8 +21,6 @@ private:
 
 public:
 	Player();
-	~Player();
-	void move(int, int);
 	void updateHealth(int);
 	int getHealth();
 	bool isInfected();

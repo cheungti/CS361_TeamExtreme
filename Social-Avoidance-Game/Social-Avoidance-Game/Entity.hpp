@@ -5,7 +5,6 @@
 #include <string>
 
 
-
 using namespace std;
 
 class Entity {
@@ -16,12 +15,10 @@ public:
 	};
 
 	Entity();
-	~Entity();
 	Entity(EntityType t);
 	void setType(EntityType type1);		//created
 	EntityType getType();				//created 
 
-	void Step();
 	void updateLocation(int x, int y);	//created
 	tuple<int, int> getLocation();
 	int getInfectionRadius();			//created

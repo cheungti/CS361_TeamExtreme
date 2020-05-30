@@ -5,86 +5,196 @@
 ** the Buildings class.  Member methods are defined within.
 *********************************************************************/
 #include "Buildings.hpp"
-#include <string>
 
-/*********************************************************************
-** Description: Parameter constructor for Buildings class
-*********************************************************************/
-Buildings::Buildings(string aType, string aBuildingChar, int buildingRow, int buildingCol) {
-	buildingType = aType;
-    buildingChar = aBuildingChar;
-	row = buildingRow;
-	col = buildingCol;
-	visited = false;
-	locked = false;
+
+/***************************************************************************
+ *							Building Constructor						   *
+ *	The default Building class constructor will initialize the buildings'  *
+ *		name, symbol and xy location                                       *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: N/A															   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
+Buildings::Buildings(string bName, string buildingChar, int x, int y) {
+    setBuildingName(bName);
+    setBuildingChar(buildingChar);
+    updateLocation(x, y);
+    setLocked(false);
+    setVisited(false);
 }
 
-/*********************************************************************
-** Description: Set function sets building type
-*********************************************************************/
-void Buildings::setBuildingName(std::string buildingName) {
 
-	buildingType = buildingName;
-
+/***************************************************************************
+ *							  Building Name						           *
+ *	Modify the building's name value to be printed in the board key        *
+ *                                                                         *
+ *	Params: buildingName as the new name value							   *
+ *	Return: N/A															   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
+void Buildings::setBuildingName(string buildingName) {
+    this->buildingType = buildingName;
 }
 
-/*********************************************************************
-** Description: Set function sets building type
-*********************************************************************/
-std::string Buildings::getBuildingName() {
 
-	return buildingType;
-
+/***************************************************************************
+ *							  Building Name						           *
+ *	Return the building's name value to be printed in the board key        *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: the buildings' name value									   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
+string Buildings::getBuildingName() {
+    return this->buildingType;
 }
 
-/*********************************************************************
-** Description: Get building Char
-*********************************************************************/
+
+/***************************************************************************
+ *							  Building Char						           *
+ *	Return the building's char symbol to be printed on the gameboard       *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: The buildings' char symbol									   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
 string Buildings::getBuildingChar() {
-
-    return buildingChar;
-
+    return this->buildingChar;
 }
 
-/*********************************************************************
-** Description: return if locked or not
-*********************************************************************/
+
+/***************************************************************************
+ *							  Building Char						           *
+ *	Modify the building's char symbol to be printed on the gameboard       *
+ *                                                                         *
+ *	Params: The buildings' char symbol									   *
+ *	Return: N/A                                                            *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
+void Buildings::setBuildingChar(string newChar) {
+    this->buildingChar = newChar;
+}
+
+
+/***************************************************************************
+ *							  Building Locked						       *
+ *	Return the locked building value. Only players can enter when unlocked *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: true if locked, else false                                     *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
 bool Buildings::isLocked() {
-
-	return locked; 
-
+	return locked;
 }
 
-/*********************************************************************
-** Description: return if building has been visited
-*********************************************************************/
+
+/***************************************************************************
+ *							  Building Locked						       *
+ *	Modify the locked building value. Only players can enter when unlocked *
+ *                                                                         *
+ *	Params: The new lock value  										   *
+ *	Return: N/A                                                            *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
+void Buildings::setLocked(bool locked) {
+    this->locked = locked;
+}
+
+
+/***************************************************************************
+ *							 Building Visited						       *
+ *	Return the building's visited status                                   *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: true if the player has already visited, else false             *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
 bool Buildings::ifVisited() {
-
-	return visited; 
-
+	return visited;
 }
 
+
+/***************************************************************************
+ *							  Building Visited						       *
+ *	Modify the buildings' visited status                                   *
+ *                                                                         *
+ *	Params: The new visited value  										   *
+ *	Return: N/A                                                            *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
+void Buildings::setVisited(bool visited) {
+    this->visited = visited;
+}
+
+
+/***************************************************************************
+ *						    Building Location						       *
+ *	Modify the buildings row and column values where the symbol will be    *
+ *         printed on the gameboard.                                       *
+ *                                                                         *
+ *	Params: x for row, y for column										   *
+ *	Return: N/A															   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
 void Buildings::updateLocation(int x, int y) {
-
-    // Update new placement on board
-    row = x;
-    col = y;
-
+    setX(x);
+    setY(y);
 }
 
-/*********************************************************************
-** Description: Get x coordinate position
-*********************************************************************/
+
+/***************************************************************************
+ *							     Building X						           *
+ *	Return the building's column (X) value of its location on the board    *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: x value as the column										   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
 int Buildings::getX() {
-	return row;
+    return this->col;
 }
 
-/*********************************************************************
-** Description: Get y coordinate position
-*********************************************************************/
+
+/***************************************************************************
+ *							     Building Y						           *
+ *	Return the building's row (Y) value of its location on the board       *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: y value as the row   										   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
 int Buildings::getY() {
-	return col;
+    return this->row;
 }
+
+
+/***************************************************************************
+ *							     Building X						           *
+ *	Modify the building's column (X) value of its location on the board    *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: x value as the column										   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
+void Buildings::setX(int col) {
+    this->col = col;
+}
+
+
+/***************************************************************************
+ *							     Building Y						           *
+ *	Modify the building's row (Y) value of its location on the board       *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: y value as the row   										   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
+void Buildings::setY(int row) {
+    this->row = row;
+}
+
 
 /*********************************************************************
 ** Description: Set visted to true
@@ -93,10 +203,9 @@ int Buildings::getY() {
 ** Author: Tinron Cheung
 *********************************************************************/
 void Buildings::setVisited() {
-
 	this->visited = true;
-
 }
+
 
 /*********************************************************************
 ** Description: Set visted to false
@@ -105,10 +214,9 @@ void Buildings::setVisited() {
 ** Author: Tinron Cheung
 *********************************************************************/
 void Buildings::unsetVisited() {
-
 	this->visited = false;
-
 }
+
 
 /*********************************************************************
 ** Description: Get visted status
@@ -117,14 +225,5 @@ void Buildings::unsetVisited() {
 ** Author: William Dam
 *********************************************************************/
 bool Buildings::getVisited() {
-
 	return this->visited;
-
-}
-
-/*********************************************************************
-** Description: Class destructor
-*********************************************************************/
-Buildings::~Buildings() {
-
 }

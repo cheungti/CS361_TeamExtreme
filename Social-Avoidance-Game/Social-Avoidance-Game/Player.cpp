@@ -12,6 +12,7 @@
 	#define PLATFORM_NAME "apple" // apple
 #endif
 
+
 /***************************************************************************
  *							Player Constructor							   *
  *	The default player class constructor will initialize the Player entity *
@@ -32,6 +33,7 @@ Player::Player() {
     buildingsVisited = 0;
 }
 
+
 /***************************************************************************
  *							  Update Health 			    			   *
  *	The function will update the players integer health value              *
@@ -41,10 +43,9 @@ Player::Player() {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 void Player::updateHealth(int newhealth) {
-
     this->health = newhealth;
-
 }
+
 
 /***************************************************************************
  *							     Get Health    			    			   *
@@ -55,10 +56,9 @@ void Player::updateHealth(int newhealth) {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 int Player::getHealth() {
-
     return this->health;
-
 }
+
 
 /***************************************************************************
  *							   Is Infected    			    			   *
@@ -69,10 +69,9 @@ int Player::getHealth() {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 bool Player::isInfected() {
-
     return this->infected;
-
 }
+
 
 /***************************************************************************
  *							   Set Infected    			    			   *
@@ -83,48 +82,49 @@ bool Player::isInfected() {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 void Player::setInfected(bool infectionStatus) {
-
     this->infected = infectionStatus;
-
 }
+
 
 /***************************************************************************
  *							   Set Tickets   			    			   *
  *	The function will update the players tickets                           *
  ***************************************************************************/
-void Player::setTickets(bool ticket){
-
+void Player::setTickets(bool ticket) {
     hasTickets = ticket;
-
 }
+
 
 /***************************************************************************
  *							   Get Tickets    			    			   *
  *	The function will return true if player has tickets                    *
  ***************************************************************************/
-bool Player::getHasTickets(){
-
+bool Player::getHasTickets() {
     return hasTickets;
-
 }
+
 
 /***************************************************************************
- *							Player Destructor						       *
- *	The player class deconstructor will ensure we have no memory leaks at  *
- *		the end of the game when shutting down. Keep coding clean!		   *
+ *							 Get Visit Count    			    		   *
+ *	The function will return the number of visited buildings               *
  *																		   *
- *	Params: N/A															   *
- *	Return: N/A															   *
- *	Author: Bryce Hahn, Tinron Cheung									   *
+ *	Params: N/A                                                            *
+ *	Return: the number of buildings visited                                *
+ *	Author: Bryce Hahn              									   *
  ***************************************************************************/
-Player::~Player() {
-
-}
-
 int Player::getVisitCount() {
     return this->buildingsVisited;
 }
 
+
+/***************************************************************************
+ *							 Set Visit Count    			    		   *
+ *	The function will add to the number of visited buildings               *
+ *																		   *
+ *	Params: N/A                                                            *
+ *	Return: N/A                                                            *
+ *	Author: Bryce Hahn              									   *
+ ***************************************************************************/
 void Player::increaseVisitCount() {
     this->buildingsVisited++;
 }

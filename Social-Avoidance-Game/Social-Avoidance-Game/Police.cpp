@@ -14,9 +14,16 @@
 	#define PLATFORM_NAME "apple" // apple
 #endif
 
-/*********************************************************************
-** Description: Default constructor
-*********************************************************************/
+
+/***************************************************************************
+ *						      Police Constructor						   *
+ *	The default Police class constructor will initialize the Polices'      *
+ *      default values                                                     *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: N/A															   *
+ *	Author: William Dam, Daniel Mesa                                       *
+ ***************************************************************************/
 Police::Police() {
 	setType(Entity::EntityType::Police);	// Initialize type Police
     if(PLATFORM_NAME == "windows")
@@ -26,19 +33,16 @@ Police::Police() {
 	setInfectionRadius(6);
 }
 
-/*********************************************************************
-** Description: Class destructor
-*********************************************************************/
-Police::~Police() {
 
-}
-
-/*********************************************************************
-** Description: Penalty
-** Penalize player for being within radius
-*********************************************************************/
-void Police::penalty(Player* player){
-
+/***************************************************************************
+ *						        Police Ticket						       *
+ *	This function gives the player a ticket value whenever interacted with *
+ *      a police or too close to a bystander                               *
+ *                                                                         *
+ *	Params: Player pointer to change ticket status                         *
+ *	Return: N/A															   *
+ *	Author: William Dam, Daniel Mesa                                       *
+ ***************************************************************************/
+void Police::penalty(Player* player) {
 	player->setTickets(true);
-
 }

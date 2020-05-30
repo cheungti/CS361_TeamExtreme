@@ -13,9 +13,16 @@
 	#define PLATFORM_NAME "apple" // apple
 #endif
 
-/*********************************************************************
-** Description: Default constructor
-*********************************************************************/
+
+/***************************************************************************
+ *						    Bystander Constructor						   *
+ *	The default Bystander class constructor will initialize the Bystander  *
+ *      character symbol, and entity type, with an infected value of false *
+ *                                                                         *
+ *	Params: N/A															   *
+ *	Return: N/A															   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
 Bystander::Bystander() {
     if(PLATFORM_NAME == "windows")
 		setChar("B");
@@ -27,61 +34,65 @@ Bystander::Bystander() {
 	setInfectionRadius(2);
 }
 
-/*********************************************************************
-** Description: Set function sets infection true/false
-*********************************************************************/
+
+/***************************************************************************
+ *						    Bystander Infection                            *
+ *	Modify the Bystander's infection status                                *
+ *                                                                         *
+ *	Params: the new infection value										   *
+ *	Return: N/A															   *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
 void Bystander::setInfection(bool infect) {
 	this->infected = infect;
 }
-/*********************************************************************
- ** Description: return infected or not
-*********************************************************************/
+
+
+/***************************************************************************
+ *						    Bystander Infection                            *
+ *	Get the Bystander's infection status                                   *
+ *                                                                         *
+ *	Params: N/A                                                            *
+ *	Return: the current infection value								       *
+ *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
+ ***************************************************************************/
 bool Bystander::isInfected() {
     return infected;
 }
 
 
 /*********************************************************************
-** Description: Class destructor
-*********************************************************************/
-Bystander::~Bystander() {
-
-}
-
-/*********************************************************************
 ** Description: Penalty
 ** Penalize player for being within radius
 *********************************************************************/
-void Bystander::penalty(Player* player){
-
-	if(isInfected()){
-
+void Bystander::penalty(Player* player) {
+	if (isInfected()) {
 		int currentHealth = player->getHealth();
 		int newHealth = currentHealth - healthDecline;
 
-		if(newHealth < 0){
+		if (newHealth < 0) {
 			newHealth = 0;
 		}
 
 		player->updateHealth(newHealth);
 	}
-	
 }
+
 
 /*********************************************************************
 ** Description: Set Health Decline
 ** set deduction to health for infected Bystanders
 *********************************************************************/
 
-void Bystander::setHealthDecline(int deduction){
+void Bystander::setHealthDecline(int deduction) {
 	healthDecline = deduction;
 }
+
 
 /*********************************************************************
 ** Description: Get Health Decline
 ** get deduction to health for infected Bystanders
 *********************************************************************/
-int Bystander::getHealthDecline(){
+int Bystander::getHealthDecline() {
 	return healthDecline;
 }
-
