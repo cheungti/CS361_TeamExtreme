@@ -4,6 +4,13 @@ const int boardWidth = 51;
 const int boardHeight = 27;
 const int boxHeight = 5;
 
+#if defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS_)
+    #define PLATFORM_NAME "windows" // Windows
+    #include <conio.h>
+#elif defined(__APPLE__) || defined(__linux__)
+    #define PLATFORM_NAME "apple" // apple
+#endif
+
 /***************************************************************************
  *				        	  Default Constructor						   *
  * The default constructor instantiates a new gameboard object and defaults*
@@ -11,35 +18,38 @@ const int boxHeight = 5;
  *                                                                         *
  *	Params: N/A															   *
  *	Return: N/A															   *
- *	Author: Bryce Hahn, Tinron Cheung									   *
+ *	Author: Bryce Hahn, Tinron Cheung, William Dam						   *
  ***************************************************************************/
 GameBoard::GameBoard(Player* player) {
-	this->player = player;
+    this->player = player;
 
     // Instantiate bystanders
-	for (int i = 0; i < 5; i++) {
-		entities.push_back(new Bystander());
-	}
+    for (int i = 0; i < 5; i++) {
+        entities.push_back(new Bystander());
+    }
 
     // Instantiate police officers
     for (int i = 0; i < 3; i++) {
         entities.push_back(new Police());
     }
-    
+
     // Set die height and width
     die = new Die();
-    die->setHeightWidth(boardHeight-1, boardWidth-1);
-    
-    // Create gameboard
-    this->board = createBoard();
+    die->setHeightWidth(boardHeight - 1, boardWidth - 1);
+
+    // Get OS system and create gameboard
+    if(PLATFORM_NAME == "windows")
+        this->board = createBoardWindows();
+    else 
+        this->board = createBoard();
 
     // Initialize all buildings on game board & update their char on the board
-	buildings.push_back(new Buildings("home", "H", 24, 25));
-	buildings.push_back(new Buildings("pharmacy", "J", 13, 2));
-	buildings.push_back(new Buildings("grocery", "G", 2, 2));
-	buildings.push_back(new Buildings("station", "S", 2, 25));
-	buildings.push_back(new Buildings("doctor", "D", 2, 48));
-	buildings.push_back(new Buildings("work","W", 13, 48));
+    buildings.push_back(new Buildings("home", "H", 24, 25));
+    buildings.push_back(new Buildings("pharmacy", "J", 13, 2));
+    buildings.push_back(new Buildings("grocery", "G", 2, 2));
+    buildings.push_back(new Buildings("station", "S", 2, 25));
+    buildings.push_back(new Buildings("doctor", "D", 2, 48));
+    buildings.push_back(new Buildings("work", "W", 13, 48));
     buildings.push_back(new Buildings("handwash", "N", 13, 25));
 
     for (int i = 0; i < buildings.size(); i++) {
@@ -47,26 +57,24 @@ GameBoard::GameBoard(Player* player) {
     }
 
     //update board building locations
-	for (int i = 0; i < buildings.size(); i++) {
-		updateLocation(buildings[i]->getBuildingChar(), buildings[i]->getX(), buildings[i]->getY());
-	}
-    
-     //Randomize entity locations
-     for (int i = 0; i < entities.size(); i++){
-         randomLocation(entities[i]);
-         //set entity position on board
-         board[entities[i]->getX()][entities[i]->getY()] = entities[i]->getChar();
-     }
-     
-     //set player's position on board
-     board[player->getX()][player->getY()] = player->getChar();
+    for (int i = 0; i < buildings.size(); i++) {
+        updateLocation(buildings[i]->getBuildingChar(), buildings[i]->getX(), buildings[i]->getY());
+    }
+
+    //Randomize entity locations
+    for (int i = 0; i < entities.size(); i++) {
+        randomLocation(entities[i]);
+        //set entity position on board
+        board[entities[i]->getX()][entities[i]->getY()] = entities[i]->getChar();
+    }
+
+    //set player's position on board
+    board[player->getX()][player->getY()] = player->getChar();
 
     this->printBoard();
-    
-	
 }
 
-void GameBoard::updateLocation(string aChar, int row, int column){
+void GameBoard::updateLocation(string aChar, int row, int column) {
     board[row][column] = aChar;
 }
 
@@ -82,45 +90,36 @@ void GameBoard::updateLocation(string aChar, int row, int column){
 *	Author: Bryce Hahn, Tinron Cheung									   *
 ***************************************************************************/
 void GameBoard::checkBystanderInteraction() {
-	for (int i = 0; i < entities.size(); i++) {
-		//checks if player is within the infection radius of a cpu
+    for (int i = 0; i < entities.size(); i++) {
+        //checks if player is within the infection radius of a cpu
 
         if (overlappingRadius(this->player, this->entities[i])) {
             //penalty
-            if(entities[i]->getChar() == "₱"){
+            if (entities[i]->getChar() == "₱" || entities[i]->getChar() == "P") {
                 //if police is in radius
-                Police* policeman = static_cast<Police*>(entities[i]); 
+                Police* policeman = static_cast<Police*>(entities[i]);
 
                 //check if Bystander is also in radius
-                for(int j = 0; j < entities.size(); j++){
-                    if(j!=i){
-                        if(overlappingRadius(this->entities[j], policeman)){
-                        policeman->penalty(this->player);
-                        text.push_back("Police caught you near a Bystander. You received a fine!");
+                for (int j = 0; j < entities.size(); j++) {
+                    if (j != i) {
+                        if (overlappingRadius(this->entities[j], policeman)) {
+                            policeman->penalty(this->player);
+                            text.push_back("Police caught you near a Bystander. You received a fine!");
+                        }
                     }
-                        
-
-                    }
-                    
                 }
             }
 
             // Health deduction for getting too close to bystander
-            else if(entities[i]->getChar() == "ф"){
-                Bystander* aBystander = static_cast<Bystander*>(entities[i]); 
+            else if (entities[i]->getChar() == "ф" || entities[i]->getChar() == "B") {
+                Bystander* aBystander = static_cast<Bystander*>(entities[i]);
                 aBystander->penalty(this->player);
 
                 text.push_back("You got too close to a bystander! Health Deducted: " + std::to_string(aBystander->getHealthDecline()));
-
             }
-
-
         }
-	}
-	
-	
+    }
 }
-
 
 
 /***************************************************************************
@@ -140,28 +139,11 @@ bool GameBoard::overlappingRadius(Entity* e1, Entity* e2) {
     int circle_x = e2->getX();
     int circle_y = e2->getY();
     int rad = e2->getInfectionRadius();
-    if ((x - circle_x) * (x - circle_x) + 
-        (y - circle_y) * (y - circle_y) <= rad * rad) 
-        return true; 
+    if ((x - circle_x) * (x - circle_x) +
+        (y - circle_y) * (y - circle_y) <= rad * rad)
+        return true;
     else
-        return false; 
-}
-
-/***************************************************************************
- *				        	  Class Deconstructor						   *
- * The default deconstructor destroys the memory for the gameboard pointer *
- *      starting values.                                                   *
- *                                                                         *
- *	Params: N/A															   *
- *	Return: N/A															   *
- *	Author: Bryce Hahn, Tinron Cheung									   *
- ***************************************************************************/
-GameBoard::~GameBoard() {
-    delete board;
-    delete player;
-
-    entities.clear(); //delete the vectors efficiently
-    buildings.clear();
+        return false;
 }
 
 /***************************************************************************
@@ -180,9 +162,6 @@ bool GameBoard::Step() {
 
     //player movements
     keepPlaying = handleKeybinds();
-    
-    //clear console
-    //system("clear"); //system only works on windows
 
     //check collisions
     if (keepPlaying == true) {
@@ -192,7 +171,7 @@ bool GameBoard::Step() {
         //redraw board
         printBoard();
     }
-    
+
 
     return keepPlaying;
 }
@@ -207,37 +186,42 @@ bool GameBoard::Step() {
  *	Return: N/A															   *
  *	Author: Bryce Hahn, Jonathan Dresel									   *
  ***************************************************************************/
-bool GameBoard::handleKeybinds() { 
-    char ascii = 0;   
-    
+bool GameBoard::handleKeybinds() {
+    char ascii = 0;
+    bool movement = false;
+
     //getch() returns an ASCII value. That's why I have an int for getting the input.
     printf("w = up, a = left, s = down, d = right, q = Quit Game\n");
     printf("Enter your move (w,a,s,d): ");
 
-	system("/bin/stty raw");
-	ascii = tolower(getchar());
-    system("/bin/stty cooked");
+    //different platforms have specific input handling
+    if (PLATFORM_NAME == "windows") {
+        ascii = _getch();
+    } else {
+        system("/bin/stty raw");
+        ascii = tolower(getchar());
+        system("/bin/stty cooked");
+    }
 
     if (ascii == 'w') {      //if the character is a 'w'
         //move up
-        cout << player->getX();
-        cout << " " << player->getY() <<endl;
-        updateBoard(player, player->getX()-1, player->getY());
-        cout << player->getX();
-        cout << " " << player->getY() <<endl;
-        
-    } 
+        movement = occupied(player->getX() - 1, player->getY());
+        updateBoard(player, player->getX() - 1, player->getY());
+    }
     else if (ascii == 'a') {  //if the character is an 'a'
         //move left
-        updateBoard(player, player->getX(), player->getY()-1);
-    } 
+        movement = occupied(player->getX(), player->getY() - 1);
+        updateBoard(player, player->getX(), player->getY() - 1);
+    }
     else if (ascii == 's') { //if the character is an 's'
         //move down
-        updateBoard(player, player->getX()+1, player->getY());
-    } 
+        movement = occupied(player->getX() + 1, player->getY());
+        updateBoard(player, player->getX() + 1, player->getY());
+    }
     else if (ascii == 'd') { //if the character is a 'd'
         //move right
-        updateBoard(player, player->getX(), player->getY()+1);
+        movement = occupied(player->getX(), player->getY() + 1);
+        updateBoard(player, player->getX(), player->getY() + 1);
     }
     else if (ascii == 'q') {
         return false;
@@ -247,9 +231,10 @@ bool GameBoard::handleKeybinds() {
         printf("Error, invalid move key! '%c' -> Please use W, A, S or D", (char)ascii);
     }
     
-    moveCPUs();
-    player->updateHealth(player->getHealth() - 1);
-    
+    if (movement == false) {
+        player->updateHealth(player->getHealth() - 1);
+        moveCPUs();
+    }
     return true;
 }
 
@@ -265,68 +250,96 @@ bool GameBoard::handleKeybinds() {
  ***************************************************************************/
 string** GameBoard::createBoard() {
     string** board = 0;
-    board = new string*[boardHeight]; //define y value size
+    board = new string * [boardHeight]; //define y value size
 
     for (int i = 0; i < boardHeight; i++) { //columns
         board[i] = new string[boardWidth]; //define x value size
         for (int j = 0; j < boardWidth; j++) { //rows
             if (i == 0) {
                 if (j == 0) {
-				    board[i][j] = "╔";
-				} else if (j > 0 && j < boardWidth - 1) {
+                    board[i][j] = "╔";
+                }
+                else if (j > 0 && j < boardWidth - 1) {
                     board[i][j] = "═";
-				} else if (j == boardWidth - 1) {
+                }
+                else if (j == boardWidth - 1) {
                     board[i][j] = "╗";
-				}
-            } else if (i > 0 && i < boardHeight - 1) {
+                }
+            }
+            else if (i > 0 && i < boardHeight - 1) {
                 if (j == 0 || j == boardWidth - 1) {
                     board[i][j] = "║";
-				} else {
-				    board[i][j] = " ";
-			    }
-			} else if (i == boardHeight - 1) {
+                }
+                else {
+                    board[i][j] = " ";
+                }
+            }
+            else if (i == boardHeight - 1) {
                 if (j == 0) {
-				    board[i][j] = "╚";
-				} else if (j > 0 && j < boardWidth - 1) {
+                    board[i][j] = "╚";
+                }
+                else if (j > 0 && j < boardWidth - 1) {
                     board[i][j] = "═";
-				} else if (j == boardWidth - 1) {
+                }
+                else if (j == boardWidth - 1) {
                     board[i][j] = "╝";
-				}
-			}
-		}
+                }
+            }
+        }
     }
+    return board;
+}
 
+string** GameBoard::createBoardWindows() {
+    string** board = 0;
+    board = new string * [boardHeight]; //define y value size
 
-	return board;
+    for (int i = 0; i < boardHeight; i++) { //columns
+        board[i] = new string[boardWidth]; //define x value size
+        for (int j = 0; j < boardWidth; j++) { //rows
+            if (i == 0) {
+                board[i][j] = "-";
+            } else if (i > 0 && i < boardHeight - 1) {
+                if (j == 0 || j == boardWidth - 1) {
+                    board[i][j] = "|";
+                } else {
+                    board[i][j] = " ";
+                }
+            } else if (i == boardHeight - 1) {
+                board[i][j] = "-";
+            }
+        }
+    }
+    return board;
 }
 
 void GameBoard::randomLocation(Entity* anEntity) {
     int row = die->dieRollHeight();
     int column = die->dieRollWidth();
-    
-    while(occupied(row, column)){
+
+    while (occupied(row, column)) {
         row = die->dieRollHeight();
         column = die->dieRollWidth();
     }
-    
+
     anEntity->updateLocation(row, column);
 }
 
-void GameBoard::randomLocation(Buildings* aBuilding){
+void GameBoard::randomLocation(Buildings* aBuilding) {
     int row = die->dieRollHeight();
     int column = die->dieRollWidth();
-    
-    while(occupied(row, column)){
+
+    while (occupied(row, column)) {
         row = die->dieRollHeight();
         column = die->dieRollWidth();
     }
-    
+
     aBuilding->updateLocation(row, column);
 }
 
 
 void GameBoard::updateBoard(Entity* e, int newX, int newY) {
-    if(!occupied(newX, newY)){
+    if (!occupied(newX, newY)) {
         emptyPoint(e->getX(), e->getY()); //empty old position
         this->board[newX][newY] = e->getChar(); //set entity char at new x,y
         e->updateLocation(newX, newY);
@@ -335,13 +348,21 @@ void GameBoard::updateBoard(Entity* e, int newX, int newY) {
 
 
 void GameBoard::emptyPoint(int i, int j) {
-	this->board[i][j] = " ";
+    this->board[i][j] = " ";
 }
 
 void GameBoard::printInstructions() {
-    //system("CLS");
     printf("\n----------------------------------------------\n");
     printf("Police - ₱      Player - Δ      Bystander - ф\n");
+    printf("Home - H        Pharmacy - J    Doctor - D\n");
+    printf("Grocery - G     Station - S     Work - W\n");
+    printf("Handwash Station (recharge health) - N\n");
+    printf("----------------------------------------------\n");
+}
+
+void GameBoard::printInstructionsWindows() {
+    printf("\n----------------------------------------------\n");
+    printf("Police - P      Player - Y      Bystander - B\n");
     printf("Home - H        Pharmacy - J    Doctor - D\n");
     printf("Grocery - G     Station - S     Work - W\n");
     printf("Handwash Station (recharge health) - N\n");
@@ -358,11 +379,16 @@ void GameBoard::printInstructions() {
  *	Author: Bryce Hahn, Tinron Cheung, William Dam						   *
  ***************************************************************************/
 void GameBoard::printBoard() {
-    printInstructions();
+
+    if (PLATFORM_NAME == "windows")
+        printInstructionsWindows();
+    else
+        printInstructions();
+
     for (int i = 0; i < boardHeight; i++) {
         for (int j = 0; j < boardWidth; j++) {
+            //printf("%s", this->board[i][j].c_str());
             cout << this->board[i][j];
-            
         }
         if ((i + 1) <= boardHeight) {
             printf("\n");
@@ -370,41 +396,39 @@ void GameBoard::printBoard() {
     }
 
     // Display player health score
-    cout << "Health: " << this->player->getHealth() << endl;
+    printf("Health: %i\n",  this->player->getHealth());
 
     // Display message if player has received a fine
     if (this->player->getHasTickets()) {
 
-        cout << "Visit Police Station to pay your fine!" << endl;
+        printf("Visit Police Station to pay your fine!\n");
 
     }
-    
-    cout << "Visited: ";
+
+    printf("Buildings Visited: (%i/%i)\n", player->getVisitCount(), buildings.size());
     for (int i = 0; i < buildings.size(); i++) {
-        
+
         // Mark visited, except home and handwash station
         if (buildings[i]->getBuildingName() != "home" && buildings[i]->getBuildingName() != "handwash") {
 
             if (buildings[i]->getVisited() == true) {
-                cout << buildings[i]->getBuildingName() << "  ";
+                printf("%s  ", buildings[i]->getBuildingName().c_str());
             }
-
         }
-
     }
-    cout << endl;
+    printf("\n");
 
     int enters = 5;
-    
-    for (vector<string>::const_iterator i = text.begin(); i != text.end(); ++i){
+
+    for (vector<string>::const_iterator i = text.begin(); i != text.end(); ++i) {
         cout << *i << endl;
         enters--;
     }
 
     text.clear();
-    
-    for(int i =0; i < enters; i++){
-        cout << endl;
+
+    for (int i = 0; i < enters; i++) {
+        printf("\n");
     }
 
 }
@@ -433,10 +457,10 @@ void GameBoard::printBuildingWalls(Buildings* building) {
 
 /***************************************************************************
 *                                Occupied                             *
-                                   
+
 ***************************************************************************/
-bool GameBoard::occupied(int row, int column) {
-    if (board[row][column] != " ") {
+bool GameBoard::occupied(int column, int row) {
+    if (board[column][row] != " ") {
         return true;
     }
     return false;
@@ -444,73 +468,73 @@ bool GameBoard::occupied(int row, int column) {
 
 /***************************************************************************
 *                                Move CPUs                         *
-                                   
+
 ***************************************************************************/
 void GameBoard::moveCPUs() {
-    for(int i = 0; i < entities.size(); i++) {
+    for (int i = 0; i < entities.size(); i++) {
         bool moved = false;
         int looped = 0;
-        while(!moved && looped < 20) {
-            int rand1 = die->dieRoll100()%8;
+        while (!moved && looped < 20) {
+            int rand1 = die->dieRoll100() % 8;
             switch (rand1) {
-                case 0:
-                    //move up
-                    if(!occupied(entities[i]->getX()-1, entities[i]->getY())){
-                       updateBoard(entities[i], entities[i]->getX()-1, entities[i]->getY());
-                        moved = true;
-                    }
-                    break;
-                case 1:
-                    //move down
-                    if(!occupied(entities[i]->getX()+1, entities[i]->getY())){
-                       updateBoard(entities[i], entities[i]->getX()+1, entities[i]->getY());
-                        moved = true;
-                    }
-                    break;
-                case 2:
-                    //move left
-                    if(!occupied(entities[i]->getX(), entities[i]->getY() - 1)){
-                       updateBoard(entities[i], entities[i]->getX(), entities[i]->getY()-1);
-                        moved = true;
-                    }
-                    break;
-                case 3:
-                    //move right
-                    if(!occupied(entities[i]->getX(), entities[i]->getY()+1)){
-                       updateBoard(entities[i], entities[i]->getX(), entities[i]->getY()+1);
-                        moved = true;
-                    }
-                    break;
-                case 4:
-                    //move top right (diag.)
-                    if(!occupied(entities[i]->getX()+1, entities[i]->getY()-1)) {
-                        updateBoard(entities[i], entities[i]->getX()+1, entities[i]->getY()-1);
-                        moved = true;
-                    }
-                    break;
-                case 5:
-                    //move top left (diag.)
-                    if(!occupied(entities[i]->getX()-1, entities[i]->getY()-1)) {
-                        updateBoard(entities[i], entities[i]->getX()-1, entities[i]->getY()-1);
-                        moved = true;
-                    }
-                    break;
-                case 6:
-                    //move bottom right (diag.)
-                    if(!occupied(entities[i]->getX()+1, entities[i]->getY()+1)) {
-                        updateBoard(entities[i], entities[i]->getX()+1, entities[i]->getY()+1);
-                        moved = true;
-                    }
-                    break;
-                case 7:
-                    //move top left (diag.)
-                    if(!occupied(entities[i]->getX()-1, entities[i]->getY()+1)) {
-                        updateBoard(entities[i], entities[i]->getX()-1, entities[i]->getY()+1);
-                        moved = true;
-                    }
-                    break;
-                default:
-                    break;
+            case 0:
+                //move up
+                if (!occupied(entities[i]->getX() - 1, entities[i]->getY())) {
+                    updateBoard(entities[i], entities[i]->getX() - 1, entities[i]->getY());
+                    moved = true;
+                }
+                break;
+            case 1:
+                //move down
+                if (!occupied(entities[i]->getX() + 1, entities[i]->getY())) {
+                    updateBoard(entities[i], entities[i]->getX() + 1, entities[i]->getY());
+                    moved = true;
+                }
+                break;
+            case 2:
+                //move left
+                if (!occupied(entities[i]->getX(), entities[i]->getY() - 1)) {
+                    updateBoard(entities[i], entities[i]->getX(), entities[i]->getY() - 1);
+                    moved = true;
+                }
+                break;
+            case 3:
+                //move right
+                if (!occupied(entities[i]->getX(), entities[i]->getY() + 1)) {
+                    updateBoard(entities[i], entities[i]->getX(), entities[i]->getY() + 1);
+                    moved = true;
+                }
+                break;
+            case 4:
+                //move top right (diag.)
+                if (!occupied(entities[i]->getX() + 1, entities[i]->getY() - 1)) {
+                    updateBoard(entities[i], entities[i]->getX() + 1, entities[i]->getY() - 1);
+                    moved = true;
+                }
+                break;
+            case 5:
+                //move top left (diag.)
+                if (!occupied(entities[i]->getX() - 1, entities[i]->getY() - 1)) {
+                    updateBoard(entities[i], entities[i]->getX() - 1, entities[i]->getY() - 1);
+                    moved = true;
+                }
+                break;
+            case 6:
+                //move bottom right (diag.)
+                if (!occupied(entities[i]->getX() + 1, entities[i]->getY() + 1)) {
+                    updateBoard(entities[i], entities[i]->getX() + 1, entities[i]->getY() + 1);
+                    moved = true;
+                }
+                break;
+            case 7:
+                //move top left (diag.)
+                if (!occupied(entities[i]->getX() - 1, entities[i]->getY() + 1)) {
+                    updateBoard(entities[i], entities[i]->getX() - 1, entities[i]->getY() + 1);
+                    moved = true;
+                }
+                break;
+            default:
+                break;
             }
             looped++;
         }
@@ -518,19 +542,23 @@ void GameBoard::moveCPUs() {
 }
 
 /*********************************************************************
-** Description: This function will check to see if the player and 
+** Description: This function will check to see if the player and
 ** building are in interaction range will set building visited to true.
 ** Arguments: None
 ** Return: bool
-** Author: Tinron Cheung
+** Author: Tinron Cheung, William Dam
 *********************************************************************/
 
 bool GameBoard::checkBuildingInteraction() {
 
     for (int i = 0; i < buildings.size(); i++) {
-        
+
         if (buildingRadius(this->player, this->buildings[i])) {
-            this->buildings[i]->setVisited();
+
+            if (!this->buildings[i]->getVisited()) {
+                this->buildings[i]->setVisited();
+                this->player->increaseVisitCount();
+            }
 
             // Pay ticket at police station
             if (this->player->getHasTickets() && this->buildings[i]->getBuildingName() == "station") {
@@ -550,7 +578,7 @@ bool GameBoard::checkBuildingInteraction() {
                     for (int i = 0; i < this->buildings.size(); i++) {
                         if (i != 0 && i != 6) {
                             if (this->buildings[i]->getVisited() == false) {
-                                
+
                                 text.push_back(this->buildings[i]->getBuildingName());
                             }
                         }
@@ -560,7 +588,7 @@ bool GameBoard::checkBuildingInteraction() {
                     text.push_back("You can't go home yet!\nGo to the police station to pay your fine.");
                 }
             }
-            
+
 
             return true;
         }
@@ -570,7 +598,7 @@ bool GameBoard::checkBuildingInteraction() {
 }
 
 /*********************************************************************
-** Description: This function will check to see if player is on the 
+** Description: This function will check to see if player is on the
 ** border of building.
 ** Arguments: e1 as player e2 as the  building
 ** Return: true if the player is at building boundary
@@ -633,4 +661,28 @@ bool GameBoard::errandsDone() {
     }
 
     return true;
+}
+
+/*********************************************************************
+** Description: The default deconstructor destroys the memory for the 
+** gameboard pointer starting values.    
+** Arguments: None
+** Return: None
+** Author: Bryce Hahn, Tinron Cheung	
+*********************************************************************/
+GameBoard::~GameBoard() {
+
+    // Delete board 2d array
+    for (int i = 0; i < boardWidth; i++) {
+        delete[] board[i];
+    }
+
+    delete[] board;
+
+    delete player;
+
+    entities.clear(); // delete the vectors efficiently
+    buildings.clear();
+
+    
 }

@@ -1,6 +1,5 @@
 #ifndef GAMEBOARD_H
 #define GAMEBOARD_H
-//class imports
 #include <stdio.h>
 #include <cmath>
 #include <vector>
@@ -10,7 +9,6 @@
 #include "Entity.hpp"
 #include "Police.hpp"
 #include "Die.hpp"
-
 
 #define C_RED     "\x1b[31m"
 #define C_GREEN   "\x1b[32m"
@@ -29,33 +27,35 @@ private:
 	vector<Entity*> entities;
 	vector<Buildings*> buildings;
 	vector<string> text;
-    Die* die;
+	Die* die;
 
-	string **board;
+	string** board;
 	char movement;
 	//Room * rooms;
 	int infectAmount;
 	char* drawBox(int, int, int, int, int);
 	bool handleKeybinds();
-	string **textBox;
+	string** textBox;
 
 public:
 	GameBoard();
 	GameBoard(Player*);
 	~GameBoard();
 	string** createBoard();
+	string** createBoardWindows();
 	void updateBoard(Entity*, int, int);
 	void printInstructions();
+	void printInstructionsWindows();
 	void printBoard();
 	bool Step();
 	void checkBystanderInteraction();
 	bool overlappingRadius(Entity*, Entity*);
 	void emptyPoint(int, int);
-    bool occupied(int, int);
-    void randomLocation(Entity*);
-    void randomLocation(Buildings*);
-    void updateLocation(string, int, int);
-    void moveCPUs();
+	bool occupied(int, int);
+	void randomLocation(Entity*);
+	void randomLocation(Buildings*);
+	void updateLocation(string, int, int);
+	void moveCPUs();
 	bool outOfBounds(int, int);
 	void printBuildingWalls(Buildings* building);
 	bool checkBuildingInteraction();

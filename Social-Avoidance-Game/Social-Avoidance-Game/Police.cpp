@@ -7,12 +7,22 @@
 *********************************************************************/
 #include "Police.hpp"
 
+
+#if defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS_)
+	#define PLATFORM_NAME "windows" // Windows
+#elif defined(__APPLE__) || defined(__linux__)
+	#define PLATFORM_NAME "apple" // apple
+#endif
+
 /*********************************************************************
 ** Description: Default constructor
 *********************************************************************/
 Police::Police() {
 	setType(Entity::EntityType::Police);	// Initialize type Police
-    setChar("₱");
+    if(PLATFORM_NAME == "windows")
+		setChar("P");
+	else
+		setChar("₱");
 	setInfectionRadius(6);
 }
 

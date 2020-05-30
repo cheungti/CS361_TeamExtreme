@@ -1,4 +1,16 @@
+/*********************************************************************
+** Author: Bryce Hahn, Tinron Cheung
+** Date: 05-15-2020
+** Description: Player.cpp is the class implementation file for the
+** Player class.  Member methods defined within.
+*********************************************************************/
 #include "Player.hpp"
+
+#if defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS_)
+	#define PLATFORM_NAME "windows" // Windows
+#elif defined(__APPLE__) || defined(__linux__)
+	#define PLATFORM_NAME "apple" // apple
+#endif
 
 /***************************************************************************
  *							Player Constructor							   *
@@ -10,25 +22,90 @@
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 Player::Player() {
-    setChar("Δ");
+    if (PLATFORM_NAME == "windows")
+        setChar("Y");
+    else
+        setChar("Δ");
     setType(Entity::EntityType::Player);
     updateHealth(100);
     updateLocation(22, 25); // Start at home building
+    buildingsVisited = 0;
 }
 
 /***************************************************************************
- *								Player Step								   *
- *	Every game tick the player class takes a Step loop. This function will *
- *		check for user input (movement, entity interaction, ect...), then  *
- *		call the nessesary update functions to calculate player's updated  *
- *		position information.											   *
+ *							  Update Health 			    			   *
+ *	The function will update the players integer health value              *
  *																		   *
- *	Params: N/A															   *
+ *	Params: int for new player health                                      *
  *	Return: N/A															   *
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
-void Player::Step() {
-	
+void Player::updateHealth(int newhealth) {
+
+    this->health = newhealth;
+
+}
+
+/***************************************************************************
+ *							     Get Health    			    			   *
+ *	The function will return the players health value                      *
+ *																		   *
+ *	Params: N/A                                                            *
+ *	Return: The player's current health                                    *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+int Player::getHealth() {
+
+    return this->health;
+
+}
+
+/***************************************************************************
+ *							   Is Infected    			    			   *
+ *	The function will return the players infection status                  *
+ *																		   *
+ *	Params: N/A                                                            *
+ *	Return: The player's current infection status                          *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+bool Player::isInfected() {
+
+    return this->infected;
+
+}
+
+/***************************************************************************
+ *							   Set Infected    			    			   *
+ *	The function will update the players infection status                  *
+ *																		   *
+ *	Params: The player's new infection status                              *
+ *	Return: N/A                                                            *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+void Player::setInfected(bool infectionStatus) {
+
+    this->infected = infectionStatus;
+
+}
+
+/***************************************************************************
+ *							   Set Tickets   			    			   *
+ *	The function will update the players tickets                           *
+ ***************************************************************************/
+void Player::setTickets(bool ticket){
+
+    hasTickets = ticket;
+
+}
+
+/***************************************************************************
+ *							   Get Tickets    			    			   *
+ *	The function will return true if player has tickets                    *
+ ***************************************************************************/
+bool Player::getHasTickets(){
+
+    return hasTickets;
+
 }
 
 /***************************************************************************
@@ -41,71 +118,13 @@ void Player::Step() {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 Player::~Player() {
-    
+
 }
 
-
-/***************************************************************************
- *							  Update Health 			    			   *
- *	The function will update the players integer health value              *
- *																		   *
- *	Params: int for new player health                                      *
- *	Return: N/A															   *
- *	Author: Bryce Hahn, Tinron Cheung									   *
- ***************************************************************************/
-void Player::updateHealth(int newhealth) {
-    this->health = newhealth;
+int Player::getVisitCount() {
+    return this->buildingsVisited;
 }
 
-/***************************************************************************
- *							     Get Health    			    			   *
- *	The function will return the players health value                      *
- *																		   *
- *	Params: N/A                                                            *
- *	Return: The player's current health                                    *
- *	Author: Bryce Hahn, Tinron Cheung									   *
- ***************************************************************************/
-int Player::getHealth() {
-    return this->health;
+void Player::increaseVisitCount() {
+    this->buildingsVisited++;
 }
-
-/***************************************************************************
- *							   Is Infected    			    			   *
- *	The function will return the players infection status                  *
- *																		   *
- *	Params: N/A                                                            *
- *	Return: The player's current infection status                          *
- *	Author: Bryce Hahn, Tinron Cheung									   *
- ***************************************************************************/
-bool Player::isInfected() {
-    return this->infected;
-}
-
-/***************************************************************************
- *							   Set Infected    			    			   *
- *	The function will update the players infection status                  *
- *																		   *
- *	Params: The player's new infection status                              *
- *	Return: N/A                                                            *
- *	Author: Bryce Hahn, Tinron Cheung									   *
- ***************************************************************************/
-void Player::setInfected(bool infectionStatus) {
-    this->infected = infectionStatus;
-}
-
-/***************************************************************************
- *							   Set Tickets   			    			   *
- *	The function will update the players tickets                           *
- ***************************************************************************/
-void Player::setTickets(bool ticket){
-    hasTickets = ticket;
-}
-
-/***************************************************************************
- *							   Get Tickets    			    			   *
- *	The function will return true if player has tickets                    *
- ***************************************************************************/
-bool Player::getHasTickets(){
-    return hasTickets;
-}
-

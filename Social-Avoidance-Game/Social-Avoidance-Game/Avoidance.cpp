@@ -5,13 +5,15 @@
 #include "Player.hpp"
 #include "GameBoard.hpp"
 
+
+
+
 //instantiate class variables
 Player* player;
 GameBoard* board;
 
 //define function declarations
 void Avoidance();
-
 
 /***************************************************************************
  *								Avoidance							       *
@@ -20,7 +22,7 @@ void Avoidance();
  *																		   *
  *	Params: N/A															   *
  *	Return: N/A															   *
- *	Author: Bryce Hahn, Tinron Cheung, 									   *
+ *	Author: Bryce Hahn, Tinron Cheung, William Dam                         *
  ***************************************************************************/
 void Avoidance() {
 
@@ -44,21 +46,26 @@ void Avoidance() {
                 std::cout << "You made it home alive!  YOU WIN!!!\n";
                 break;
             }
-            
         }
         else {
             std::cout << "You ran out of health and died!  GAME OVER :(\n";
             break;
         }
-        
     }
     
     if (keepPlaying == false) {
+        delete player;
+        delete board;
+
         std::cout << "\nYou have quit the game.  GOODBYE!\n";
+        exit(1);
     }
 }
 
 
+/*********************************************************************
+** Description: Main function
+*********************************************************************/
 int main(int argc, char** argv) {
 
 	Avoidance();

@@ -7,30 +7,28 @@
 #include "Die.hpp"
 
 /*********************************************************************
-** Description: Default constructor for Cpu class
+** Description: Default constructor for Die class
 *********************************************************************/
 Die::Die() {
-	srand(static_cast<unsigned int>(time(0)));	// Seed random number generator
-	srand(time(NULL));
+    srand(static_cast<unsigned int>(time(0)));	// Seed random number generator
+    height = 5;
+    width = 5;
 }
 
-/*********************************************************************
-** Description: dieRoll function generates random number and returns
-** value.  Receives 2 args for high and low, for example, 6 sided
-** die would be sent as dieRoll(6, 1).
-*********************************************************************/
 int Die::dieRollHeight() {
-    //rand() % (max_number - minimum_number) + minimum_number
+
     return rand() % height + 1;
+
 }
 
 int Die::dieRollWidth() {
-    //rand() % (max_number - minimum_number) + minimum_number
-    return rand() % width + 1 ;               // Return roll value
+
+    return rand() % width + 1;               // Return roll value
+
 }
 
 int Die::randPosition(int axisConstraint) {
-	return rand() % axisConstraint + 1;
+    return rand() % axisConstraint + 1;
 }
 
 void Die::setHeightWidth(int aHeight, int aWidth) {
@@ -38,8 +36,8 @@ void Die::setHeightWidth(int aHeight, int aWidth) {
     width = aWidth;
 }
 
-int Die::dieRoll100(){
-    return rand() % 100 + 1 ;
+int Die::dieRoll100() {
+    return rand() % 100 + 1;
 }
 
 /*********************************************************************

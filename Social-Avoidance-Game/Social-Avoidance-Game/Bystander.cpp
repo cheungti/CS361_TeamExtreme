@@ -7,13 +7,22 @@
 *********************************************************************/
 #include "Bystander.hpp"
 
+#if defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS_)
+	#define PLATFORM_NAME "windows" // Windows
+#elif defined(__APPLE__) || defined(__linux__)
+	#define PLATFORM_NAME "apple" // apple
+#endif
+
 /*********************************************************************
 ** Description: Default constructor
 *********************************************************************/
 Bystander::Bystander() {
-    setChar("ф");
+    if(PLATFORM_NAME == "windows")
+		setChar("B");
+	else
+		setChar("ф");
 	setType(Entity::EntityType::Bystander);	// Initialize type Bystander
-	infected = true;
+	setInfection(true);
 	setHealthDecline(10);
 	setInfectionRadius(2);
 }
@@ -22,17 +31,13 @@ Bystander::Bystander() {
 ** Description: Set function sets infection true/false
 *********************************************************************/
 void Bystander::setInfection(bool infect) {
-
-	infected = infect;
-
+	this->infected = infect;
 }
 /*********************************************************************
  ** Description: return infected or not
 *********************************************************************/
 bool Bystander::isInfected() {
-
     return infected;
-
 }
 
 

@@ -4,11 +4,7 @@
 ** Description: Default constructor for Entity class
 *********************************************************************/
 Entity::Entity() {
-
-	type = EntityType::null;		// Initialize type
-    
-    // Generate default position
-
+    setType(EntityType::null);
 }
 
 Entity::~Entity() {
@@ -19,36 +15,9 @@ Entity::~Entity() {
 ** Description: Parameter constructor for Entity class
 *********************************************************************/
 Entity::Entity(EntityType type) {
-	this->type = type;		        // Initialize type
-
+    setType(type);
     // Generate random position
 	updateLocation(0, 0); // -> Change this to random x and y in their respected child classes
-
-}
-
-/***************************************************************************
- *								Player Step								   *
- *	Every game tick the player class takes a Step loop. This function will *
- *		check for user input (movement, entity interaction, ect...), then  *
- *		call the nessesary update functions to calculate player's updated  *
- *		position information.											   *
- *																		   *
- *	Params: N/A															   *
- *	Return: N/A															   *
- *	Author: Bryce Hahn, Tinron Cheung									   *
- ***************************************************************************/
-void Entity::Step() {
-
-    // Testing, move one to right and down 1 every step
-    updateLocation(getX() + 1, getY() - 1);
-
-    // Check for interactables in current room
-
-    // Check for entities in current room
-
-    // Get user input in console
-
-    // Update location if necessary
 
 }
 
