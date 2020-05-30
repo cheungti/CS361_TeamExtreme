@@ -4,6 +4,8 @@
 #include <tuple>
 #include <string>
 
+
+
 using namespace std;
 
 class Entity {
@@ -15,18 +17,20 @@ public:
 
 	Entity();
 	~Entity();
-	Entity(EntityType);
-	void setType(EntityType);		//created
+	Entity(EntityType t);
+	void setType(EntityType type1);		//created
 	EntityType getType();				//created 
 
-	void updateLocation(int, int);	//created
+	void Step();
+	void updateLocation(int x, int y);	//created
 	tuple<int, int> getLocation();
 	int getInfectionRadius();			//created
-	void setInfectionRadius(int);		//created
+	void setInfectionRadius(int r);		//created
 	int getX();							//created
 	int getY();							//created
     string getChar();
-    void setChar(string);
+    void setChar(string aChar);
+	
 
 	
 private:
@@ -34,7 +38,7 @@ private:
 	int y;
 	int infectionRadius;
 	EntityType type;
-    string entityChar;
+    string entChar;
 };
 
 #endif

@@ -17,25 +17,23 @@ using namespace std;
 class Buildings {
 
 public:
-	Buildings(string, string, int, int);
+	Buildings(string aType, string aBuildingChar, int x, int y);
 	~Buildings();
 
-	void setBuildingName(string);		// Set building type
-	string getBuildingName();				// Get building type
-    void updateLocation(int, int);
+	void setBuildingName(string name);		// Set building type
+	std::string getBuildingName();				// Get building type
+    void updateLocation(int x, int y);
 	int getX();
-	void setX(int);
 	int getY();
-	void setY(int);
 	bool isLocked();
-	void setLocked(bool);
 	bool ifVisited();
-	void setVisited(bool);
     string getBuildingChar();
-	void setBuildingChar(string);
+	void setVisited();
+	void unsetVisited();
+	bool getVisited();
 
 private:
-	string buildingType;					// Building type
+	std::string buildingType;					// Building type
     string buildingChar;                          //char for board
 	int row;									// row location of building
 	int col;									// col location of building

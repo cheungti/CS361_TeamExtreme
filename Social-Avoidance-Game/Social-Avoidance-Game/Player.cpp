@@ -1,5 +1,20 @@
 #include "Player.hpp"
 
+/***************************************************************************
+ *							Player Constructor							   *
+ *	The default player class constructor will initialize the Player entity *
+ *		and set up the required user input classes to ensure everything	   *
+ *		cooperates with the players movement.							   *
+ *	Params: N/A															   *
+ *	Return: N/A															   *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+Player::Player() {
+    setChar("Δ");
+    setType(Entity::EntityType::Player);
+    updateHealth(100);
+    updateLocation(22, 25); // Start at home building
+}
 
 /***************************************************************************
  *								Player Step								   *
@@ -16,27 +31,8 @@ void Player::Step() {
 	
 }
 
-
 /***************************************************************************
- *							Player Constructor							   *
- *	The default player class constructor will initialize the Player entity *
- *		and set up the required user input classes to ensure everything	   *
- *		cooperates with the players movement.							   *
- *	Params: N/A															   *
- *	Return: N/A															   *
- *	Author: Bryce Hahn, Tinron Cheung									   *
- ***************************************************************************/
-Player::Player() {
-    setChar("Δ");
-    setType(Entity::EntityType::Player);
-    updateHealth(100);
-    updateMoney(0);
-    updateLocation(0, 0); //start at 0, 0 -> board can go into the negatives
-}
-
-
-/***************************************************************************
- *							Player Deconstructor						   *
+ *							Player Destructor						       *
  *	The player class deconstructor will ensure we have no memory leaks at  *
  *		the end of the game when shutting down. Keep coding clean!		   *
  *																		   *
@@ -45,7 +41,7 @@ Player::Player() {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 Player::~Player() {
-    //nothing?
+    
 }
 
 
@@ -61,7 +57,6 @@ void Player::updateHealth(int newhealth) {
     this->health = newhealth;
 }
 
-
 /***************************************************************************
  *							     Get Health    			    			   *
  *	The function will return the players health value                      *
@@ -73,47 +68,6 @@ void Player::updateHealth(int newhealth) {
 int Player::getHealth() {
     return this->health;
 }
-
-
-/***************************************************************************
- *							    Update Money 			    			   *
- *	The function will update the players integer money value               *
- *																		   *
- *	Params: int for new player money value                                 *
- *	Return: N/A															   *
- *	Author: Bryce Hahn, Tinron Cheung									   *
- ***************************************************************************/
-void Player::updateMoney(int money) {
-    this->money = money;
-}
-
-
-/***************************************************************************
- *							      Add Money 			    		  	   *
- *	The function will add a designated ammount of cash to the players      *
- *      integer money value                                                *
- *																		   *
- *	Params: int for new player money going to be added                     *
- *	Return: N/A															   *
- *	Author: Bryce Hahn, Tinron Cheung									   *
- ***************************************************************************/
-void Player::addMoney(int additionalmoney) {
-    this->money += additionalmoney;
-}
-
-
-/***************************************************************************
- *							     Get Money    			    			   *
- *	The function will return the players money value                       *
- *																		   *
- *	Params: N/A                                                            *
- *	Return: The player's current money value                               *
- *	Author: Bryce Hahn, Tinron Cheung									   *
- ***************************************************************************/
-int Player::getMoney() {
-    return this->money;
-}
-
 
 /***************************************************************************
  *							   Is Infected    			    			   *
@@ -127,7 +81,6 @@ bool Player::isInfected() {
     return this->infected;
 }
 
-
 /***************************************************************************
  *							   Set Infected    			    			   *
  *	The function will update the players infection status                  *
@@ -139,3 +92,20 @@ bool Player::isInfected() {
 void Player::setInfected(bool infectionStatus) {
     this->infected = infectionStatus;
 }
+
+/***************************************************************************
+ *							   Set Tickets   			    			   *
+ *	The function will update the players tickets                           *
+ ***************************************************************************/
+void Player::setTickets(bool ticket){
+    hasTickets = ticket;
+}
+
+/***************************************************************************
+ *							   Get Tickets    			    			   *
+ *	The function will return true if player has tickets                    *
+ ***************************************************************************/
+bool Player::getHasTickets(){
+    return hasTickets;
+}
+

@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
-#include <csignal>
 #include "Player.hpp"
 #include "GameBoard.hpp"
 
@@ -12,7 +11,7 @@ GameBoard* board;
 
 //define function declarations
 void Avoidance();
-void signalHandler(int);
+
 
 /***************************************************************************
  *								Avoidance							       *
@@ -24,43 +23,45 @@ void signalHandler(int);
  *	Author: Bryce Hahn, Tinron Cheung, 									   *
  ***************************************************************************/
 void Avoidance() {
+
 	//setup player
 	player = new Player();
+
 	//setup game board
 	board = new GameBoard(player);
-
-    //game ending input registers
-    signal(SIGINT, signalHandler);
-    int tickReturn = 0;
     
 	//main game loop
-    while (tickReturn == 0) {
-        tickReturn = board->Step();
+    bool keepPlaying = true;
+
+    while(keepPlaying == true) {
+        
+        if (player->getHealth() > 0) {
+
+            keepPlaying = board->Step();
+
+            // Win game if player returns home, errands done, and no tickets (fines)
+            if (board->playerHome() == true && board->errandsDone() == true && player->getHasTickets() == false) {
+                std::cout << "You made it home alive!  YOU WIN!!!\n";
+                break;
+            }
+            
+        }
+        else {
+            std::cout << "You ran out of health and died!  GAME OVER :(\n";
+            break;
+        }
+        
+    }
+    
+    if (keepPlaying == false) {
+        std::cout << "\nYou have quit the game.  GOODBYE!\n";
     }
 }
 
 
-/***************************************************************************
- *								Signal Handler							   *
- *	Interpret and return signal int for a user break call                  *
- *																		   *
- *	Params: signum representing type of quit signal to send                *
- *	Return: N/A															   *
- *	Author: Bryce Hahn                                                     *
- ***************************************************************************/
-void signalHandler(int signum) {
-    cout << "Interrupt signal (" << signum << ") received.\n";
-
-    // cleanup and close up stuff here
-    delete board;
-    delete player;
-
-    // terminate program  
-    exit(signum);
-}
-
-
 int main(int argc, char** argv) {
+
 	Avoidance();
+
 	return 0;
 }

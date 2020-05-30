@@ -10,18 +10,27 @@
 #include <iostream>
 #include <string>
 #include "Entity.hpp"
+#include "Player.hpp"
 
 class Bystander : public Entity {
 
 public:
 	Bystander();				// Default constructor
 	~Bystander();				// Destructor
-
+	
+	void setInfection(bool n);
+	void penalty(Player* player);
 	bool isInfected();
-	void setInfection(bool);
+	void setInfected(bool);
+	void setHealthDecline(int deduction);
+	int getHealthDecline();
 
 private:
 	bool infected;
+	int infectionRadius;		// How close another entity needs to be to get infected
+	int healthDecline;
+	
+	
 
 };
 

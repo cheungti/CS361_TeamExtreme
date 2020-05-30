@@ -8,6 +8,7 @@
 #ifndef Police_hpp
 #define Police_hpp
 #include "Entity.hpp"
+#include "Player.hpp"
 #include <iostream>
 #include <string>
 
@@ -16,11 +17,10 @@ class Police : public Entity {
 public:
 	Police();				// Default constructor
 	~Police();				// Destructor
-	int getFine();			
-	void setFine(int);
+	void penalty(Player* player);
 
 private:
-	int fine;
+
 };
 
 #endif

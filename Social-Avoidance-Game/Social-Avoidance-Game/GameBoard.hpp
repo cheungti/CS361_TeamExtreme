@@ -28,10 +28,8 @@ private:
 	Player* player;
 	vector<Entity*> entities;
 	vector<Buildings*> buildings;
+	vector<string> text;
     Die* die;
-
-	const int boardWidth = 51;
-	const int boardHeight = 27;
 
 	string **board;
 	char movement;
@@ -39,7 +37,7 @@ private:
 	int infectAmount;
 	char* drawBox(int, int, int, int, int);
 	bool handleKeybinds();
-	void deleteGameboard();
+	string **textBox;
 
 public:
 	GameBoard();
@@ -49,8 +47,8 @@ public:
 	void updateBoard(Entity*, int, int);
 	void printInstructions();
 	void printBoard();
-	int Step();
-	bool checkBystanderInteraction();
+	bool Step();
+	void checkBystanderInteraction();
 	bool overlappingRadius(Entity*, Entity*);
 	void emptyPoint(int, int);
     bool occupied(int, int);
@@ -59,6 +57,11 @@ public:
     void updateLocation(string, int, int);
     void moveCPUs();
 	bool outOfBounds(int, int);
+	void printBuildingWalls(Buildings* building);
+	bool checkBuildingInteraction();
+	bool buildingRadius(Entity*, Buildings*);
+	bool playerHome();
+	bool errandsDone();
 };
 
 #endif

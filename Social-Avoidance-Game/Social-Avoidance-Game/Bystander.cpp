@@ -7,58 +7,76 @@
 *********************************************************************/
 #include "Bystander.hpp"
 
-
-/***************************************************************************
- *						    Bystander Constructor						   *
- *	The default Bystander class constructor will initialize the Bystander  *
- *      character symbol, and entity type, with an infected value of false *
- *                                                                         *
- *	Params: N/A															   *
- *	Return: N/A															   *
- *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
- ***************************************************************************/
+/*********************************************************************
+** Description: Default constructor
+*********************************************************************/
 Bystander::Bystander() {
     setChar("ф");
 	setType(Entity::EntityType::Bystander);	// Initialize type Bystander
-    setInfection(false);
+	infected = true;
+	setHealthDecline(10);
+	setInfectionRadius(2);
+}
+
+/*********************************************************************
+** Description: Set function sets infection true/false
+*********************************************************************/
+void Bystander::setInfection(bool infect) {
+
+	infected = infect;
+
+}
+/*********************************************************************
+ ** Description: return infected or not
+*********************************************************************/
+bool Bystander::isInfected() {
+
+    return infected;
+
 }
 
 
-/***************************************************************************
- *						    Bystander Deconstructor						   *
- *	The Bystander class deconstructor will destroy all of the bystander    *
- *      values.                                                            *
- *                                                                         *
- *	Params: N/A                                                            *
- *	Return: N/A															   *
- *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
- ***************************************************************************/
+/*********************************************************************
+** Description: Class destructor
+*********************************************************************/
 Bystander::~Bystander() {
 
 }
 
+/*********************************************************************
+** Description: Penalty
+** Penalize player for being within radius
+*********************************************************************/
+void Bystander::penalty(Player* player){
 
-/***************************************************************************
- *						    Bystander Infection                            *
- *	Modify the Bystander's infection status                                *
- *                                                                         *
- *	Params: the new infection value										   *
- *	Return: N/A															   *
- *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
- ***************************************************************************/
-void Bystander::setInfection(bool infect) {
-	this->infected = infect;
+	if(isInfected()){
+
+		int currentHealth = player->getHealth();
+		int newHealth = currentHealth - healthDecline;
+
+		if(newHealth < 0){
+			newHealth = 0;
+		}
+
+		player->updateHealth(newHealth);
+	}
+	
 }
 
+/*********************************************************************
+** Description: Set Health Decline
+** set deduction to health for infected Bystanders
+*********************************************************************/
 
-/***************************************************************************
- *						    Bystander Infection                            *
- *	Get the Bystander's infection status                                   *
- *                                                                         *
- *	Params: N/A                                                            *
- *	Return: the current infection value								       *
- *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
- ***************************************************************************/
-bool Bystander::isInfected() {
-    return this->infected;
+void Bystander::setHealthDecline(int deduction){
+	healthDecline = deduction;
 }
+
+/*********************************************************************
+** Description: Get Health Decline
+** get deduction to health for infected Bystanders
+*********************************************************************/
+int Bystander::getHealthDecline(){
+	return healthDecline;
+}
+

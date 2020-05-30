@@ -7,57 +7,28 @@
 *********************************************************************/
 #include "Police.hpp"
 
-
-/***************************************************************************
- *						      Police Constructor						   *
- *	The default Police class constructor will initialize the Polices'      *
- *      default values                                                     *
- *                                                                         *
- *	Params: N/A															   *
- *	Return: N/A															   *
- *	Author: William Dam, Daniel Mesa                                       *
- ***************************************************************************/
+/*********************************************************************
+** Description: Default constructor
+*********************************************************************/
 Police::Police() {
 	setType(Entity::EntityType::Police);	// Initialize type Police
     setChar("₱");
-	setFine(50);
+	setInfectionRadius(6);
 }
 
-
-/***************************************************************************
- *						    Police Deconstructor						   *
- *	The Police class deconstructor will destroy all of the Police values   *
- *                                                                         *
- *	Params: N/A                                                            *
- *	Return: N/A															   *
- *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
- ***************************************************************************/
+/*********************************************************************
+** Description: Class destructor
+*********************************************************************/
 Police::~Police() {
 
 }
 
+/*********************************************************************
+** Description: Penalty
+** Penalize player for being within radius
+*********************************************************************/
+void Police::penalty(Player* player){
 
-/***************************************************************************
- *						        Get Police Fine				     		   *
- *	Return a value for the fine                                            *
- *                                                                         *
- *	Params: N/A                                                            *
- *	Return: The current fine value										   *
- *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
- ***************************************************************************/
-int Police::getFine() {
-	return this->fine;
-}
+	player->setTickets(true);
 
-
-/***************************************************************************
- *						        Set Police Fine				     		   *
- *	Modify a new value for the fine                                        *
- *                                                                         *
- *	Params: The new fine value                                             *
- *	Return: N/A															   *
- *	Author: William Dam, Daniel Mesa, Tinron Cheung                  	   *
- ***************************************************************************/
-void Police::setFine(int anAmount) {
-	this->fine = anAmount;
 }
