@@ -22,32 +22,22 @@ using namespace std;
 
 class GameBoard {
 private:
-	//entities
+	//private class objects
 	Player* player;
 	vector<Entity*> entities;
 	vector<Buildings*> buildings;
 	vector<string> text;
 	Die* die;
 
+	//private class vars
+	string** textBox;
 	string** board;
 	char movement;
-	//Room * rooms;
 	int infectAmount;
+
+	//private class methods
 	bool handleKeybinds();
 	char getWindowsInput();
-	string** textBox;
-
-public:
-	GameBoard(Player*);
-	~GameBoard();
-	string** createBoard();
-	string** createBoardWindows();
-	void updateBoard(Entity*, int, int);
-	void printInstructions();
-	void printInstructionsWindows();
-	void printBoard();
-	void clearScreen();
-	bool Step();
 	void checkBystanderInteraction();
 	bool overlappingRadius(Entity*, Entity*);
 	void emptyPoint(int, int);
@@ -56,10 +46,20 @@ public:
 	void randomLocation(Buildings*);
 	void updateLocation(string, int, int);
 	void moveCPUs();
-	bool outOfBounds(int, int);
 	void printBuildingWalls(Buildings*);
 	bool checkBuildingInteraction();
 	bool buildingRadius(Entity*, Buildings*);
+	void updateBoard(Entity*, int, int);
+	void printInstructions();
+	void printBoard();
+	void clearScreen();
+
+public:
+	GameBoard(Player*);
+	~GameBoard();
+	string** createBoard();
+	string** createBoardWindows();
+	bool Step();
 	bool playerHome();
 	bool errandsDone();
 };

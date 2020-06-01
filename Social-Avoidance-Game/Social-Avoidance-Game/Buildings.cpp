@@ -25,6 +25,7 @@ Buildings::Buildings(string aType, string aBuildingChar, int buildingRow, int bu
  *		when printing to board, but will generate the building location on *
  *		its own for a more random gameboard each playthrough			   *
  *	Params: building name, building char, die pointer for random locations *
+ *																	       *
  *	Return: N/A															   *
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
@@ -33,11 +34,65 @@ Buildings::Buildings(string aType, string aBuildingChar, Die* d) {
     buildingChar = aBuildingChar;
 	col = d->dieRollWidth();
 	row = d->dieRollHeight();
-	// row = buildingRow;
-	// col = buildingCol;
 	visited = false;
 	locked = false;
 }
+
+
+/***************************************************************************
+ *							Building Constructor						   *
+ *	The random building constructor takes a building name a char to show   *
+ *		when printing to board, but will generate the building location on *
+ *		its own for a more random gameboard each playthrough, while also   *
+ *		verifying the placement is a valid (non-collision) position on map *
+ *																	       *
+ *	Params: building name, building char, die pointer for random locations *
+ *	Return: N/A															   *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+Buildings::Buildings(string aType, string aBuildingChar, Die* d, vector<Buildings*> buildings) {
+	buildingType = aType;
+	buildingChar = aBuildingChar;
+	randomWithPlacementCollision(d, buildings);
+	visited = false;
+	locked = false;
+}
+
+Buildings::~Buildings() {
+
+}
+
+
+void Buildings::randomWithPlacementCollision(Die* d, vector<Buildings*> buildings) {
+	bool goodPlacement = false, replacement = true;
+	int x, y, xDisplacement, yDisplacement;
+	int minDisplacement = 5;
+
+
+	while (!goodPlacement) {
+		if (replacement) {
+			replacement = false;
+			x = d->dieRollWidth();
+			y = d->dieRollHeight();
+
+			for (int i = 0; i < buildings.size(); i++) {
+				xDisplacement = (buildings[i]->getX() - x);
+				yDisplacement = (buildings[i]->getY() - y);
+				if (xDisplacement < minDisplacement && xDisplacement > -minDisplacement) {
+					if (yDisplacement < minDisplacement && yDisplacement > -minDisplacement) {
+						replacement = true;
+					}
+				}
+			}
+		}
+		goodPlacement = true;
+	}
+
+	//once we've verified the building can't overlap others, define its xy coords
+	this->col = x;
+	this->row = y;
+}
+
 
 /*********************************************************************
 ** Description: Set function sets building type
@@ -145,12 +200,5 @@ void Buildings::unsetVisited() {
 bool Buildings::getVisited() {
 
 	return this->visited;
-
-}
-
-/*********************************************************************
-** Description: Class destructor
-*********************************************************************/
-Buildings::~Buildings() {
 
 }

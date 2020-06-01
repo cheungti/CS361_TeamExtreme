@@ -21,7 +21,6 @@ private:
 
 public:
     Die();
-    ~Die();
 
     int dieRollHeight();
     int dieRollWidth();

@@ -39,10 +39,3 @@ void Die::setHeightWidth(int aHeight, int aWidth) {
 int Die::dieRoll100() {
     return rand() % 100 + 1;
 }
-
-/*********************************************************************
-** Description: Class destructor
-*********************************************************************/
-Die::~Die() {
-
-}

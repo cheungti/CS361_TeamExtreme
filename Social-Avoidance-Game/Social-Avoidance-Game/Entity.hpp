@@ -18,18 +18,17 @@ public:
 	Entity();
 	~Entity();
 	Entity(EntityType t);
-	void setType(EntityType type1);		//created
+	void setType(EntityType);			//created
 	EntityType getType();				//created 
 
-	void Step();
-	void updateLocation(int x, int y);	//created
+	void updateLocation(int, int);		//created
 	tuple<int, int> getLocation();
 	int getInfectionRadius();			//created
-	void setInfectionRadius(int r);		//created
+	void setInfectionRadius(int);		//created
 	int getX();							//created
 	int getY();							//created
     string getChar();
-    void setChar(string aChar);
+    void setChar(string);
 	
 
 	

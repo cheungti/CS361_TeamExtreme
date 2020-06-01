@@ -16,10 +16,12 @@
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 Player::Player() {
-    if (PLATFORM_NAME == "windows")
+    #if defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS_)
         setChar(C_MAGENTA "Y" C_RESET);
-    else
+    #elif defined(__APPLE__) || defined(__linux__)
         setChar(C_MAGENTA "Δ" C_RESET);
+    #endif
+        
     setType(Entity::EntityType::Player);
     updateHealth(100);
     updateLocation(22, 25); // Start at home building

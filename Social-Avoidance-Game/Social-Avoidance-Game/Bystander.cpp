@@ -11,14 +11,20 @@
 ** Description: Default constructor
 *********************************************************************/
 Bystander::Bystander() {
-	if (PLATFORM_NAME == "windows")
+	#if defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS_)
 		setChar(C_YELLOW "B" C_RESET);
-	else
+	#elif defined(__APPLE__) || defined(__linux__)
 		setChar(C_YELLOW "ф" C_RESET);
+	#endif
+		
 	setType(Entity::EntityType::Bystander);	// Initialize type Bystander
 	infected = true;
 	setHealthDecline(10);
 	setInfectionRadius(2);
+}
+
+Bystander::~Bystander() {
+
 }
 
 /*********************************************************************
@@ -38,13 +44,6 @@ bool Bystander::isInfected() {
 
 }
 
-
-/*********************************************************************
-** Description: Class destructor
-*********************************************************************/
-Bystander::~Bystander() {
-
-}
 
 /*********************************************************************
 ** Description: Penalty

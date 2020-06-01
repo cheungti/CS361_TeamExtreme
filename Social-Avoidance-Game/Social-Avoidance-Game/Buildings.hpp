@@ -24,6 +24,7 @@ public:
 	};
 
 	Buildings(string, string, Die*);
+	Buildings(string, string, Die*, vector<Buildings*>);
 	Buildings(string, string, int, int);
 	~Buildings();
 
@@ -41,13 +42,14 @@ public:
 	bool getVisited();
 
 private:
-	std::string buildingType;					// Building type
+	string buildingType;					// Building type
     string buildingChar;                          //char for board
 	int row;									// row location of building
 	int col;									// col location of building
 	bool locked;
 	bool visited;
 
+	void randomWithPlacementCollision(Die*, vector<Buildings*>);
 };
 
 #endif

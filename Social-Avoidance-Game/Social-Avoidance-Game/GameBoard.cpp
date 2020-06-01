@@ -58,9 +58,9 @@ GameBoard::GameBoard(Player* player) {
     //random room location generation!
         //if we have a larger sized board, we need to generate enough handwash
         //      stations to compensate for the larger player travel distance
-    int bathroomCount = (int)(buildings.size() / 3);
+    int bathroomCount = 0;// (int)(buildings.size() / 3);
     for (int i = 0; i < bathroomCount; i++) {
-        buildings.push_back(new Buildings("handwash", "T", die));
+        buildings.push_back(new Buildings("handwash", "N", die, buildings));
     }
 
     for (int i = 0; i < buildings.size(); i++) {

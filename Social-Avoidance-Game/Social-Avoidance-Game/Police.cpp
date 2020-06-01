@@ -11,20 +11,16 @@
 ** Description: Default constructor
 *********************************************************************/
 Police::Police() {
-	setType(Entity::EntityType::Police);	// Initialize type Police
-	if (PLATFORM_NAME == "windows")
+	#if defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS_)
 		setChar(C_RED "P" C_RESET);
-	else
+	#elif defined(__APPLE__) || defined(__linux__)
 		setChar(C_RED "₱" C_RESET);
+	#endif
+
+	setType(Entity::EntityType::Police);	// Initialize type Police
 	setInfectionRadius(6);
 }
 
-/*********************************************************************
-** Description: Class destructor
-*********************************************************************/
-Police::~Police() {
-
-}
 
 /*********************************************************************
 ** Description: Penalty
