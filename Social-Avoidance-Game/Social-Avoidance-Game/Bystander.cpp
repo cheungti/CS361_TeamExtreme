@@ -12,9 +12,9 @@
 *********************************************************************/
 Bystander::Bystander() {
 	if (PLATFORM_NAME == "windows")
-		setChar("B");
+		setChar(C_YELLOW "B" C_RESET);
 	else
-		setChar("ф");
+		setChar(C_YELLOW "ф" C_RESET);
 	setType(Entity::EntityType::Bystander);	// Initialize type Bystander
 	infected = true;
 	setHealthDecline(10);
@@ -63,7 +63,7 @@ void Bystander::penalty(Player* player){
 
 		player->updateHealth(newHealth);
 	}
-	
+
 }
 
 /*********************************************************************
@@ -82,4 +82,3 @@ void Bystander::setHealthDecline(int deduction){
 int Bystander::getHealthDecline(){
 	return healthDecline;
 }
-

@@ -17,9 +17,9 @@
  ***************************************************************************/
 Player::Player() {
     if (PLATFORM_NAME == "windows")
-        setChar("Y");
+        setChar(C_MAGENTA "Y" C_RESET);
     else
-        setChar("Δ");
+        setChar(C_MAGENTA "Δ" C_RESET);
     setType(Entity::EntityType::Player);
     updateHealth(100);
     updateLocation(22, 25); // Start at home building

@@ -2,12 +2,15 @@
 ** Author: Bryce Hahn, Tinron Cheung
 ** Date: 05-15-2020
 ** Description: Player.hpp is the class specification file for the
-** Player class.  Member methods defined in separate implementation 
+** Player class.  Member methods defined in separate implementation
 ** file.
 *********************************************************************/
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
-#include "Entity.hpp" 
+#include "Entity.hpp"
+
+#define C_MAGENTA "\x1b[35m"
+#define C_RESET   "\x1b[0m"
 
 #if defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS_)
 	#define PLATFORM_NAME "windows" // Windows
@@ -34,7 +37,7 @@ public:
 	void setInfected(bool);
 	void setTickets(bool);
 	bool getHasTickets();
-	
+
 };
 
 #endif

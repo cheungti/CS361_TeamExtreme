@@ -26,7 +26,7 @@ public:
     int dieRollHeight();
     int dieRollWidth();
     int randPosition(int);
-    void setHeightWidth(int aHeight, int aWidth);
+    void setHeightWidth(int, int);
     int dieRoll100();
 };
 

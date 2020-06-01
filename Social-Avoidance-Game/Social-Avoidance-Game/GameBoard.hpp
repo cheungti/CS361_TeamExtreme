@@ -34,6 +34,7 @@ private:
 	//Room * rooms;
 	int infectAmount;
 	bool handleKeybinds();
+	char getWindowsInput();
 	string** textBox;
 
 public:

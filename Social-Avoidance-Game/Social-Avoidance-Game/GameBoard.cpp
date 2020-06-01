@@ -53,6 +53,15 @@ GameBoard::GameBoard(Player* player) {
     buildings.push_back(new Buildings("work", "W", 13, 48));
     buildings.push_back(new Buildings("handwash", "N", 13, 25));
 
+
+    //random room location generation!
+        //if we have a larger sized board, we need to generate enough handwash
+        //      stations to compensate for the larger player travel distance
+    int bathroomCount = (int)(buildings.size() / 3);
+    for (int i = 0; i < bathroomCount; i++) {
+        buildings.push_back(new Buildings("handwash", "T", die));
+    }
+
     for (int i = 0; i < buildings.size(); i++) {
         printBuildingWalls(buildings[i]);
     }
@@ -202,20 +211,22 @@ bool GameBoard::Step() {
  ***************************************************************************/
 bool GameBoard::handleKeybinds() {
     char ascii = 0;
-    bool movement = false;
+    bool movement = true;
 
     //getch() returns an ASCII value. That's why I have an int for getting the input.
     printf("w = up, a = left, s = down, d = right, q = Quit Game\n");
     printf("Enter your move (w,a,s,d): ");
 
-    if (PLATFORM_NAME == "windows") {
-        //ascii = tolower(_getch());
-        ascii = tolower(getchar());
-    } else {
-        system("/bin/stty raw");
-        ascii = tolower(getchar());
-        system("/bin/stty cooked");
-    }
+    // if (PLATFORM_NAME.compare("windows")) {
+    //     //ascii = tolower(_getch());
+    //     ascii = tolower(getchar());
+    // } else {
+    //     system("/bin/stty raw");
+    //     ascii = tolower(getchar());
+    //     system("/bin/stty cooked");
+    // }
+
+    ascii = getWindowsInput();
 
     if (ascii == 'w') {      //if the character is a 'w'
         //move up
@@ -237,7 +248,7 @@ bool GameBoard::handleKeybinds() {
         return false;
     } else {
         //dont' move
-        printf("Error, invalid move key! '%c' -> Please use W, A, S or D", (char)ascii);
+        printf(C_RED "\n\nError, invalid move key! " C_RESET "'%c' -> Please use W, A, S or D\n\n", (char)ascii);
     }
 
     if (movement == false) {
@@ -246,6 +257,21 @@ bool GameBoard::handleKeybinds() {
     }
     return true;
 }
+
+char GameBoard::getWindowsInput() {
+    char ascii = 0;
+    #if defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS_)
+        ascii = tolower(_getch());
+    #else
+        system("/bin/stty raw");
+        ascii = tolower(getchar());
+        system("/bin/stty cooked");
+    #endif
+
+    return ascii;
+}
+
+
 
 /***************************************************************************
  *							    Create Board							   *
@@ -366,22 +392,25 @@ void GameBoard::emptyPoint(int i, int j) {
 }
 
 void GameBoard::printInstructions() {
-    //system("CLS");
-    printf("\n----------------------------------------------\n");
-    printf("Police - ₱      Player - Δ      Bystander - ф\n");
-    printf("Home - H        Pharmacy - J    Doctor - D\n");
-    printf("Grocery - G     Station - S     Work - W\n");
-    printf("Handwash Station (recharge health) - N\n");
-    printf("----------------------------------------------\n");
-}
+    int iter = 1;
 
-void GameBoard::printInstructionsWindows() {
+    printf("\n-------------------" C_BLUE "Game Key" C_RESET "-------------------\n");
+
+    if (PLATFORM_NAME == "windows")
+        printf("Police - P      Player - Y      Bystander - B\n");
+    else
+        printf("Police - ₱      Player - Δ      Bystander - ф\n");
+
+    for (int i = 0; i < buildings.size(); i++) {
+        printf("%s - %s\t", buildings[i]->getBuildingName().c_str(), buildings[i]->getBuildingChar().c_str());
+        if (iter == 3) {
+            printf("\n");
+            iter = 0;
+        }
+        iter++;
+    }
+
     printf("\n----------------------------------------------\n");
-    printf("Police - P      Player - Y      Bystander - B\n");
-    printf("Home - H        Pharmacy - J    Doctor - D\n");
-    printf("Grocery - G     Station - S     Work - W\n");
-    printf("Handwash Station (recharge health) - N\n");
-    printf("----------------------------------------------\n");
 }
 
 /***************************************************************************
@@ -394,15 +423,11 @@ void GameBoard::printInstructionsWindows() {
  *	Author: Bryce Hahn, Tinron Cheung, William Dam						   *
  ***************************************************************************/
 void GameBoard::printBoard() {
-    if (PLATFORM_NAME == "windows")
-        printInstructionsWindows();
-    else
-        printInstructions();
+    printInstructions();
 
     for (int i = 0; i < boardHeight; i++) {
         for (int j = 0; j < boardWidth; j++) {
             cout << this->board[i][j];
-
         }
         if ((i + 1) <= boardHeight) {
             printf("\n");
@@ -410,29 +435,29 @@ void GameBoard::printBoard() {
     }
 
     // Display player health score
-    cout << "Health: " << this->player->getHealth() << endl;
+    if (this->player->getHealth() > 50) {
+        printf(C_GREEN "Health: %i\n" C_RESET, this->player->getHealth());
+    } else if (this->player->getHealth() > 30) {
+        printf(C_YELLOW "Health: %i\n" C_RESET, this->player->getHealth());
+    } else {
+        printf(C_RED "Health: %i\n" C_RESET, this->player->getHealth());
+    }
 
     // Display message if player has received a fine
     if (this->player->getHasTickets()) {
-
-        cout << "Visit Police Station to pay your fine!" << endl;
-
+        printf(C_RED "Visit Police Station to pay your fine!\n" C_RESET);
     }
 
-    cout << "Visited: ";
+    printf("Visited: ");
     for (int i = 0; i < buildings.size(); i++) {
-
         // Mark visited, except home and handwash station
         if (buildings[i]->getBuildingName() != "home" && buildings[i]->getBuildingName() != "handwash") {
-
             if (buildings[i]->getVisited() == true) {
-                cout << buildings[i]->getBuildingName() << "  ";
+                printf("%s  ", buildings[i]->getBuildingName().c_str());
             }
-
         }
-
     }
-    cout << endl;
+    printf("\n");
 
     int enters = 5;
 
@@ -446,7 +471,6 @@ void GameBoard::printBoard() {
     for (int i = 0; i < enters; i++) {
         cout << endl;
     }
-
 }
 
 /*********************************************************************
@@ -580,32 +604,27 @@ bool GameBoard::checkBuildingInteraction() {
             // Recharge health by washing hands
             if (this->buildings[i]->getBuildingName() == "handwash") {
                 this->player->updateHealth(100);
-                text.push_back("You washed your hands.  Health restored to 100!\n");
+                text.push_back(C_CYAN "You washed your hands.  Health restored to 100!\n" C_RESET);
             }
 
             // Can't go home without finishing errands
             if (playerHome() == true) {
                 if (errandsDone() == false) {
-                    text.push_back("You can't go home yet! You must visit: ");
+                    text.push_back(C_RED "You can't go home yet! You must visit: " C_RESET);
                     for (int i = 0; i < this->buildings.size(); i++) {
                         if (i != 0 && i != 6) {
                             if (this->buildings[i]->getVisited() == false) {
-
                                 text.push_back(this->buildings[i]->getBuildingName());
                             }
                         }
                     }
-                }
-                else if (errandsDone() == true && this->player->getHasTickets() == true) {
-                    text.push_back("You can't go home yet!\nGo to the police station to pay your fine.");
+                } else if (errandsDone() == true && this->player->getHasTickets() == true) {
+                    text.push_back(C_RED "You can't go home yet!\n" C_RESET "Go to the police station to pay your fine.");
                 }
             }
-
-
             return true;
         }
     }
-
     return false;
 }
 
@@ -624,17 +643,13 @@ bool GameBoard::buildingRadius(Entity* e1, Buildings* e2) {
     int buildingYcoord = e2->getY();
 
 
-    if ((playerYcoord == buildingYcoord + 2) || (playerYcoord == buildingYcoord - 2))
-    {
-        if ((playerXcoord == buildingXcoord - 1) || (playerXcoord == buildingXcoord + 1) || (playerXcoord == buildingXcoord))
-        {
+    if ((playerYcoord == buildingYcoord + 2) || (playerYcoord == buildingYcoord - 2)) {
+        if ((playerXcoord == buildingXcoord - 1) || (playerXcoord == buildingXcoord + 1) || (playerXcoord == buildingXcoord)) {
             return true;
         }
     }
-    if ((playerXcoord == buildingXcoord + 2) || (playerXcoord == buildingXcoord - 2))
-    {
-        if ((playerYcoord == buildingYcoord - 1) || (playerYcoord == buildingYcoord + 1) || (playerYcoord == buildingYcoord))
-        {
+    if ((playerXcoord == buildingXcoord + 2) || (playerXcoord == buildingXcoord - 2)) {
+        if ((playerYcoord == buildingYcoord - 1) || (playerYcoord == buildingYcoord + 1) || (playerYcoord == buildingYcoord)) {
             return true;
         }
     }
@@ -676,11 +691,11 @@ bool GameBoard::errandsDone() {
 }
 
 /*********************************************************************
-** Description: The default deconstructor destroys the memory for the 
-** gameboard pointer starting values.    
+** Description: The default deconstructor destroys the memory for the
+** gameboard pointer starting values.
 ** Arguments: None
 ** Return: None
-** Author: Bryce Hahn, Tinron Cheung	
+** Author: Bryce Hahn, Tinron Cheung
 *********************************************************************/
 GameBoard::~GameBoard() {
 
@@ -692,9 +707,10 @@ GameBoard::~GameBoard() {
     delete[] board;
 
     delete player;
+    delete die;
 
     entities.clear(); // delete the vectors efficiently
     buildings.clear();
 
-    
+
 }

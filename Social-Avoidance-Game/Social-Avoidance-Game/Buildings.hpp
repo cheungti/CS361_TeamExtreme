@@ -2,7 +2,7 @@
 ** Author: William Dam, Daniel Mesa, Tinron Cheung
 ** Date: 05-05-2020
 ** Description: Buildings.hpp is the class specification for the
-** Buildings class.  Member methods defined in separate implementation 
+** Buildings class.  Member methods defined in separate implementation
 ** file.
 *********************************************************************/
 #ifndef Buildings_hpp
@@ -11,23 +11,31 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Die.hpp"
 
 using namespace std;
 
 class Buildings {
 
 public:
-	Buildings(string aType, string aBuildingChar, int x, int y);
+	enum class BuildingType {
+		Home, Pharmacy, GroceryStore, PoliceStation,
+		Doctor, Work, HandwashStation, empty
+	};
+
+	Buildings(string, string, Die*);
+	Buildings(string, string, int, int);
 	~Buildings();
 
-	void setBuildingName(string name);		// Set building type
-	std::string getBuildingName();				// Get building type
-    void updateLocation(int x, int y);
+	void setBuildingName(string);		// Set building type
+	string getBuildingName();				// Get building type
+    void updateLocation(int, int);
 	int getX();
 	int getY();
 	bool isLocked();
 	bool ifVisited();
     string getBuildingChar();
+	void setBuildingChar(string);
 	void setVisited();
 	void unsetVisited();
 	bool getVisited();

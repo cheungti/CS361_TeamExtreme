@@ -12,6 +12,9 @@
 #include <iostream>
 #include <string>
 
+#define C_RED     "\x1b[31m"
+#define C_RESET   "\x1b[0m"
+
 #if defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS_)
 	#define PLATFORM_NAME "windows" // Windows
 #elif defined(__APPLE__) || defined(__linux__)

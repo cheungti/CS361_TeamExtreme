@@ -12,6 +12,9 @@
 #include "Entity.hpp"
 #include "Player.hpp"
 
+#define C_YELLOW  "\x1b[33m"
+#define C_RESET   "\x1b[0m"
+
 #if defined(_WIN32) || defined(_WIN64) || defined(_WINDOWS_)
 	#define PLATFORM_NAME "windows" // Windows
 #elif defined(__APPLE__) || defined(__linux__)
@@ -23,7 +26,7 @@ class Bystander : public Entity {
 public:
 	Bystander();				// Default constructor
 	~Bystander();				// Destructor
-	
+
 	void setInfection(bool n);
 	void penalty(Player* player);
 	bool isInfected();
@@ -35,8 +38,8 @@ private:
 	bool infected;
 	int infectionRadius;		// How close another entity needs to be to get infected
 	int healthDecline;
-	
-	
+
+
 
 };
 

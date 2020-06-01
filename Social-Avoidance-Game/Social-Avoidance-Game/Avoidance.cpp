@@ -5,6 +5,11 @@
 #include "Player.hpp"
 #include "GameBoard.hpp"
 
+#define C_RED     "\x1b[31m"
+#define C_GREEN   "\x1b[32m"
+#define C_RESET   "\x1b[0m"
+
+
 //instantiate class variables
 Player* player;
 GameBoard* board;
@@ -28,30 +33,28 @@ void Avoidance() {
 
 	//setup game board
 	board = new GameBoard(player);
-    
+
 	//main game loop
     bool keepPlaying = true;
 
     while(keepPlaying == true) {
-        
+
         if (player->getHealth() > 0) {
 
             keepPlaying = board->Step();
 
             // Win game if player returns home, errands done, and no tickets (fines)
             if (board->playerHome() == true && board->errandsDone() == true && player->getHasTickets() == false) {
-                std::cout << "You made it home alive!  YOU WIN!!!\n";
+				printf(C_GREEN "You made it home alive!  YOU WIN!!!\n" C_RESET);
                 break;
             }
-            
-        }
-        else {
-            std::cout << "You ran out of health and died!  GAME OVER :(\n";
+
+        } else {
+			printf(C_RED "You ran out of health and died!  GAME OVER :(\n" C_RESET);
             break;
         }
-        
     }
-    
+
     if (keepPlaying == false) {
         std::cout << "\nYou have quit the game.  GOODBYE!\n";
     }

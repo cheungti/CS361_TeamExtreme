@@ -19,19 +19,39 @@ Buildings::Buildings(string aType, string aBuildingChar, int buildingRow, int bu
 	locked = false;
 }
 
+/***************************************************************************
+ *							Building Constructor						   *
+ *	The default building constructor takes a building name a char to show  *
+ *		when printing to board, but will generate the building location on *
+ *		its own for a more random gameboard each playthrough			   *
+ *	Params: building name, building char, die pointer for random locations *
+ *	Return: N/A															   *
+ *	Author: Bryce Hahn, Tinron Cheung									   *
+ ***************************************************************************/
+Buildings::Buildings(string aType, string aBuildingChar, Die* d) {
+	buildingType = aType;
+    buildingChar = aBuildingChar;
+	col = d->dieRollWidth();
+	row = d->dieRollHeight();
+	// row = buildingRow;
+	// col = buildingCol;
+	visited = false;
+	locked = false;
+}
+
 /*********************************************************************
 ** Description: Set function sets building type
 *********************************************************************/
-void Buildings::setBuildingName(std::string buildingName) {
+void Buildings::setBuildingName(string buildingName) {
 
-	buildingType = buildingName;
+	this->buildingType = buildingName;
 
 }
 
 /*********************************************************************
 ** Description: Set function sets building type
 *********************************************************************/
-std::string Buildings::getBuildingName() {
+string Buildings::getBuildingName() {
 
 	return buildingType;
 
@@ -46,12 +66,18 @@ string Buildings::getBuildingChar() {
 
 }
 
+void Buildings::setBuildingChar(string buildingChar) {
+
+	this->buildingChar = buildingChar;
+
+}
+
 /*********************************************************************
 ** Description: return if locked or not
 *********************************************************************/
 bool Buildings::isLocked() {
 
-	return locked; 
+	return locked;
 
 }
 
@@ -60,7 +86,7 @@ bool Buildings::isLocked() {
 *********************************************************************/
 bool Buildings::ifVisited() {
 
-	return visited; 
+	return visited;
 
 }
 
