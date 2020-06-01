@@ -46,6 +46,7 @@ public:
 	void printInstructions();
 	void printInstructionsWindows();
 	void printBoard();
+	void clearScreen();
 	bool Step();
 	void checkBystanderInteraction();
 	bool overlappingRadius(Entity*, Entity*);

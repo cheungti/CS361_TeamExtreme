@@ -45,12 +45,12 @@ void Avoidance() {
 
             // Win game if player returns home, errands done, and no tickets (fines)
             if (board->playerHome() == true && board->errandsDone() == true && player->getHasTickets() == false) {
-				printf(C_GREEN "You made it home alive!  YOU WIN!!!\n" C_RESET);
+					 printf(C_GREEN "You made it home alive!  YOU WIN!!!\n" C_RESET);
                 break;
             }
 
         } else {
-			printf(C_RED "You ran out of health and died!  GAME OVER :(\n" C_RESET);
+				printf(C_RED "You ran out of health and died!  GAME OVER :(\n" C_RESET);
             break;
         }
     }

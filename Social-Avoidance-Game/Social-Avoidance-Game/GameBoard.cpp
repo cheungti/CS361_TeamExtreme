@@ -9,6 +9,7 @@ const int boxHeight = 5;
     #include <conio.h>
 #elif defined(__APPLE__) || defined(__linux__)
     #define PLATFORM_NAME "apple" // apple
+	 #include <cstdlib>
 #endif
 
 
@@ -82,9 +83,9 @@ GameBoard::GameBoard(Player* player) {
     board[player->getX()][player->getY()] = player->getChar();
 
     this->printBoard();
-
-
 }
+
+
 
 void GameBoard::updateLocation(string aChar, int row, int column) {
     board[row][column] = aChar;
@@ -177,7 +178,6 @@ bool GameBoard::overlappingRadius(Entity* e1, Entity* e2) {
  *	Author: Bryce Hahn, Tinron Cheung									   *
  ***************************************************************************/
 bool GameBoard::Step() {
-
     bool keepPlaying = false;
 
     //player movements
@@ -190,7 +190,8 @@ bool GameBoard::Step() {
     if (keepPlaying == true) {
         checkBystanderInteraction();
         checkBuildingInteraction();
-
+			
+	 	  clearScreen();
         //redraw board
         printBoard();
     }
@@ -423,6 +424,7 @@ void GameBoard::printInstructions() {
  *	Author: Bryce Hahn, Tinron Cheung, William Dam						   *
  ***************************************************************************/
 void GameBoard::printBoard() {
+	 clearScreen();
     printInstructions();
 
     for (int i = 0; i < boardHeight; i++) {
@@ -473,6 +475,16 @@ void GameBoard::printBoard() {
     }
 }
 
+void GameBoard::clearScreen() {
+	if(PLATFORM_NAME == "windows") {
+		system("CLS");
+	}
+	else {
+		system("clear");
+	}
+	
+}
+
 /*********************************************************************
 ** Description: Print borders around each building
 ** Arguments: Buildings*
@@ -492,7 +504,6 @@ void GameBoard::printBuildingWalls(Buildings* building) {
             }
         }
     }
-
 }
 
 /***************************************************************************
