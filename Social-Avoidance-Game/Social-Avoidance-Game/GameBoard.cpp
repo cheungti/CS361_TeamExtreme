@@ -105,10 +105,9 @@ void GameBoard::updateLocation(string aChar, int row, int column) {
 void GameBoard::checkBystanderInteraction() {
     for (int i = 0; i < entities.size(); i++) {
         //checks if player is within the infection radius of a cpu
-
         if (overlappingRadius(this->player, this->entities[i])) {
             //penalty
-            if (entities[i]->getChar() == "₱") {
+            if (entities[i]->getType() == Entity::EntityType::Police) {
                 //if police is in radius
                 Police* policeman = static_cast<Police*>(entities[i]);
 
@@ -119,27 +118,19 @@ void GameBoard::checkBystanderInteraction() {
                             policeman->penalty(this->player);
                             text.push_back("Police caught you near a Bystander. You received a fine!");
                         }
-
-
                     }
-
                 }
             }
 
             // Health deduction for getting too close to bystander
-            else if (entities[i]->getChar() == "ф") {
+            else if (entities[i]->getType() == Entity::EntityType::Bystander) {
                 Bystander* aBystander = static_cast<Bystander*>(entities[i]);
                 aBystander->penalty(this->player);
 
                 text.push_back("You got too close to a bystander! Health Deducted: " + std::to_string(aBystander->getHealthDecline()));
-
             }
-
-
         }
     }
-
-
 }
 
 
@@ -183,15 +174,12 @@ bool GameBoard::Step() {
     //player movements
     keepPlaying = handleKeybinds();
 
-    //clear console
-    //system("clear"); //system only works on windows
-
     //check collisions
     if (keepPlaying == true) {
         checkBystanderInteraction();
         checkBuildingInteraction();
 			
-	 	  clearScreen();
+        clearScreen();
         //redraw board
         printBoard();
     }
@@ -214,18 +202,8 @@ bool GameBoard::handleKeybinds() {
     char ascii = 0;
     bool movement = true;
 
-    //getch() returns an ASCII value. That's why I have an int for getting the input.
     printf("w = up, a = left, s = down, d = right, q = Quit Game\n");
     printf("Enter your move (w,a,s,d): ");
-
-    // if (PLATFORM_NAME.compare("windows")) {
-    //     //ascii = tolower(_getch());
-    //     ascii = tolower(getchar());
-    // } else {
-    //     system("/bin/stty raw");
-    //     ascii = tolower(getchar());
-    //     system("/bin/stty cooked");
-    // }
 
     ascii = getWindowsInput();
 

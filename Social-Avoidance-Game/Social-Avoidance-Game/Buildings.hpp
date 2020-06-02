@@ -28,7 +28,7 @@ public:
 	Buildings(string, string, int, int);
 	~Buildings();
 
-	void setBuildingName(string);		// Set building type
+	void setBuildingName(string);			// Set building type
 	string getBuildingName();				// Get building type
     void updateLocation(int, int);
 	int getX();
