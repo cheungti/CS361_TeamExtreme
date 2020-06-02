@@ -22,6 +22,7 @@ Player::Player() {
         setChar(C_MAGENTA "Δ" C_RESET);
     #endif
         
+    this->hasTickets = false;
     setType(Entity::EntityType::Player);
     updateHealth(100);
     updateLocation(22, 25); // Start at home building
